@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens (06-arayuz §3, plan §11 "Stüdyo galeri"). Cream canvas, ink text, one
+ * dominant colour (nail-polish burgundy) and pastel surfaces that only ever sit behind
+ * foreground text. Contrast pairs are checked in D-01 (AA: text 4.5:1, UI 3:1).
+ */
+:root {
+  --background: oklch(0.985 0.008 75); /* #fdf9f4 canvas cream */
+  --foreground: oklch(0.24 0.02 330); /* #251c24 ink — 15.8:1 on background */
+  --surface: oklch(0.995 0.004 75);
+  --surface-muted: oklch(0.955 0.012 60); /* #f6eee8 */
+  --muted-foreground: oklch(0.47 0.02 330); /* #625760 — 6.6:1 on background */
+  --border: oklch(0.88 0.015 40); /* decorative dividers only */
+  --input: oklch(0.6 0.02 330); /* form field borders — ≥ 3:1 (WCAG 1.4.11) */
+  --ring: oklch(0.45 0.13 5);
+
+  --primary: oklch(0.45 0.13 5); /* #8d2e4b nail-polish burgundy — 7.7:1 */
+  --primary-foreground: oklch(0.985 0.008 75);
+  --accent: oklch(0.9 0.04 15); /* #f8d4d5 powder pink */
+  --accent-foreground: oklch(0.24 0.02 330);
+
+  /* Pastel category surfaces (backgrounds only; text on them is --foreground). */
+  --lila: oklch(0.9 0.04 300);
+  --nane: oklch(0.92 0.04 165);
+  --seftali: oklch(0.92 0.045 60);
+  --gok: oklch(0.92 0.035 240);
+
+  --success: oklch(0.45 0.1 155);
+  --success-muted: oklch(0.94 0.04 155);
+  --warning: oklch(0.5 0.11 70);
+  --warning-muted: oklch(0.95 0.05 85);
+  --danger: oklch(0.5 0.17 25);
+  --danger-muted: oklch(0.95 0.03 25);
+  --info: oklch(0.47 0.09 240);
+  --info-muted: oklch(0.95 0.025 240);
+
+  --radius: 0.75rem;
+  --section-y: 4rem;
+  --action-bar-h: 4.25rem;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --section-y: 7rem;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-lila: var(--lila);
+  --color-nane: var(--nane);
+  --color-seftali: var(--seftali);
+  --color-gok: var(--gok);
+  --color-success: var(--success);
+  --color-success-muted: var(--success-muted);
+  --color-warning: var(--warning);
+  --color-warning-muted: var(--warning-muted);
+  --color-danger: var(--danger);
+  --color-danger-muted: var(--danger-muted);
+  --color-info: var(--info);
+  --color-info-muted: var(--info-muted);
+
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 3px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding-inline: 1rem;
+
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility section-y {
+  padding-block: var(--section-y);
+}

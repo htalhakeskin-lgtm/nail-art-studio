@@ -1,0 +1,9 @@
+{
+  "$comment": "Plan §21'deki ekran listesi. dosya: {sıra}-{ekran}-{cihaz}; cihaz: masaustu | mobil | tablet. tamSayfa: true ise ayrıca '-tam' sonekli tam sayfa görüntüsü alınır. hazirla: sayfada çekimden önce çalışacak isteğe bağlı adımlar (tıkla, kaydır).",
+  "ekranlar": [
+    { "dosya": "01-ana-sayfa-masaustu", "yol": "/", "cihaz": "masaustu", "tamSayfa": true },
+    { "dosya": "02-ana-sayfa-mobil", "yol": "/", "cihaz": "mobil" },
+    { "dosya": "03-iletisim-mobil", "yol": "/iletisim", "cihaz": "mobil" },
+    { "dosya": "04-sss-masaustu", "yol": "/sss", "cihaz": "masaustu" }
+  ]
+}

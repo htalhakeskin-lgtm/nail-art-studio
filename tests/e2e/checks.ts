@@ -1,0 +1,66 @@
+import type { Page } from "@playwright/test";
+
+/**
+ * Layout checks shared by the public and panel specs (07-mobil §10): horizontal overflow,
+ * touch targets ≥ 44 px, inputs ≥ 16 px.
+ */
+
+const MIN_TARGET = 44;
+
+export async function findOverflow(page: Page) {
+  return page.evaluate(() => {
+    const root = document.documentElement;
+    if (root.scrollWidth <= root.clientWidth) return null;
+    const offenders = [...document.querySelectorAll<HTMLElement>("body *")]
+      .filter((el) => el.getBoundingClientRect().right > root.clientWidth + 1)
+      .slice(0, 5)
+      .map(
+        (el) =>
+          el.tagName.toLowerCase() +
+          (el.id ? `#${el.id}` : "") +
+          [...el.classList]
+            .slice(0, 3)
+            .map((name) => `.${name}`)
+            .join(""),
+      );
+    return { scrollWidth: root.scrollWidth, clientWidth: root.clientWidth, offenders };
+  });
+}
+
+export async function findSmallTargets(page: Page) {
+  return page.evaluate((min) => {
+    const interactive = document.querySelectorAll<HTMLElement>(
+      'a[href], button, input:not([type="hidden"]), select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])',
+    );
+    return [...interactive]
+      .filter((el) => {
+        const style = getComputedStyle(el);
+        if (
+          style.visibility === "hidden" ||
+          style.display === "none" ||
+          el.closest("[aria-hidden='true']")
+        )
+          return false;
+        // Inline links inside running text are exempt (WCAG 2.5.8 inline exception).
+        if (el.tagName === "A" && el.closest("p, li") && style.display === "inline") return false;
+        const box = el.getBoundingClientRect();
+        if (box.width === 0 || box.height === 0) return false;
+        // Visually hidden until focused (sr-only skip link): not a touch target in this state.
+        if (box.width <= 1 && box.height <= 1) return false;
+        return box.width < min || box.height < min;
+      })
+      .slice(0, 10)
+      .map(
+        (el) =>
+          `${el.tagName.toLowerCase()} "${(el.textContent.trim() || (el.getAttribute("aria-label") ?? "")).slice(0, 30)}"`,
+      );
+  }, MIN_TARGET);
+}
+
+export async function findSmallInputs(page: Page) {
+  return page.evaluate(() =>
+    [...document.querySelectorAll<HTMLElement>("input:not([type=hidden]), select, textarea")]
+      .filter((el) => parseFloat(getComputedStyle(el).fontSize) < 16) // eslint-disable-line no-restricted-globals -- CSS pixel value, not money
+      .map((el) => el.getAttribute("name") ?? el.tagName.toLowerCase()),
+  );
+}
