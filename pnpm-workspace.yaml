@@ -14,3 +14,12 @@ allowBuilds:
   unrs-resolver: false # same
   lefthook: false # hooks are installed by the "prepare" script instead
   esbuild: false # platform binary ships as an optional dependency
+
+# Temporary audit exemptions (15-git-ve-ci §6): reason + date, reviewed by the date below.
+auditConfig:
+  ignoreGhsas:
+    # braces ≤ 3.0.3 (high, ReDoS-style stack exhaustion). Dev-only path:
+    # eslint-config-next → @next/eslint-plugin-next → fast-glob → micromatch → braces.
+    # No patched version exists (2026-10-16). Runs only on our own lint globs, never on user input.
+    # Review: 2026-11-16 or when eslint-config-next / braces ships a fix.
+    - GHSA-vfj7-8cjw-p6xm

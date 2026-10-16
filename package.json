@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "vercel-build": "pnpm db:migrate && next build",
-    "lint": "eslint . --max-warnings=0",
+    "lint": "next typegen && eslint . --max-warnings=0",
     "typecheck": "next typegen && tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
