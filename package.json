@@ -23,7 +23,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx --conditions=react-server scripts/seed.ts",
     "db:reset": "tsx --conditions=react-server scripts/reset.ts",
-    "prepare": "lefthook install"
+    "prepare": "lefthook install || exit 0"
   },
   "dependencies": {
     "better-auth": "1.7.7",
