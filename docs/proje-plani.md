@@ -9,8 +9,8 @@
 | Hesap modeli | B: misafir işlem ([§8](#8-hesap-ve-yetki-modeli)) |
 | Teknoloji varyantı | V1 ([§10](#10-teknoloji-ve-mimari-kararlar)) |
 | Ortam | Demo (kişiye özel; gerçek ad, Instagram ve telefon, geri kalanı kurgusal) |
-| Yayın | Önizleme: Vercel (adres kurulumda yazılacak) |
-| Kaynak kod | GitHub, gizli depo (kurulumda) |
+| Yayın | Önizleme: Vercel, `nail-art-studio-*-talha-keskin.vercel.app` (Vercel girişiyle korumalı) · Üretim (demo): Faz 6 |
+| Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
 > **Güncel durum:** Faz 3 (kurulum) yapıldı: iskelet, temel tablolar, site kabuğu, yasal sayfalar, panel girişi ve demo kutusu çalışıyor; birim ve e2e testleri yeşil. Sıradaki dilim D-01 (tasarım sistemi + çekirdek sayfalar).
@@ -508,7 +508,7 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 |---|---|
 | Ortamlar | Yerel (Docker PostgreSQL) · Önizleme (Vercel + Neon dalı) · Üretim (demo) |
 | Barındırma planı | Vercel Hobby + Neon ücretsiz katman (demo) |
-| Alan adı | Yok (vercel.app alt alanı); canlıda müşteri kararı |
+| Alan adı | `bahadirkarasu-nails.vercel.app` (Faz 6'da üretim dağıtımına atanacak; `NEXT_PUBLIC_SITE_URL` ve `BETTER_AUTH_URL` bu adrese ayarlı; `nail-art-studio.vercel.app` başkasına ait). Gerçek alan adı canlıda müşteri kararı |
 | İzleme | Demo'da yok; canlıda uptime (`/api/health`) |
 | Yedek | Neon zamana göre geri dönüş (ücretsiz katman süresi) |
 | Zamanlanmış işler | Demo kutusu 30 gün temizliği; randevu durumunun geçmiş tarihli `confirmed` → panelde "işaretlenmemiş" uyarısı (otomatik geçiş yok) |

@@ -26,8 +26,8 @@
 | Yönetici girişi | ✅ | `/panel/giris`, oturum kapısı, çıkış, başarısız giriş sınırı (P-15) + işlem geçmişi; `/panel` özet, `/panel/demo-kutusu` |
 | Seed + reset | ✅ | Demo yönetici (Bahadır Karasu), 24 talep |
 | Doğrulama | ✅ | lint, typecheck, format, 46 birim testi, build, 128 e2e (mobil + masaüstü; taşma, 44 px, 16 px giriş, axe, panel nonce CSP) |
-| Git + GitHub + CI | 🔄 | Aşağıda |
-| Vercel önizleme | 🔄 | Aşağıda |
+| Git + GitHub + CI | 🔄 | Gizli depo + PR #1 (`chore/scaffold`); kancalar (ESLint, Prettier, gitleaks, commitlint, main koruması) çalışıyor; CI static / test / security yeşil, e2e sonucu PR'da |
+| Vercel önizleme | ✅ | Proje bağlandı (bölge `fra1`), Neon (Frankfurt) Marketplace entegrasyonuyla, ortam değişkenleri üretim + önizleme; CLI ile önizleme yayını Ready, migration'lar Neon'a uygulandı, demo verisi yüklendi. Önizleme Vercel girişiyle korumalı. **Git entegrasyonu kurulamadı:** Vercel hesabında GitHub giriş bağlantısı yok (kullanıcı panelden bağlamalı) |
 
 ## Dilimler
 
@@ -79,3 +79,11 @@ Faz 5'te doldurulur.
 - **Next.js 16.4'te `error.tsx` `retry` alır** (`reset` değil) ve panel nonce CSP'si için sayfanın istek başına render edilmesi gerekir (`instant = false`); iskelette panel sayfası örneği yoktu. Önerilen: iskelete `/panel/giris` + oturum kapısı örneği. Belge: iskelet. **Sisteme taşı.**
 - **Çift `role="alert"`** → Next.js rota duyurucusu da `role="alert"` taşıyor; e2e'de `getByRole("alert")` forma daraltılmalı. Belge: 14-test. Not.
 - **Docker port çakışması** → Aynı makinede birden çok proje 5432 kullanıyor; `docker-compose.yml`'a `name:` ve proje başına port. Belge: 16-ortamlar §4. Not.
+- **Commit kancası üretilmiş dosyada düşüyor** → `auth.ts` ESLint'te yok sayılıyor; commit'e girince "File ignored" uyarısı `--max-warnings=0` ile hata oluyor. Çözüm: `lefthook.yml` ESLint komutuna `--no-warn-ignored`. Belge: `iskelet/lefthook.yml`. **Sisteme taşı.**
+- **gitleaks yanlış pozitif** → `.claude/rules/sunucu.md`'deki `05-sunucu-ve-api.md` dosya adı `generic-api-key` kuralını tetikliyor; her projede tekrarlar. Çözüm: dar kapsamlı `.gitleaks.toml` izin listesi (standart dosya adı deseni). Belge: iskelet. **Sisteme taşı.**
+- **CI'da lint de rota tiplerine muhtaç** → `static` işinde lint, typecheck'ten önce koşuyor; tipli kurallar `PageProps`'u çözemiyor. Çözüm: `"lint": "next typegen && eslint . --max-warnings=0"`. Belge: iskelet README §2 adım 5. **Sisteme taşı.**
+- **`prepare: lefthook install` Vercel CLI yüklemesinde kurulumu durduruyor** → `.git` yok. Çözüm: `"prepare": "lefthook install || exit 0"`. Ayrıca `pnpm install` "Already up to date" iken `prepare` çalışmıyor; ilk kurulumda `pnpm exec lefthook install` elle. Belge: iskelet. **Sisteme taşı.**
+- **Vercel CLI yan etkileri** → `vercel link` `.gitignore`'un sonuna `.env*` ekliyor (`!.env.example` istisnasını eziyor; geri alındı); `integration add neon` projeye istenmeyen ajan talimat dosyaları (`.agents/`, `.claude/skills/`) ekliyor (silindi) ve `--no-env-pull` olmadan `.env.local`'daki yerel `DATABASE_URL`'i değiştirirdi; `vercel curl` Windows'ta "Malformed input" veriyor. Belge: 16-ortamlar §6. **Sisteme taşı.**
+- **CLI yüklemesinde sır sızıntısı riski** → `vercel deploy` yerel klasörü yükler; `.vercelignore` olmadan `.env.local` da gidebilir. Çözüm: iskelete `.vercelignore`. **Sisteme taşı.**
+- **Satır sonları** → Windows'ta `core.autocrlf` açıkken bash kancaları CR ile bozulabilir; iskelete `.gitattributes` (`* text=auto eol=lf`). **Sisteme taşı.**
+- **pnpm audit: yaması olmayan dolaylı açık** → `braces` (eslint-config-next zinciri, yalnızca geliştirme). Standart muafiyete izin veriyor ama biçim tanımlı değil; `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` + gerekçe + gözden geçirme tarihi örneği eklenmeli. Belge: 15-git-ve-ci §6. **Sisteme taşı.**

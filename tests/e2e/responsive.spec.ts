@@ -12,7 +12,9 @@ import { publicRoutes, widths } from "./routes";
 for (const route of publicRoutes) {
   test.describe(route, () => {
     for (const width of widths) {
-      test(`no overflow, touch targets and inputs at ${width}px`, async ({ page }) => {
+      test(`no overflow, touch targets and inputs at ${width}px`, async ({ page }, testInfo) => {
+        // Every width is set explicitly, so one project covers them; the touch device is the stricter one.
+        test.skip(testInfo.project.name === "desktop", "widths are covered by the mobile project");
         await page.setViewportSize({ width, height: 900 });
         await page.goto(route);
         await page.waitForLoadState("networkidle");
@@ -62,5 +64,6 @@ test("skip link is reachable first and is a full-size target when focused", asyn
   const skip = page.getByRole("link", { name: "İçeriğe geç" });
   await expect(skip).toBeFocused();
   const box = await skip.boundingBox();
-  expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+  // Rounded: device-pixel scaling reports 44 px as 43.999999… on emulated phones.
+  expect(Math.round(box?.height ?? 0)).toBeGreaterThanOrEqual(44);
 });

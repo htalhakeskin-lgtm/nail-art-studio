@@ -15,8 +15,16 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: CI,
   retries: CI ? 1 : 0, // one retry for browser flakiness; a retried pass is reported as flaky (14-test §7)
+  // Private-repo runners have 2 vCPUs (Playwright would pick 1 worker): two keep the job well under its limit.
+  workers: CI ? 2 : undefined,
   reporter: CI ? [["github"], ["html", { open: "never" }]] : "list",
-  use: { baseURL, trace: "retain-on-failure", screenshot: "only-on-failure", ...shared },
+  use: {
+    baseURL,
+    // Recording a trace for every test roughly doubled CI time; on CI only the retry is traced.
+    trace: CI ? "on-first-retry" : "retain-on-failure",
+    screenshot: "only-on-failure",
+    ...shared,
+  },
   projects: [
     { name: "setup", testMatch: /auth\.setup\.ts$/ },
     {
