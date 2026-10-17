@@ -46,10 +46,13 @@ const nextConfig: NextConfig = {
     },
   },
   // output: "standalone", // only for the Docker / VPS hosting variant (16-ortamlar-ve-yayin §6)
+  // Pre-encoded WebP variants (480 / 960 / 1600) chosen by a custom loader: no runtime image
+  // optimisation, so the Vercel Hobby transformation quota is never used (plan §10, U-21, K-21).
   images: {
-    qualities: [60, 75, 90],
-    formats: ["image/avif", "image/webp"],
-    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
+    deviceSizes: [480, 960, 1600],
+    imageSizes: [320],
   },
   poweredByHeader: false,
   headers() {

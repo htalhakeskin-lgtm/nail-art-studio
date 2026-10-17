@@ -1,12 +1,16 @@
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 
-import { getSiteSettings, whatsappHref } from "@/features/site";
+import { Button } from "@/components/ui/button";
+import { siteNav } from "@/config/navigation";
+import { getSiteSettings, instagramHref, phoneHref, whatsappHref } from "@/features/site";
+
+import { MobileMenu } from "./mobile-menu";
+import { SiteNav } from "./site-nav";
 
 /**
- * Sticky header (Z-12). Navigation links are added slice by slice as their pages ship
- * (15-git-ve-ci §2: a screen joins the menu with its last part). On phones the WhatsApp
- * action lives in the bottom action bar instead.
+ * Sticky header (Z-12, 07-mobil §4). Phone: logo + menu button (contact actions also live in
+ * the bottom action bar). Desktop: logo, navigation and the WhatsApp action.
  */
 export async function SiteHeader() {
   const settings = await getSiteSettings();
@@ -21,13 +25,21 @@ export async function SiteHeader() {
             {settings.company.owner}
           </span>
         </Link>
-        <a
-          href={whatsappHref(settings)}
-          className="hidden min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-opacity duration-(--duration-fast) hover:opacity-90 md:inline-flex"
-        >
-          <MessageCircle aria-hidden="true" className="size-4" />
-          WhatsApp&apos;tan yazın
-        </a>
+        <div className="flex items-center gap-2">
+          <SiteNav items={siteNav} />
+          <Button asChild className="hidden md:inline-flex">
+            <a href={whatsappHref(settings)}>
+              <MessageCircle aria-hidden="true" />
+              WhatsApp&apos;tan yazın
+            </a>
+          </Button>
+          <MobileMenu
+            items={siteNav}
+            whatsappHref={whatsappHref(settings)}
+            phoneHref={phoneHref(settings)}
+            instagramHref={instagramHref(settings)}
+          />
+        </div>
       </div>
     </header>
   );

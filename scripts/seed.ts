@@ -11,7 +11,9 @@ loadEnvConfig(process.cwd());
 async function main() {
   const { env } = await import("@/lib/env");
   const { db } = await import("@/server/db/client");
-  const { accounts, leads, siteSettings, users } = await import("@/server/db/schema");
+  const { accounts, contentBlocks, leads, siteSettings, users } =
+    await import("@/server/db/schema");
+  const { contentBlockDefaults } = await import("@/content/content-blocks");
   const { newId } = await import("@/server/db/columns");
   const { siteDefaults } = await import("@/config/site-defaults");
   const { hashPassword } = await import("better-auth/crypto");
@@ -66,6 +68,12 @@ async function main() {
     });
   }
 
+  async function seedContentBlocks() {
+    // Existing rows are kept: the owner may already have edited them in the panel.
+    const rows = Object.entries(contentBlockDefaults).map(([key, value]) => ({ key, value }));
+    await db.insert(contentBlocks).values(rows).onConflictDoNothing();
+  }
+
   async function seedLeads() {
     // Fictional people only; phones use the 000 block, e-mails example.com (17 §3).
     const names = [
@@ -104,6 +112,7 @@ async function main() {
   }
 
   await seedSettings();
+  await seedContentBlocks();
   await seedDemoAdmin();
   await seedLeads();
   console.log("✓ Seed tamamlandı");

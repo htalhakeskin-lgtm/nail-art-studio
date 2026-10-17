@@ -10,5 +10,5 @@ import { absoluteUrl } from "@/lib/seo";
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const legal = Object.values(legalDocuments).map((document) => document.path);
-  return ["/", ...legal].map((path) => ({ url: absoluteUrl(path) }));
+  return ["/", "/hakkinda", ...legal].map((path) => ({ url: absoluteUrl(path) }));
 }

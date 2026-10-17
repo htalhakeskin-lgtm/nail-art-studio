@@ -2,8 +2,8 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.2 |
-| Tarih | 2026-10-16 |
+| Belge sürümü | v0.3 |
+| Tarih | 2026-10-17 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
 | Hesap modeli | B: misafir işlem ([§8](#8-hesap-ve-yetki-modeli)) |
@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 3 (kurulum) yapıldı: iskelet, temel tablolar, site kabuğu, yasal sayfalar, panel girişi ve demo kutusu çalışıyor; birim ve e2e testleri yeşil. Sıradaki dilim D-01 (tasarım sistemi + çekirdek sayfalar).
+> **Güncel durum:** Faz 4. D-01a bitti (tasarım sistemi, görselli giriş, Hakkında, görsel boru hattı). Sıradaki dilim D-01b (SSS + panel İçerik modülü).
 
 ---
 
@@ -349,6 +349,8 @@ erDiagram
 | Çok dil | Yok | VR-12 |
 | Ödeme | Yok | VR-11 |
 | Markdown | `react-markdown` + `remark-gfm` (yasal metinler, ileride hizmet gövdeleri) | K-16 |
+| Arayüz bileşenleri | shadcn/ui 4 (Radix tabanı, "nova" ön ayarı), proje token'larına bağlı; düğmeler ≥ 44 px, odak çerçevesi global | K-22 |
+| Görsel teslimi | `next/image` + özel yükleyici (`src/lib/image-loader.ts`): önceden üretilmiş 480 / 960 / 1600 WebP; AVIF yok | K-21 |
 | Panel render | Panel sayfaları istek başına render (`instant = false` + oturum okuma) | Nonce'lu CSP statik kabukta çalışmaz (Next.js CSP rehberi) |
 
 ADR'ler: S2'de sapma olmadığı için yok.
@@ -597,9 +599,15 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-18 | 2026-10-16 | Yasal metinlerdeki çok sütunlu tablolar başlıklı listelere çevrildi | 360 px'te 5 sütunlu tablo okunmuyor (KURALLAR C: telefonda tablo yerine kart) |
 | K-19 | 2026-10-16 | Ziyaretçi çerezi yok; yalnızca yönetici oturum çerezi (`app.session_token`). Çerez politikası buna göre yazıldı | K-13'ün sonucu; analitik (D-11) çerezsiz kalmalı, aksi hâlde politika ve tercih merkezi güncellenir |
 
+| K-20 | 2026-10-17 | Panel giriş / çıkış eylemleri `adminAction` / `publicAction` sarmalayıcısı dışında | Better Auth akışı: oturum henüz yok (adminAction kullanılamaz), form `FormData` + `useActionState` (publicAction nesne + honeypot bekler). Sarmalayıcının adımları elle var: Zod doğrulama, başarısız deneme sınırı (P-15), işlem geçmişi, istisna yakalama, genel hata mesajı |
+| K-21 | 2026-10-17 | Görseller özel `next/image` yükleyicisiyle önceden üretilmiş 480 / 960 / 1600 WebP varyantlarından verilir; AVIF üretilmez (plan §9 BR-GLR-002'deki "AVIF + WebP" yerine) | Yükleyici genişlik başına tek adres döndürebiliyor; WebP tüm hedef tarayıcılarda var. Vercel görsel dönüştürme kotası hiç kullanılmaz (U-21). D-09 yüklemeleri aynı adlandırmayı kullanır |
+| K-22 | 2026-10-17 | shadcn/ui 4 kuruldu (Radix, "nova"); `init`'in yazdığı token'lar ve Geist yazı tipi geri alındı, shadcn adları proje token'larına bağlandı. Üretilen `Button` 44 px ve global odak çerçevesine, `Sheet` Türkçe "Kapat" ve 44 px'e uyarlandı. `shadcn` paketi yalnızca CSS için, geliştirme bağımlılığı | 07-mobil dokunma hedefi; shadcn'in %50 saydam odak halkası krem zeminde 3:1'in altında |
+| K-23 | 2026-10-17 | D-01 ikiye bölündü: D-01a (tasarım sistemi, görselli giriş, Hakkında) ve D-01b (SSS + panel "İçerik" modülü) | Tek dilim M'yi aşıyordu (AKIŞ: dilim en fazla M) |
+
 **Değişiklik kaydı:**
 
 | Tarih | Sürüm | Değişiklik |
 |---|---|---|
 | 2026-10-16 | v0.1 | İlk plan |
 | 2026-10-16 | v0.2 | Onay; kurulum kararları K-16…K-19; P-13…P-15 parametreleri; §10'a Markdown ve panel render satırları |
+| 2026-10-17 | v0.3 | D-01a: K-20…K-23; §10'a arayüz bileşenleri ve görsel teslimi satırları |
