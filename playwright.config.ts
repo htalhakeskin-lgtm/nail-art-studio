@@ -53,7 +53,9 @@ export default defineConfig({
     { name: "portfolyo", testMatch: /ekran-goruntusu\.spec\.ts/, use: { ...shared } },
   ],
   webServer: {
-    command: CI ? "pnpm start" : "pnpm dev",
+    // Not "pnpm start" on CI: pnpm 12 runs the script outside Playwright's process group, so
+    // teardown could not stop next-server and the job hung for the full global timeout.
+    command: CI ? "./node_modules/.bin/next start" : "pnpm dev",
     url: baseURL,
     reuseExistingServer: !CI,
     timeout: 120_000,

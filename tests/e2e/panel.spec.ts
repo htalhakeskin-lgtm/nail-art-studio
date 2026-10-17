@@ -44,7 +44,7 @@ test.describe("anonymous visitor", () => {
 test.describe("signed-in owner", () => {
   test.use({ storageState: ADMIN_STATE });
 
-  test("sees the overview and can sign out", async ({ page }) => {
+  test("sees the overview and the demo outbox", async ({ page }) => {
     await page.goto("/panel");
     await expect(page.getByRole("heading", { level: 1, name: "Özet" })).toBeVisible();
     await page.goto("/panel/demo-kutusu");
