@@ -4,8 +4,8 @@
 
 ## Şu an
 
-- **Etkin dilim:** — · Faz 3 kurulumu bitti (yayın adımı aşağıda)
-- **Son yapılan:** İskelet + sistem dosyaları + temel tablolar + site kabuğu + yasal sayfalar + panel girişi + demo kutusu; 46 birim, 128 e2e testi yeşil
+- **Etkin dilim:** — · Faz 3 kurulumu bitti; çıkış koşulu sağlandı (CI yeşil, taşma + axe geçiyor, önizleme Ready)
+- **Son yapılan:** İskelet + sistem dosyaları + temel tablolar + site kabuğu + yasal sayfalar + panel girişi + demo kutusu; 46 birim + 86 e2e testi yeşil (yerel ve CI); Vercel önizleme + Neon
 - **Sıradaki adım:** `/web-proje devam` → D-01: shadcn/ui kurulumu, kontrast birim testi, ana sayfanın görselli ilk sürümü, Hakkında, SSS, `docs/gorsel-kaynaklari.md`
 
 ## Gözetimsiz çalışma notları
@@ -26,7 +26,7 @@
 | Yönetici girişi | ✅ | `/panel/giris`, oturum kapısı, çıkış, başarısız giriş sınırı (P-15) + işlem geçmişi; `/panel` özet, `/panel/demo-kutusu` |
 | Seed + reset | ✅ | Demo yönetici (Bahadır Karasu), 24 talep |
 | Doğrulama | ✅ | lint, typecheck, format, 46 birim testi, build, 128 e2e (mobil + masaüstü; taşma, 44 px, 16 px giriş, axe, panel nonce CSP) |
-| Git + GitHub + CI | 🔄 | Gizli depo + PR #1 (`chore/scaffold`); kancalar (ESLint, Prettier, gitleaks, commitlint, main koruması) çalışıyor; CI static / test / security yeşil, e2e sonucu PR'da |
+| Git + GitHub + CI | ✅ | Gizli depo + PR #1 (`chore/scaffold`, squash); kancalar (ESLint, Prettier, gitleaks, commitlint, main koruması) çalışıyor; CI static / test / security / e2e yeşil (e2e ~3 dk: 86 geçti, 43 bilerek atlandı) |
 | Vercel önizleme | ✅ | Proje bağlandı (bölge `fra1`), Neon (Frankfurt) Marketplace entegrasyonuyla, ortam değişkenleri üretim + önizleme; CLI ile önizleme yayını Ready, migration'lar Neon'a uygulandı, demo verisi yüklendi. Önizleme Vercel girişiyle korumalı. **Git entegrasyonu kurulamadı:** Vercel hesabında GitHub giriş bağlantısı yok (kullanıcı panelden bağlamalı) |
 
 ## Dilimler
@@ -86,4 +86,5 @@ Faz 5'te doldurulur.
 - **Vercel CLI yan etkileri** → `vercel link` `.gitignore`'un sonuna `.env*` ekliyor (`!.env.example` istisnasını eziyor; geri alındı); `integration add neon` projeye istenmeyen ajan talimat dosyaları (`.agents/`, `.claude/skills/`) ekliyor (silindi) ve `--no-env-pull` olmadan `.env.local`'daki yerel `DATABASE_URL`'i değiştirirdi; `vercel curl` Windows'ta "Malformed input" veriyor. Belge: 16-ortamlar §6. **Sisteme taşı.**
 - **CLI yüklemesinde sır sızıntısı riski** → `vercel deploy` yerel klasörü yükler; `.vercelignore` olmadan `.env.local` da gidebilir. Çözüm: iskelete `.vercelignore`. **Sisteme taşı.**
 - **Satır sonları** → Windows'ta `core.autocrlf` açıkken bash kancaları CR ile bozulabilir; iskelete `.gitattributes` (`* text=auto eol=lf`). **Sisteme taşı.**
+- **CI e2e işi testler bittikten sonra 15 dk asılı kaldı** → Playwright `webServer: "pnpm start"`; pnpm 12 betiği Playwright'ın süreç grubu dışında çalıştırıyor, kapanışta `next-server` öldürülemiyor ("Timed out waiting 900s for the teardown"). Çözüm: CI'da `./node_modules/.bin/next start`. Ayrıca gizli depolarda runner 2 vCPU: `workers: 2`, iz yalnızca ilk tekrar denemede, `globalTimeout` (iptal yerine hata + rapor). Belge: `iskelet/playwright.config.ts`. **Sisteme taşı.**
 - **pnpm audit: yaması olmayan dolaylı açık** → `braces` (eslint-config-next zinciri, yalnızca geliştirme). Standart muafiyete izin veriyor ama biçim tanımlı değil; `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` + gerekçe + gözden geçirme tarihi örneği eklenmeli. Belge: 15-git-ve-ci §6. **Sisteme taşı.**
