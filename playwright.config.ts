@@ -17,7 +17,10 @@ export default defineConfig({
   retries: CI ? 1 : 0, // one retry for browser flakiness; a retried pass is reported as flaky (14-test §7)
   // Private-repo runners have 2 vCPUs (Playwright would pick 1 worker): two keep the job well under its limit.
   workers: CI ? 2 : undefined,
-  reporter: CI ? [["github"], ["html", { open: "never" }]] : "list",
+  // "list" names every test as it runs, so a stuck test is visible in the CI log.
+  reporter: CI ? [["list"], ["github"], ["html", { open: "never" }]] : "list",
+  // Fail (and upload the report) instead of being cancelled by the job time limit.
+  globalTimeout: CI ? 15 * 60_000 : undefined,
   use: {
     baseURL,
     // Recording a trace for every test roughly doubled CI time; on CI only the retry is traced.
