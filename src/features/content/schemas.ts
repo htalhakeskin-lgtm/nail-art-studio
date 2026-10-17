@@ -22,3 +22,20 @@ export const contentBlockSchemas = {
 
 export type ContentBlockKey = keyof typeof contentBlockSchemas;
 export type ContentBlock<K extends ContentBlockKey> = z.infer<(typeof contentBlockSchemas)[K]>;
+
+export type AboutFormValues = z.input<typeof aboutBlockSchema>;
+
+/** Panel form → schema input. Up to four section slots; empty slots are dropped. */
+export function aboutFormValues(formData: FormData): AboutFormValues {
+  const text = (name: string) => {
+    const value = formData.get(name);
+    return typeof value === "string" ? value : "";
+  };
+  const sections = [0, 1, 2, 3]
+    .map((index) => ({
+      title: text(`sections.${String(index)}.title`),
+      body: text(`sections.${String(index)}.body`),
+    }))
+    .filter((section) => section.title.trim() !== "" || section.body.trim() !== "");
+  return { eyebrow: text("eyebrow"), intro: text("intro"), sections, closing: text("closing") };
+}

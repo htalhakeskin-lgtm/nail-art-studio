@@ -1,4 +1,4 @@
-import { ExternalLink, Inbox, LayoutDashboard, LogOut } from "lucide-react";
+import { ExternalLink, FileText, Inbox, LayoutDashboard, LogOut } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -10,6 +10,7 @@ import { signOut } from "../actions";
  */
 const links = [
   { href: "/panel", label: "Özet", icon: LayoutDashboard },
+  { href: "/panel/icerik", label: "İçerik", icon: FileText },
   { href: "/panel/demo-kutusu", label: "Demo kutusu", icon: Inbox },
 ] as const;
 
@@ -60,7 +61,7 @@ export function PanelShell({ userName, children }: { userName: string; children:
         aria-label="Panel kısayolları"
         className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
       >
-        <ul className="grid grid-cols-3">
+        <ul className="grid grid-cols-4">
           {links.map(({ href, label, icon: Icon }) => (
             <li key={href}>
               <Link

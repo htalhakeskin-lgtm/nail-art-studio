@@ -2,18 +2,18 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.3 |
+| Belge sürümü | v0.4 |
 | Tarih | 2026-10-17 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
 | Hesap modeli | B: misafir işlem ([§8](#8-hesap-ve-yetki-modeli)) |
 | Teknoloji varyantı | V1 ([§10](#10-teknoloji-ve-mimari-kararlar)) |
 | Ortam | Demo (kişiye özel; gerçek ad, Instagram ve telefon, geri kalanı kurgusal) |
-| Yayın | Önizleme: Vercel, `nail-art-studio-*-talha-keskin.vercel.app` (Vercel girişiyle korumalı) · Üretim (demo): Faz 6 |
+| Yayın | Vercel Git entegrasyonu: PR → önizleme (Vercel girişiyle korumalı), `main` → üretim (demo, `noindex`) · Resmî demo yayın listesi: Faz 6 |
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4. D-01a bitti (tasarım sistemi, görselli giriş, Hakkında, görsel boru hattı). Sıradaki dilim D-01b (SSS + panel İçerik modülü).
+> **Güncel durum:** Faz 4. D-01a ve D-01b bitti (tasarım sistemi, Hakkında, SSS, panel İçerik modülü, entegrasyon testi altyapısı). Vercel Git entegrasyonu açık: PR'lar önizleme, `main` üretim (demo) yayını alıyor. Sıradaki dilim D-02 (İletişim + talep kutusu + yerel SEO).
 
 ---
 
@@ -603,6 +603,10 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-21 | 2026-10-17 | Görseller özel `next/image` yükleyicisiyle önceden üretilmiş 480 / 960 / 1600 WebP varyantlarından verilir; AVIF üretilmez (plan §9 BR-GLR-002'deki "AVIF + WebP" yerine) | Yükleyici genişlik başına tek adres döndürebiliyor; WebP tüm hedef tarayıcılarda var. Vercel görsel dönüştürme kotası hiç kullanılmaz (U-21). D-09 yüklemeleri aynı adlandırmayı kullanır |
 | K-22 | 2026-10-17 | shadcn/ui 4 kuruldu (Radix, "nova"); `init`'in yazdığı token'lar ve Geist yazı tipi geri alındı, shadcn adları proje token'larına bağlandı. Üretilen `Button` 44 px ve global odak çerçevesine, `Sheet` Türkçe "Kapat" ve 44 px'e uyarlandı. `shadcn` paketi yalnızca CSS için, geliştirme bağımlılığı | 07-mobil dokunma hedefi; shadcn'in %50 saydam odak halkası krem zeminde 3:1'in altında |
 | K-23 | 2026-10-17 | D-01 ikiye bölündü: D-01a (tasarım sistemi, görselli giriş, Hakkında) ve D-01b (SSS + panel "İçerik" modülü) | Tek dilim M'yi aşıyordu (AKIŞ: dilim en fazla M) |
+| K-24 | 2026-10-17 | SSS silinmez, gizlenir; sıralama kategori içinde yukarı / aşağı düğmeleriyle | Tek yönetici, çöp kutusu yok (plan §5 A-04); sürükle-bırak S2 için gereksiz efor ve klavye / dokunmatik erişilebilirliği zor |
+| K-25 | 2026-10-17 | Entegrasyon testleri gerçek PostgreSQL'de (`app_test`): Vitest `unit` / `integration` projeleri, `.env.test` (gizli değer yok, depoda), migration'lar test açılışında yalnızca `*_test` veritabanına uygulanır; oturum, IP ve önbellek etiketi sahte | 14-test §2–3 (S2: her eylem için yetki testi); yanlış veritabanını silme riskine karşı ad denetimi |
+| K-26 | 2026-10-17 | Dependabot: `@types/node` ve PostgreSQL Docker imajında major güncellemeler yok sayılır | Tipler çalışma zamanı Node 24 ile, yerel PostgreSQL Neon (17) ile aynı major'da kalır |
+| K-27 | 2026-10-17 | Vercel Git entegrasyonu açıldı (kullanıcı GitHub bağlantısını ekledi); `main` her birleşmede üretim (demo) yayını alır | Hobby planında GitHub "noreply" yazarlı commit'lerin CLI yayını engelleniyordu; entegrasyonla PR önizlemeleri de otomatik |
 
 **Değişiklik kaydı:**
 
@@ -611,3 +615,4 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | 2026-10-16 | v0.1 | İlk plan |
 | 2026-10-16 | v0.2 | Onay; kurulum kararları K-16…K-19; P-13…P-15 parametreleri; §10'a Markdown ve panel render satırları |
 | 2026-10-17 | v0.3 | D-01a: K-20…K-23; §10'a arayüz bileşenleri ve görsel teslimi satırları |
+| 2026-10-17 | v0.4 | D-01b: K-24…K-27; yayın satırı (Git entegrasyonu) |
