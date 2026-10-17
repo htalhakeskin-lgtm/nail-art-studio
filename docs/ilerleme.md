@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-16 · **Faz:** 3 (kurulum) → 4 · **Sıradaki dilim:** D-01
+> **Son güncelleme:** 2026-10-17 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-01b
 
 ## Şu an
 
-- **Etkin dilim:** — · Faz 3 kurulumu bitti; çıkış koşulu sağlandı (CI yeşil, taşma + axe geçiyor, önizleme Ready)
-- **Son yapılan:** İskelet + sistem dosyaları + temel tablolar + site kabuğu + yasal sayfalar + panel girişi + demo kutusu; 46 birim + 86 e2e testi yeşil (yerel ve CI); Vercel önizleme + Neon
-- **Sıradaki adım:** `/web-proje devam` → D-01: shadcn/ui kurulumu, kontrast birim testi, ana sayfanın görselli ilk sürümü, Hakkında, SSS, `docs/gorsel-kaynaklari.md`
+- **Etkin dilim:** D-01a ✅ (PR açık) → sıradaki D-01b
+- **Son yapılan:** Tasarım sistemi (shadcn/ui, kontrast testi), mobil menü, breadcrumb, görsel boru hattı + kaynak kaydı, görselli ana sayfa girişi, Hakkında (`content_blocks`); 81 birim + 106 e2e testi yeşil
+- **Sıradaki adım:** `/web-proje devam` → D-01b: `faqs` tablosu + seed (12), `/sss`, panel "İçerik" modülü (SSS CRUD + Hakkında metni düzenleme, `updateTag`)
 
 ## Gözetimsiz çalışma notları
 
@@ -33,7 +33,8 @@
 
 | No | Dilim | Kapsam (özellik / REQ) | Efor | Öncelik | Durum | 360 px | Test |
 |---|---|---|---|---|---|---|---|
-| D-01 | Tasarım sistemi + çekirdek sayfalar | shadcn/ui, kontrast birim testi, ana sayfanın görselli ilk sürümü, Hakkında (Bahadır Karasu), SSS, `docs/gorsel-kaynaklari.md`; Z-07, Z-08, Z-10. **Kurulumda yapıldı:** token'lar, yazı tipleri, başlık, alt bilgi, mobil eylem çubuğu, demo şeridi, yasal sayfalar + randevu koşulları (REQ-009), 404 / 500 | M | P0 | ⏳ | — | — |
+| D-01a | Tasarım sistemi + görselli giriş + Hakkında | shadcn/ui (K-22), kontrast birim testi, mobil menü (Sheet), breadcrumb + `BreadcrumbList`, `PhoneLink`, görsel boru hattı (K-21) + `docs/gorsel-kaynaklari.md`, ana sayfa giriş kolajı + "Stüdyo" bölümü, `/hakkinda` (`content_blocks.about`); Z-07, Z-08, Z-18. Kurulumda yapılanlar: token'lar, yazı tipleri, başlık, alt bilgi, mobil eylem çubuğu, demo şeridi, yasal sayfalar (REQ-009), 404 / 500 | M | P0 | ✅ | ✅ 360 / 1024 / 1280 | 81 birim + 106 e2e |
+| D-01b | SSS + panel İçerik modülü | `faqs` + seed (12), `/sss` (akordeon, `FAQPage` isteğe bağlı), panel `/panel/icerik`: SSS ekle / düzenle / sırala / gizle, Hakkında metni düzenleme (`aboutBlockSchema`, `updateTag`), işlem geçmişi; menüye "SSS"; Z-10, Z-31 | M | P0 | ⏳ | — | — |
 | D-02 | İletişim + talep kutusu + yerel SEO | İletişim sayfası ve formu → `leads` → panel talepler, teşekkür ekranı; harita + yol tarifi; WhatsApp bağlamlı bağlantı temeli (REQ-005a); `NailSalon` JSON-LD (REQ-010); Z-09, Z-13, Z-15, Z-29 | M | P0 | ⏳ | — | — |
 | D-03 | Hizmetler | `services` + seed (16), `/hizmetler`, `/hizmetler/[slug]`, panel hizmet CRUD, fiyat gösterim anahtarı (REQ-004; BR-HZM-001, 002) | M | P0 | ⏳ | — | — |
 | D-04 | Müsaitlik motoru + randevu veri modeli | `staff`, `business_hours`, `time_off`, `appointments` + dışlama kısıtı migration; `domain/availability.ts` + tablo testleri; panel müsaitlik ekranı (REQ-001a, REQ-002a, REQ-003a; BR-RND-001…005, 015) | M | P0 | ⏳ | — | — |
@@ -50,7 +51,12 @@
 
 ## Etkin dilim planı
 
-Henüz yok. Sıradaki: D-01.
+**D-01a — Tasarım sistemi + görselli giriş + Hakkında** (✅ 2026-10-17)
+- Kabul kriterleri: token çiftleri AA (birim testi); mobilde menü düğmesi + çekmece (odak tuzağı, `Esc`, kaydırma kilidi, bağlantıyla kapanma); masaüstünde `aria-current`; Hakkında içeriği `content_blocks`'tan, demo notu görünür; alt sayfalarda görünür breadcrumb + eşleşen `BreadcrumbList`; görseller `/_next/image` değil önceden üretilmiş WebP; 360–1536 px taşma yok, 44 px hedef, axe temiz.
+- Tablolar / migration: `content_blocks` (`0002_content_blocks.sql`, anahtar biçimi `check`).
+- Dosyalar: `src/components/ui/{button,sheet}.tsx`, `src/components/layout/{site-nav,mobile-menu,site-header,site-footer}.tsx`, `src/components/common/{breadcrumbs,framed-image,phone-link}.tsx`, `src/components/sections/{home-hero,about-teaser}.tsx`, `src/features/content/*`, `src/content/{content-blocks,demo-images}.ts`, `src/lib/{color,image-loader}.ts`, `scripts/images/build-demo-images.ts`, `src/app/(site)/hakkinda/page.tsx`.
+- Testler: `color.test.ts` (23 token çifti), `image-loader.test.ts`, `content/schemas.test.ts` (gerçek kişi adına iddia yok), `tests/e2e/site.spec.ts` (menü, aria-current, Hakkında + breadcrumb JSON-LD, görsel kaynağı); `/hakkinda` taşma + axe rotalarına eklendi.
+- Elle: 360 / 1024 / 1280 px ekran görüntüsü incelendi; kolaj notu çerçeveye değiyordu ve e-posta kelime ortasından bölünüyordu, ikisi de düzeltildi.
 
 ## Kalite kapısı raporu
 
@@ -87,4 +93,11 @@ Faz 5'te doldurulur.
 - **CLI yüklemesinde sır sızıntısı riski** → `vercel deploy` yerel klasörü yükler; `.vercelignore` olmadan `.env.local` da gidebilir. Çözüm: iskelete `.vercelignore`. **Sisteme taşı.**
 - **Satır sonları** → Windows'ta `core.autocrlf` açıkken bash kancaları CR ile bozulabilir; iskelete `.gitattributes` (`* text=auto eol=lf`). **Sisteme taşı.**
 - **CI e2e işi testler bittikten sonra 15 dk asılı kaldı** → Playwright `webServer: "pnpm start"`; pnpm 12 betiği Playwright'ın süreç grubu dışında çalıştırıyor, kapanışta `next-server` öldürülemiyor ("Timed out waiting 900s for the teardown"). Çözüm: CI'da `./node_modules/.bin/next start`. Ayrıca gizli depolarda runner 2 vCPU: `workers: 2`, iz yalnızca ilk tekrar denemede, `globalTimeout` (iptal yerine hata + rapor). Belge: `iskelet/playwright.config.ts`. **Sisteme taşı.**
+- **shadcn `init` proje token'larının üzerine yazıyor** → `globals.css`'i nötr renklerle değiştiriyor, Geist yazı tipini ekliyor, düğmeler 32 px, odak halkası %50 saydam (krem zeminde < 3:1). Önerilen: iskelete hazır uyarlanmış `button` / `sheet` + token eşlemesi (`--card` → `--surface` …) ya da `init` sonrası kontrol listesi. Belge: 06-arayuz, iskelet. **Sisteme taşı.**
+- **Stok görsel tuzağı: rawpixel büyük boyutları filigranlı** → Openverse'ün 1024 px önizlemesi temiz, `image_1300` filigranlı. Unsplash / StockSnap tam boyuta otomatik erişimi engelliyor. Önerilen: 17-icerik §5'e "indirilen görsel tam çözünürlükte filigran için incelenir" maddesi ve Openverse `license=cc0,pdm` yöntemi. **Sisteme taşı.**
+- **Next.js 16: `priority` kullanımdan kalktı** → `.claude/rules/mobil-arayuz.md` "LCP görseline `priority`" diyor; doğrusu `loading="eager"` + `fetchPriority="high"` (ya da `preload`). Belge: `sablonlar/claude-rules/mobil-arayuz.md`, 12-performans. **Sisteme taşı.**
+- **Görsel dönüştürme kotası için özel yükleyici** → `images.loaderFile` + sabit genişlikli WebP varyantları `next/image` API'sini korurken kotayı sıfırlar; ayrı `<picture>` bileşeni gerekmez. Önerilen: iskelete `image-loader.ts` + üretim betiği. Belge: 12-performans, U-21. **Sisteme taşı.**
+- **CSS `uppercase` düzenlenebilir metinde de bozar** → Panelden gelen üst başlıklarda İngilizce kelime olabilir ("Nail artist" → "NAİL ARTİST"); içerik kaynaklı metinde `uppercase` kullanılmaz. Belge: 06-arayuz §11. **Sisteme taşı.**
+- **Flex içindeki breadcrumb bağlantısı "satır içi" istisnasından düşer** → `li` flex olunca bağlantı blok sayılır, 44 px testi takılır; bağlantıya mobilde `min-h-11`. Not.
+- **Playwright `webServer` komutu işletim sisteminden bağımsız olmalı** → `./node_modules/.bin/next start` Windows `cmd`'de çalışmıyor; `node node_modules/next/dist/bin/next start` her ikisinde de çalışır ve pnpm sarmalayıcısı yok. Belge: `iskelet/playwright.config.ts`. **Sisteme taşı.**
 - **pnpm audit: yaması olmayan dolaylı açık** → `braces` (eslint-config-next zinciri, yalnızca geliştirme). Standart muafiyete izin veriyor ama biçim tanımlı değil; `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` + gerekçe + gözden geçirme tarihi örneği eklenmeli. Belge: 15-git-ve-ci §6. **Sisteme taşı.**

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { MarkdownContent } from "@/components/common/markdown";
 import { env } from "@/lib/env";
 import { formatDate } from "@/lib/format";
@@ -19,10 +20,11 @@ export async function LegalPage({ documentKey }: { documentKey: LegalDocumentKey
   return (
     <article className="container-page section-y">
       <div className="mx-auto max-w-prose">
+        <Breadcrumbs items={[{ label: meta.baslik, href: legalDocuments[documentKey].path }]} />
         {env.DEMO_MODE && (
           <p
             role="note"
-            className="mb-8 rounded-lg border border-warning/30 bg-warning-muted px-4 py-3 text-sm"
+            className="mt-6 mb-8 rounded-lg border border-warning/30 bg-warning-muted px-4 py-3 text-sm"
           >
             Örnek metindir; yayından önce hukuki incelemeden geçirilecektir.
           </p>

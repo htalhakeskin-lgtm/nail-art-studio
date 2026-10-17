@@ -4,6 +4,7 @@
  */
 export const publicRoutes = [
   "/",
+  "/hakkinda",
   "/kvkk",
   "/gizlilik",
   "/cerez-politikasi",

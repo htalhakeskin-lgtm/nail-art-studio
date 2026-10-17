@@ -47,6 +47,7 @@ Rastgele değer üretmek için: `openssl rand -base64 32` (auth sırrı), `opens
 | `pnpm analyze` | Paket boyutu analizi |
 | `pnpm screenshots` / `pnpm mockup` | Portfolyo ekran görüntüleri / cihaz mockup'ları |
 | `pnpm tsx scripts/generate-icons.ts` | `src/app/icon.svg`'den PNG ikonları üretir |
+| `pnpm tsx scripts/images/build-demo-images.ts <klasör>` | Demo görsellerini `public/demo/` altına 480 / 960 / 1600 WebP olarak üretir (kaynaklar ve lisanslar: [docs/gorsel-kaynaklari.md](docs/gorsel-kaynaklari.md)) |
 
 ## Ortam değişkenleri
 

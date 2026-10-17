@@ -1,15 +1,14 @@
 import { Camera } from "lucide-react";
 import Link from "next/link";
 
+import { PhoneLink } from "@/components/common/phone-link";
 import {
   getSiteSettings,
   instagramHref,
-  phoneHref,
   summarizeWeeklyHours,
   whatsappHref,
 } from "@/features/site";
 import { env } from "@/lib/env";
-import { formatPhone } from "@/lib/format";
 
 const legalLinks = [
   { href: "/kvkk", label: "KVKK Aydınlatma Metni" },
@@ -25,10 +24,11 @@ export async function SiteFooter() {
   const { company, contact } = settings;
   const instagram = instagramHref(settings);
   const hours = summarizeWeeklyHours(settings.openingHours.weekly);
+  const [emailUser, emailDomain] = contact.email.split("@");
 
   return (
     <footer className="border-t border-border bg-surface-muted">
-      <div className="container-page grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
+      <div className="container-page grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.2fr_1.3fr_1fr_1fr]">
         <div>
           <p className="font-display text-2xl font-semibold">{company.name}</p>
           <p className="mt-2 max-w-xs text-muted-foreground">{company.tagline}</p>
@@ -53,9 +53,7 @@ export async function SiteFooter() {
             {env.DEMO_MODE && <p className="text-sm text-muted-foreground">(örnek adres)</p>}
             <ul className="mt-2">
               <li>
-                <a href={phoneHref(settings)} className={linkClass}>
-                  {formatPhone(contact.phone)}
-                </a>
+                <PhoneLink e164={contact.phone} className={linkClass} />
               </li>
               <li>
                 <a href={whatsappHref(settings)} className={linkClass}>
@@ -63,8 +61,13 @@ export async function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href={`mailto:${contact.email}`} className={`${linkClass} break-all`}>
-                  {contact.email}
+                {/* Line break opportunity after "@" instead of break-all ("…exampl / e.com"). */}
+                <a href={`mailto:${contact.email}`} className={linkClass}>
+                  <span>
+                    {emailUser}@
+                    <wbr />
+                    <span className="whitespace-nowrap">{emailDomain}</span>
+                  </span>
                 </a>
               </li>
             </ul>
