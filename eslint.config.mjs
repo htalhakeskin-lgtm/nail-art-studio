@@ -120,6 +120,7 @@ export default defineConfig([
       "playwright.config.ts",
       "scripts/**",
       "tests/e2e/**", // credentials for the demo admin sign-in
+      "tests/setup/**", // test database URL before the app modules load
       "portfolyo/araclar/**",
     ],
     rules: { "no-restricted-properties": "off" },

@@ -47,7 +47,14 @@ export async function findSmallTargets(page: Page) {
         if (box.width === 0 || box.height === 0) return false;
         // Visually hidden until focused (sr-only skip link): not a touch target in this state.
         if (box.width <= 1 && box.height <= 1) return false;
-        return box.width < min || box.height < min;
+        // A checkbox / radio inside its label: the whole label is the target (WCAG 2.5.8).
+        const label = el.closest("label");
+        if (label && el.matches("input[type=checkbox], input[type=radio]")) {
+          const area = label.getBoundingClientRect();
+          return Math.round(area.width) < min || Math.round(area.height) < min;
+        }
+        // Rounded: emulated phones report 44 px as 43.999… (device-pixel scaling).
+        return Math.round(box.width) < min || Math.round(box.height) < min;
       })
       .slice(0, 10)
       .map(

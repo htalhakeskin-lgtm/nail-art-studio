@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-17 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-01b
+> **Son güncelleme:** 2026-10-17 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-02
 
 ## Şu an
 
-- **Etkin dilim:** D-01a ✅ (PR açık) → sıradaki D-01b
-- **Son yapılan:** Tasarım sistemi (shadcn/ui, kontrast testi), mobil menü, breadcrumb, görsel boru hattı + kaynak kaydı, görselli ana sayfa girişi, Hakkında (`content_blocks`); 81 birim + 106 e2e testi yeşil
-- **Sıradaki adım:** `/web-proje devam` → D-01b: `faqs` tablosu + seed (12), `/sss`, panel "İçerik" modülü (SSS CRUD + Hakkında metni düzenleme, `updateTag`)
+- **Etkin dilim:** D-01b ✅ (PR açık) → sıradaki D-02
+- **Son yapılan:** SSS (`faqs`, `/sss`, ana sayfa özeti), panel "İçerik" modülü (SSS ekle / düzenle / sırala / gizle, Hakkında metni), entegrasyon testi altyapısı; 107 Vitest (11 entegrasyon) + 127 e2e testi yeşil. Vercel Git entegrasyonu açık; Dependabot PR'ları sonuçlandı
+- **Sıradaki adım:** `/web-proje devam` → D-02: iletişim sayfası + form → `leads` → panel talep kutusu, teşekkür ekranı, harita + yol tarifi, ulaşım, "şu an açık", `NailSalon` JSON-LD
 
 ## Gözetimsiz çalışma notları
 
@@ -34,11 +34,11 @@
 | No | Dilim | Kapsam (özellik / REQ) | Efor | Öncelik | Durum | 360 px | Test |
 |---|---|---|---|---|---|---|---|
 | D-01a | Tasarım sistemi + görselli giriş + Hakkında | shadcn/ui (K-22), kontrast birim testi, mobil menü (Sheet), breadcrumb + `BreadcrumbList`, `PhoneLink`, görsel boru hattı (K-21) + `docs/gorsel-kaynaklari.md`, ana sayfa giriş kolajı + "Stüdyo" bölümü, `/hakkinda` (`content_blocks.about`); Z-07, Z-08, Z-18. Kurulumda yapılanlar: token'lar, yazı tipleri, başlık, alt bilgi, mobil eylem çubuğu, demo şeridi, yasal sayfalar (REQ-009), 404 / 500 | M | P0 | ✅ | ✅ 360 / 1024 / 1280 | 81 birim + 106 e2e |
-| D-01b | SSS + panel İçerik modülü | `faqs` + seed (12), `/sss` (akordeon, `FAQPage` isteğe bağlı), panel `/panel/icerik`: SSS ekle / düzenle / sırala / gizle, Hakkında metni düzenleme (`aboutBlockSchema`, `updateTag`), işlem geçmişi; menüye "SSS"; Z-10, Z-31 | M | P0 | ⏳ | — | — |
+| D-01b | SSS + panel İçerik modülü | `faqs` + seed (12 + 1 gizli), `/sss` (`<details>` akordeon, `FAQPage`), ana sayfa SSS özeti, panel `/panel/icerik`: SSS ekle / düzenle / sırala / gizle (K-24), Hakkında metni düzenleme, işlem geçmişi, `updateTag`; menüye "SSS"; entegrasyon testi altyapısı (K-25); Z-10, Z-31 | M | P0 | ✅ | ✅ 360 / 1280 | 107 Vitest (11 entegrasyon) + 127 e2e |
 | D-02 | İletişim + talep kutusu + yerel SEO | İletişim sayfası ve formu → `leads` → panel talepler, teşekkür ekranı; harita + yol tarifi; WhatsApp bağlamlı bağlantı temeli (REQ-005a); `NailSalon` JSON-LD (REQ-010); Z-09, Z-13, Z-15, Z-29 | M | P0 | ⏳ | — | — |
 | D-03 | Hizmetler | `services` + seed (16), `/hizmetler`, `/hizmetler/[slug]`, panel hizmet CRUD, fiyat gösterim anahtarı (REQ-004; BR-HZM-001, 002) | M | P0 | ⏳ | — | — |
 | D-04 | Müsaitlik motoru + randevu veri modeli | `staff`, `business_hours`, `time_off`, `appointments` + dışlama kısıtı migration; `domain/availability.ts` + tablo testleri; panel müsaitlik ekranı (REQ-001a, REQ-002a, REQ-003a; BR-RND-001…005, 015) | M | P0 | ⏳ | — | — |
-| D-05 | Ziyaretçi randevu akışı | `/randevu` adımlı akış (360 px önce), sunucu eylemi (doğrulama + hız sınırı + kısıt → kural kodu), onay ekranı, işletmeye ve müşteriye bildirim (demo kutusu), "WhatsApp'tan ilet", tercih edilen kanal; mobil eylem çubuğuna "Randevu al" (REQ-001b, REQ-005b, REQ-018; BR-RND-003, 006, 010, 011, 014) | M | P0 | ⏳ | — | — |
+| D-05 | Ziyaretçi randevu akışı | **SSS seed'indeki "Randevumu nasıl alırım?" cevabını online randevuya göre güncelle.** `/randevu` adımlı akış (360 px önce), sunucu eylemi (doğrulama + hız sınırı + kısıt → kural kodu), onay ekranı, işletmeye ve müşteriye bildirim (demo kutusu), "WhatsApp'tan ilet", tercih edilen kanal; mobil eylem çubuğuna "Randevu al" (REQ-001b, REQ-005b, REQ-018; BR-RND-003, 006, 010, 011, 014) | M | P0 | ⏳ | — | — |
 | D-06 | Randevu yönetim bağlantısı | `/randevu/yonet/[token]`: erteleme / iptal, `.ics`, Google Takvim, yenileme hatırlatıcısı + "aynı hizmetten tekrar" (REQ-002b, REQ-012; BR-RND-007, 009, 012, 013) | M | P0 (+P1 REQ-012) | ⏳ | — | — |
 | D-07 | Panel randevu | "Bugün" ekranı (3 KPI), ajanda, detay, durum geçişleri, elle randevu, WhatsApp şablonları + ayarlarda şablon düzenleme (REQ-003b, REQ-005c; BR-RND-008) | M | P0 | ⏳ | — | — |
 | D-08 | Galeri (ziyaretçi) | `gallery_items` + seed (22), `/galeri` filtreleri, eser etiketi kartı, ışık kutusu, `/galeri/[slug]`, öncesi / sonrası kaydırıcısı, "Bu tasarımı istiyorum" (REQ-006, 007, 011; BR-GLR-004) | M | P0 (+P1 REQ-011) | ⏳ | — | — |
@@ -50,6 +50,13 @@
 **P1 onaylanmazsa:** D-10 yalnızca P0 parçalarıyla (seçki + öncesi / sonrası bölümü) D-08'e katılır; REQ-011…022 P2'ye iner.
 
 ## Etkin dilim planı
+
+**D-01b — SSS + panel İçerik modülü** (✅ 2026-10-17)
+- Kabul kriterleri: `/sss` kategorilere göre gruplu, klavyeyle açılır, `FAQPage` verisi görünen sorularla birebir; gizli soru sitede ve veride yok; panelde soru ekle / düzenle / sırala / gizle, Hakkında metni düzenle; kayıttan sonra site hemen güncellenir (`updateTag`); form göndermeden önce aynı Zod şemasıyla denetlenir, ilk hatalı alana odaklanır, hatada girilen metin korunur; anonim ve yetkisiz rol reddedilir; değişiklikler işlem geçmişinde.
+- Tablolar / migration: `faqs` (`0003_faqs.sql`, kategori `check`, `(category, sort_order)` indeksi).
+- Dosyalar: `src/features/faq/*`, `src/features/content/{actions.ts,components/about-form.tsx}`, `src/server/audit.ts`, `src/components/common/{form-field,panel-breadcrumbs}.tsx`, `src/components/ui/{input,textarea,label}.tsx`, `src/components/sections/faq-teaser.tsx`, `src/lib/{form,markdown}.ts`, `src/content/faqs.ts`, `src/config/faq.ts`, `src/app/(site)/sss`, `src/app/panel/(app)/icerik/**`, `tests/setup/*`, `tests/integration/*`, `.env.test`.
+- Testler: `order.test.ts`, `form.test.ts`, `markdown.test.ts`, `tests/integration/content-actions.test.ts` (anonim / yetkisiz ret, oluştur, doğrulama, kategori değişimi, notFound, gizle / göster, sırala, Hakkında kaydı), `tests/e2e/content.spec.ts` (SSS sayfası, form doğrulaması, ekle → sitede → gizle, Hakkında düzenle; SQL ile temizlik); yeni panel rotaları taşma + 44 px + axe'ye eklendi.
+- Elle: SSS 360 / 1280, panel İçerik 360, soru formu (hatalı) 360, Hakkında formu 1280 incelendi.
 
 **D-01a — Tasarım sistemi + görselli giriş + Hakkında** (✅ 2026-10-17)
 - Kabul kriterleri: token çiftleri AA (birim testi); mobilde menü düğmesi + çekmece (odak tuzağı, `Esc`, kaydırma kilidi, bağlantıyla kapanma); masaüstünde `aria-current`; Hakkında içeriği `content_blocks`'tan, demo notu görünür; alt sayfalarda görünür breadcrumb + eşleşen `BreadcrumbList`; görseller `/_next/image` değil önceden üretilmiş WebP; 360–1536 px taşma yok, 44 px hedef, axe temiz.
@@ -100,4 +107,10 @@ Faz 5'te doldurulur.
 - **CSS `uppercase` düzenlenebilir metinde de bozar** → Panelden gelen üst başlıklarda İngilizce kelime olabilir ("Nail artist" → "NAİL ARTİST"); içerik kaynaklı metinde `uppercase` kullanılmaz. Belge: 06-arayuz §11. **Sisteme taşı.**
 - **Flex içindeki breadcrumb bağlantısı "satır içi" istisnasından düşer** → `li` flex olunca bağlantı blok sayılır, 44 px testi takılır; bağlantıya mobilde `min-h-11`. Not.
 - **Playwright `webServer` komutu işletim sisteminden bağımsız olmalı** → `./node_modules/.bin/next start` Windows `cmd`'de çalışmıyor; `node node_modules/next/dist/bin/next start` her ikisinde de çalışır ve pnpm sarmalayıcısı yok. Belge: `iskelet/playwright.config.ts`. **Sisteme taşı.**
+- **CI security işinde pnpm önbelleği** → İş bağımlılık kurmuyor; kilit dosyası değişince önbellek ıskalıyor ve `setup-node`'un son adımı var olmayan pnpm deposu yüzünden düşüyor ("Path(s) specified … do(es) not exist"). Çözüm: bu işte `cache: pnpm` yok. Belge: `iskelet/.github/workflows/ci.yml`. **Sisteme taşı.**
+- **Vercel Hobby: CLI yayını commit yazarına göre engellenir** → GitHub squash birleştirmesi commit'i GitHub "noreply" adresiyle yazar; bu adres Vercel hesabına bağlı değilse CLI dağıtımı "Blocked". Geçici çözüm: `git archive HEAD` ile `.git`'siz dışa aktarımdan yayın. Kalıcı: Vercel hesabına GitHub giriş bağlantısı + Git entegrasyonu (Faz 3'te kurulmalı). Belge: 16-ortamlar §6, iskelet README adım 10. **Sisteme taşı.**
+- **Entegrasyon testi altyapısı iskelette yok** → S2 her eylem için yetki testi istiyor ama hazır düzen yoktu. Bu projede: Vitest `projects` (unit / integration), `.env.test` (NODE_ENV=test, `.env.local` yüklenmez), `globalSetup` ile migration ve `*_test` ad denetimi, `vi.mock` ile oturum / IP / `next/cache`. Belge: iskelet, 14-test. **Sisteme taşı.**
+- **`getByLabel` alt dize eşleşmesi** → "Soru" etiketi "Sık sorulan **soru**lar" bölümüyle eşleşti (gezinme bitmeden). Kısa etiketlerde `{ exact: true }` ve tıklamadan sonra URL beklemesi. Belge: 14-test. Not.
+- **Etiketli onay kutusu ve 44 px testi** → Kutu 20 px, etiketi 44 px; WCAG 2.5.8 etiketi hedef sayar. `checks.ts` etiket içindeki onay kutusunu etiketin boyutuyla ölçer. Belge: `iskelet/tests/e2e/responsive.spec.ts`. **Sisteme taşı.**
+- **Görünmeyen `span` ile erişilebilir ad** → "Gizle" + `sr-only` ": soru" adı tutarsız hesaplandı; liste eylemlerinde görünen sözcükle başlayan `aria-label`. Belge: 08-erisilebilirlik. Not.
 - **pnpm audit: yaması olmayan dolaylı açık** → `braces` (eslint-config-next zinciri, yalnızca geliştirme). Standart muafiyete izin veriyor ama biçim tanımlı değil; `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` + gerekçe + gözden geçirme tarihi örneği eklenmeli. Belge: 15-git-ve-ci §6. **Sisteme taşı.**

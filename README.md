@@ -39,7 +39,7 @@ Rastgele değer üretmek için: `openssl rand -base64 32` (auth sırrı), `opens
 |---|---|
 | `pnpm dev` / `pnpm build` / `pnpm start` | Geliştirme sunucusu / üretim derlemesi / üretim sunucusu |
 | `pnpm check` | lint + typecheck + biçim + birim testleri (CI'ın e2e dışındaki tamamı) |
-| `pnpm test` | Vitest (birim + entegrasyon) |
+| `pnpm test` | Vitest: birim + entegrasyon (gerçek PostgreSQL `app_test`, `.env.test`; Docker açık olmalı) |
 | `pnpm test:e2e` | Playwright: mobil + masaüstü, mobil taşma, dokunma hedefi, axe, panel girişi |
 | `pnpm db:generate` / `pnpm db:migrate` | Migration üret (SQL'i okuyun) / uygula |
 | `pnpm db:seed` / `pnpm db:reset` | Demo verisini yükle / şemayı sıfırla ve yeniden yükle (yalnızca demo) |

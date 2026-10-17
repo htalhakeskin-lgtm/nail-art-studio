@@ -65,6 +65,7 @@ portfolyo/           screenshot/ · mockup/ · araclar/ · ekranlar.json · port
 - **Türkçe ek:** değişken değere ek getirilmez (`{owner}'nun` değil, "Nail artist: {owner}"). **CSS uppercase** `lang="tr"` altında İngilizce kelimeyi bozar ("NAİL"): İngilizce marka adını büyütürken öğeye `lang="en"` ver.
 - **Panel ve nonce CSP:** panel sayfaları istek başına render edilmeli (`export const instant = false` + oturum okuma); statik kabuktaki betikler nonce taşımaz. `tests/e2e/panel.spec.ts` bunu denetler.
 - **Site ayarları** `getSiteSettings()` ile `"use cache"` + `cacheTag("site-settings")`; ayar değiştiren panel eylemi `updateTag(SITE_SETTINGS_TAG)` çağırır.
+- **Entegrasyon testleri** `tests/integration/` altında, gerçek PostgreSQL'de (`app_test`, `.env.test`; `.env.local` yüklenmez). Açılışta migration'lar yalnızca `*_test` adlı veritabanına uygulanır. Oturum (`@/server/auth`), IP (`@/server/request`) ve `next/cache` `vi.mock` ile sahte; veritabanı asla sahte değil.
 - **Yerel ortam:** PostgreSQL `localhost:5434` (5432/5433 başka projelerde). `pnpm typecheck` önce `next typegen` çalıştırır (CI'da `.next` yok).
 - **pnpm 12:** kurulum betiği politikası `allowBuilds` (eski `ignoredBuiltDependencies` değil); `minimumReleaseAge` 3 gün.
 - **Next.js 16.4:** `error.tsx` `retry` alır (`reset` değil); `middleware` yerine `proxy.ts`.

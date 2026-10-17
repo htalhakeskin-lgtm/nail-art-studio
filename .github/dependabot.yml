@@ -12,6 +12,10 @@ updates:
         update-types: [minor, patch]
     commit-message: { prefix: build, prefix-development: build, include: scope }
     open-pull-requests-limit: 5
+    ignore:
+      # Types follow the runtime: Node 24 (.nvmrc, engines). Bump together with Node.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
@@ -25,3 +29,7 @@ updates:
   - package-ecosystem: docker-compose
     directory: /
     schedule: { interval: monthly }
+    ignore:
+      # Local PostgreSQL matches Neon's major version (16-ortamlar-ve-yayin §4).
+      - dependency-name: postgres
+        update-types: ["version-update:semver-major"]

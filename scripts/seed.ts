@@ -11,9 +11,11 @@ loadEnvConfig(process.cwd());
 async function main() {
   const { env } = await import("@/lib/env");
   const { db } = await import("@/server/db/client");
-  const { accounts, contentBlocks, leads, siteSettings, users } =
+  const { accounts, contentBlocks, faqs, leads, siteSettings, users } =
     await import("@/server/db/schema");
   const { contentBlockDefaults } = await import("@/content/content-blocks");
+  const { seedFaqs } = await import("@/content/faqs");
+  const { count } = await import("drizzle-orm");
   const { newId } = await import("@/server/db/columns");
   const { siteDefaults } = await import("@/config/site-defaults");
   const { hashPassword } = await import("better-auth/crypto");
@@ -74,6 +76,20 @@ async function main() {
     await db.insert(contentBlocks).values(rows).onConflictDoNothing();
   }
 
+  async function seedFaqRows() {
+    // Only into an empty table: re-running the seed never duplicates or overwrites panel edits.
+    const [existing] = await db.select({ value: count() }).from(faqs);
+    if ((existing?.value ?? 0) > 0) return;
+    const orders = new Map<string, number>();
+    await db.insert(faqs).values(
+      seedFaqs.map((faq) => {
+        const sortOrder = (orders.get(faq.category) ?? 0) + 10;
+        orders.set(faq.category, sortOrder);
+        return { ...faq, isVisible: faq.isVisible ?? true, sortOrder };
+      }),
+    );
+  }
+
   async function seedLeads() {
     // Fictional people only; phones use the 000 block, e-mails example.com (17 §3).
     const names = [
@@ -113,6 +129,7 @@ async function main() {
 
   await seedSettings();
   await seedContentBlocks();
+  await seedFaqRows();
   await seedDemoAdmin();
   await seedLeads();
   console.log("✓ Seed tamamlandı");

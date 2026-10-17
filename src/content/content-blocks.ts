@@ -26,4 +26,4 @@ export const contentBlockDefaults = {
     closing:
       "Son işlere Instagram'dan göz atabilir, aklınızdaki tasarımın fotoğrafını WhatsApp'tan gönderebilirsiniz.",
   },
-} as const;
+};
