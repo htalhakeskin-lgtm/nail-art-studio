@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-02
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-03
 
 ## Şu an
 
-- **Etkin dilim:** D-08 galeri ✅ (PR açık) → sıradaki D-02
-- **Son yapılan:** R-01 pastel tema + canlı Pexels görselleri (K-28); D-08 galeri: 27 eser, stil / renk / uzunluk filtresi, eser sayfası, ana sayfa seçkisi ve stil kartları, panel galeri (yayımla / seçkiye ekle); 130 Vitest (20 entegrasyon) + 184 e2e
-- **Sıradaki adım:** `/web-proje devam` → D-02: iletişim sayfası + form → `leads` → panel talep kutusu, teşekkür ekranı, harita + yol tarifi, ulaşım, "şu an açık", `NailSalon` JSON-LD
+- **Etkin dilim:** D-02 ✅ (PR açık) → sıradaki D-03
+- **Son yapılan:** D-02: `/iletisim` (form, "şu an açık", saatler, harita, yol tarifi, ulaşım), `NailSalon` JSON-LD (ana sayfa + iletişim), teşekkür sayfası, panel "Talepler" (liste, durum, not, WhatsApp ile yanıt); 153 Vitest (30 entegrasyon) + 211 e2e
+- **Sıradaki adım:** `/web-proje devam` → D-03: hizmetler (`services` + seed, `/hizmetler`, hizmet detayı, panel CRUD, fiyat gösterim anahtarı)
 
 ## Gözetimsiz çalışma notları
 
@@ -37,7 +37,7 @@
 | D-01a | Tasarım sistemi + görselli giriş + Hakkında | shadcn/ui (K-22), kontrast birim testi, mobil menü (Sheet), breadcrumb + `BreadcrumbList`, `PhoneLink`, görsel boru hattı (K-21) + `docs/gorsel-kaynaklari.md`, ana sayfa giriş kolajı + "Stüdyo" bölümü, `/hakkinda` (`content_blocks.about`); Z-07, Z-08, Z-18. Kurulumda yapılanlar: token'lar, yazı tipleri, başlık, alt bilgi, mobil eylem çubuğu, demo şeridi, yasal sayfalar (REQ-009), 404 / 500 | M | P0 | ✅ | ✅ 360 / 1024 / 1280 | 81 birim + 106 e2e |
 | D-01b | SSS + panel İçerik modülü | `faqs` + seed (12 + 1 gizli), `/sss` (`<details>` akordeon, `FAQPage`), ana sayfa SSS özeti, panel `/panel/icerik`: SSS ekle / düzenle / sırala / gizle (K-24), Hakkında metni düzenleme, işlem geçmişi, `updateTag`; menüye "SSS"; entegrasyon testi altyapısı (K-25); Z-10, Z-31 | M | P0 | ✅ | ✅ 360 / 1280 | 107 Vitest (11 entegrasyon) + 127 e2e |
 | R-01 | Görsel revizyon (kullanıcı geri bildirimi) | Pastel token'lar + `--brand` (K-28), Fraunces `SOFT`, kemer / polaroid çerçeve, pastel renk lekeleri, yıldız işareti; 5 yeni Pexels görseli; ikon, manifest, tema rengi; `docs/gorsel-kaynaklari.md` | S | P0 | ✅ | ✅ 360 / 1280 | 27 token çifti |
-| D-02 | İletişim + talep kutusu + yerel SEO | İletişim sayfası ve formu → `leads` → panel talepler, teşekkür ekranı; harita + yol tarifi; WhatsApp bağlamlı bağlantı temeli (REQ-005a); `NailSalon` JSON-LD (REQ-010); Z-09, Z-13, Z-15, Z-29 | M | P0 | ⏳ | — | — |
+| D-02 | İletişim + talep kutusu + yerel SEO | `/iletisim`: iletişim kartları, form → `leads` (+ onay kaydı, demo kutusu bildirimi), "şu an açık" (REQ-016), saatler, MapLibre harita (K-31), Google / Apple / Yandex yol tarifi, ulaşım (REQ-017); teşekkür sayfası; panel `/panel/talepler` + detay (durum, not, WhatsApp ile yanıt, kayıtlar); ana sayfaya konum özeti; `NailSalon` JSON-LD (REQ-010); menüye "İletişim" (Z-09, Z-13, Z-15, Z-29; BR-TLP-001, K-32) | M | P0 (+P1 REQ-016, 017) | ✅ | ✅ 360 / 1280 | 153 Vitest (30 entegrasyon) + 211 e2e |
 | D-03 | Hizmetler | `services` + seed (16), `/hizmetler`, `/hizmetler/[slug]`, panel hizmet CRUD, fiyat gösterim anahtarı (REQ-004; BR-HZM-001, 002) | M | P0 | ⏳ | — | — |
 | D-04 | Müsaitlik motoru + randevu veri modeli | `staff`, `business_hours`, `time_off`, `appointments` + dışlama kısıtı migration; `domain/availability.ts` + tablo testleri; panel müsaitlik ekranı (REQ-001a, REQ-002a, REQ-003a; BR-RND-001…005, 015) | M | P0 | ⏳ | — | — |
 | D-05 | Ziyaretçi randevu akışı | **SSS seed'indeki "Randevumu nasıl alırım?" cevabını online randevuya göre güncelle.** `/randevu` adımlı akış (360 px önce), sunucu eylemi (doğrulama + hız sınırı + kısıt → kural kodu), onay ekranı, işletmeye ve müşteriye bildirim (demo kutusu), "WhatsApp'tan ilet", tercih edilen kanal; mobil eylem çubuğuna "Randevu al" (REQ-001b, REQ-005b, REQ-018; BR-RND-003, 006, 010, 011, 014) | M | P0 | ⏳ | — | — |
@@ -52,6 +52,13 @@
 **P1 onaylanmazsa:** D-10 yalnızca P0 parçalarıyla (seçki + öncesi / sonrası bölümü) D-08'e katılır; REQ-011…022 P2'ye iner.
 
 ## Etkin dilim planı
+
+**D-02 — İletişim + talep kutusu + yerel SEO** (✅ 2026-10-22)
+- Kabul kriterleri: form aynı Zod şemasıyla tarayıcıda ve sunucuda denetlenir, ilk hatalı alana odaklanır, hatada yazılanlar korunur; ad + (telefon ya da e-posta) zorunlu, seçilen dönüş kanalının bilgisi zorunlu (BR-TLP-001); telefon E.164 saklanır; honeypot + süre denetimi + IP başına saatte 5 (P-10); her talepte onay kaydı (metin sürümü, tuzlu IP karması) ve demo kutusuna işletme bildirimi (e-posta verildiyse ziyaretçiye de); teşekkür sayfası `noindex`, kod yalnızca geçerli biçimdeyse gösterilir; "şu an açık" İstanbul saatine ve tatile göre, istek anında; `NailSalon` verisi sayfadaki ad, adres, telefonla aynı, fiyat ve puan yok; panelde talep açılınca okundu, durum ve not işlem geçmişinde; yetkisiz kullanıcı reddedilir.
+- Tablolar / migration: yok (`leads`, `consent_records`, `demo_outbox` iskeletten). `LEAD_STATUSES` istemciye sızmasın diye `src/config/leads.ts`'e taşındı.
+- Dosyalar: `src/features/leads/*`, `src/features/site/domain/{open-status,local-business}.ts`, `src/features/site/links.ts` (`directionLinks`), `src/features/legal/queries.ts` (`getFormTexts`), `src/components/common/{open-now,studio-map,spam-guard}.tsx`, `src/components/sections/location-teaser.tsx`, `src/content/location.ts`, `src/app/(site)/iletisim/**`, `src/app/panel/(app)/talepler/**`, `scripts/copy-vendor.mjs`.
+- Testler: `open-status.test.ts` (İstanbul günü, açık / kapanış dakikası / bugün / Pazartesi atlama / tatil / hiç açılmayan), `local-business.test.ts` (NAP, saatler, fiyat ve puan yok), `lead-code.test.ts`, `tests/integration/lead-actions.test.ts` (kayıt + kod + onay + bildirim, ardışık kod, BR-TLP-001 iki kural, telefon biçimi, honeypot + hız, P-10, panel yetki / durum / not / notFound), `tests/e2e/contact.spec.ts` (sayfa + NailSalon, form denetimi, gönderim → teşekkür, panel yanıt); yeni rotalar taşma + 44 px + axe'ye eklendi.
+- Elle: iletişim 360 / 1280, harita 1280, teşekkür 390 incelendi; form gerçek gönderimle denendi (talep, onay kaydı, demo kutusu satırları doğrulandı).
 
 **D-08 — Galeri** (✅ 2026-10-22)
 - Kabul kriterleri: filtreler URL'de ve paylaşılabilir; aynı seçime tekrar dokunmak filtreyi kaldırır; boş sonuçta açıklama + temizle; telefonda stil çipleri yana kayar, renk / uzunluk alttan açılan panelde, masaüstünde satır içi; eser sayfasında etiket, renk örnekleri, süre, WhatsApp mesajında eser no + ad + bağlantı (ek yok); taslak ve bilinmeyen eser "bulunamadı" sayfası + `noindex`; temsilî görselde fotoğrafçı bağlantısı; panelde yetkisiz rol reddedilir, müşteri izni olmayan gerçek iş yayımlanamaz (BR-GLR-003, eylem + `check`), eser no yeniden kullanılmaz (BR-GLR-004, identity).
@@ -89,7 +96,8 @@ Faz 5'te doldurulur.
 
 ## Bilinen sorunlar
 
-- Yok.
+- **Canlıda galeri boş** (2026-10-22): `vercel-build` migration'ı uyguladı ama demo eserler canlı veritabanına yüklenmedi (`pnpm db:seed` bu oturumda izin sisteminde durdu). Yapılacak: canlı `DATABASE_URL` ile `pnpm db:seed`, ardından yeniden yayın.
+- **Yerelde `content.spec` panel testleri kararsız** (2026-10-22): yerel `next start` ile kayıttan sonra `/hakkinda` ve `/sss` bazen eski içeriği gösteriyor; CI'da geçiyor. İncelenecek.
 
 ## Dersler
 
@@ -134,4 +142,8 @@ Faz 5'te doldurulur.
 - **İstemci filtresi için History API** → `router.replace` statik sayfada her filtrede sunucuya RSC isteği atıyor, geliştirmede yük altında testleri geciktiriyordu; `window.history.replaceState` `useSearchParams` ile senkron ve gidiş-dönüş yok. Belge: 06-arayuz (filtreler). **Sisteme taşı.**
 - **Mobil eylem çubuğu kenarlığı** → Çubuğun 1 px üst kenarlığı ayrılan boşluğa katılmamıştı; sayfa yüksekliği değişince alt bilginin 1 px'i altta kalıyordu. Ayrılan boşluk `--action-bar-h + 1px`. Belge: iskelet `site-shell`. Not.
 - **Turbopack geliştirme CSS önbelleği** → `@theme`'e yeni renk eklenince sınıflar üretilmedi; `.next/dev` silinip sunucu yeniden başlatılınca düzeldi. Not.
+- **İskeletteki `SpamGuard` Cache Components ile bozuk** → `useState(() => Date.now())` statik kabukta derleme zamanında donuyor (Next.js "unstable value `Date.now()` in a Client Component" hatası) ve "çok hızlı gönderim" denetimi hiç tetiklenmiyor. Çözüm: zaman `useEffect` ile gizli alana yazılır; boşsa sunucu süre denetimini atlar. Belge: `iskelet/src/components/common/spam-guard.tsx`. **Sisteme taşı.**
+- **MapLibre 6 + Turbopack: worker yüklenmiyor** → Worker adresi `import.meta.url`'den türetiliyor; paketlenince çözülmüyor. Çözüm: worker'ı `public/vendor/`'a sürümlü adla kopyalayan betik + `setWorkerUrl` (K-31). Belge: 01-teknoloji-yigini (harita), iskelet. **Sisteme taşı.**
+- **Mobil boyut testi onay kutusu / radyo düğmesini yazı alanı sayıyordu** → iOS yakınlaştırması yalnızca yazı alanlarında; `findSmallInputs` checkbox ve radio'yu artık saymaz. Belge: `iskelet/tests/e2e/checks.ts`. **Sisteme taşı.**
+- **Vercel'de gizli ortam değişkenleri boş iner** → `vercel env pull` "sensitive" değişkenleri boş yazıyor; `env.ts` doğrulaması seed'i durduruyor. Canlı seed için yalnızca `DATABASE_URL` isteyen bir yol gerekir. Belge: 16-ortamlar §6. **Sisteme taşı.**
 - **pnpm audit: yaması olmayan dolaylı açık** → `braces` (eslint-config-next zinciri, yalnızca geliştirme). Standart muafiyete izin veriyor ama biçim tanımlı değil; `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` + gerekçe + gözden geçirme tarihi örneği eklenmeli. Belge: 15-git-ve-ci §6. **Sisteme taşı.**

@@ -21,3 +21,17 @@ export function directionsHref(settings: SiteSettings): string {
   const { lat, lng } = settings.company.geo;
   return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
 }
+
+/** Directions in the three apps people in Türkiye use (REQ-010). */
+export function directionLinks(settings: SiteSettings): { label: string; href: string }[] {
+  const { lat, lng } = settings.company.geo;
+  const name = encodeURIComponent(settings.company.name);
+  return [
+    { label: "Google Haritalar", href: directionsHref(settings) },
+    { label: "Apple Haritalar", href: `https://maps.apple.com/?daddr=${lat},${lng}&q=${name}` },
+    {
+      label: "Yandex Haritalar",
+      href: `https://yandex.com.tr/harita/?rtext=~${lat},${lng}&rtt=auto`,
+    },
+  ];
+}

@@ -15,3 +15,11 @@ export async function getLegalDocument(key: LegalDocumentKey): Promise<ParsedLeg
   const file = path.join(process.cwd(), "content", "yasal", legalDocuments[key].file);
   return parseLegalDocument(await readFile(file, "utf8"));
 }
+
+/** Form texts (content/yasal/form-metinleri.md): not a page, but its version goes into consent records. */
+export async function getFormTexts(): Promise<ParsedLegalDocument> {
+  "use cache";
+  cacheLife("max");
+  const file = path.join(process.cwd(), "content", "yasal", "form-metinleri.md");
+  return parseLegalDocument(await readFile(file, "utf8"));
+}

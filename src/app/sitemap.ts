@@ -12,7 +12,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const legal = Object.values(legalDocuments).map((document) => document.path);
   const works = await listPublishedGalleryItems();
   return [
-    ...["/", "/galeri", "/hakkinda", "/sss", ...legal].map((path) => ({ url: absoluteUrl(path) })),
+    ...["/", "/galeri", "/hakkinda", "/sss", "/iletisim", ...legal].map((path) => ({
+      url: absoluteUrl(path),
+    })),
     ...works.map((work) => ({
       url: absoluteUrl(`/galeri/${work.slug}`),
       lastModified: work.updatedAt,

@@ -49,3 +49,6 @@ next-env.d.ts
 /playwright-report/
 !.env.test
 .gstack/
+
+# Copied from node_modules before dev / build (scripts/copy-vendor.mjs)
+/public/vendor/
