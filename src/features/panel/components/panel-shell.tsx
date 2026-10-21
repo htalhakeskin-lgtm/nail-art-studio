@@ -1,4 +1,12 @@
-import { ExternalLink, FileText, Images, Inbox, LayoutDashboard, LogOut } from "lucide-react";
+import {
+  ExternalLink,
+  FileText,
+  Images,
+  Inbox,
+  LayoutDashboard,
+  LogOut,
+  MessagesSquare,
+} from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -10,9 +18,11 @@ import { signOut } from "../actions";
  */
 const links = [
   { href: "/panel", label: "Özet", icon: LayoutDashboard },
+  { href: "/panel/talepler", label: "Talepler", icon: MessagesSquare },
   { href: "/panel/galeri", label: "Galeri", icon: Images },
   { href: "/panel/icerik", label: "İçerik", icon: FileText },
-  { href: "/panel/demo-kutusu", label: "Demo kutusu", icon: Inbox },
+  // Not in the phone tab bar (five slots); reachable from the overview card.
+  { href: "/panel/demo-kutusu", label: "Demo kutusu", icon: Inbox, tab: false },
 ] as const;
 
 export function PanelShell({ userName, children }: { userName: string; children: ReactNode }) {
@@ -62,18 +72,20 @@ export function PanelShell({ userName, children }: { userName: string; children:
         aria-label="Panel kısayolları"
         className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
       >
-        <ul className="grid grid-cols-4">
-          {links.map(({ href, label, icon: Icon }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className="flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-semibold"
-              >
-                <Icon aria-hidden="true" className="size-5" />
-                {label}
-              </Link>
-            </li>
-          ))}
+        <ul className="grid grid-cols-5">
+          {links
+            .filter((link) => !("tab" in link))
+            .map(({ href, label, icon: Icon }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-semibold"
+                >
+                  <Icon aria-hidden="true" className="size-5" />
+                  {label}
+                </Link>
+              </li>
+            ))}
           <li>
             <Link
               href="/"

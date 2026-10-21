@@ -66,7 +66,12 @@ export async function findSmallTargets(page: Page) {
 
 export async function findSmallInputs(page: Page) {
   return page.evaluate(() =>
-    [...document.querySelectorAll<HTMLElement>("input:not([type=hidden]), select, textarea")]
+    // Only fields people type into: iOS zooms on focus of those, not on checkboxes or radios.
+    [
+      ...document.querySelectorAll<HTMLElement>(
+        "input:not([type=hidden]):not([type=checkbox]):not([type=radio]), select, textarea",
+      ),
+    ]
       .filter((el) => parseFloat(getComputedStyle(el).fontSize) < 16) // eslint-disable-line no-restricted-globals -- CSS pixel value, not money
       .map((el) => el.getAttribute("name") ?? el.tagName.toLowerCase()),
   );

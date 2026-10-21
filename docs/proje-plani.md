@@ -2,7 +2,7 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.5 |
+| Belge sürümü | v0.6 |
 | Tarih | 2026-10-22 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4. D-01a, D-01b, görsel revizyon (K-28) ve D-08 galeri (öne alındı, K-30) bitti. Vercel Git entegrasyonu açık: PR'lar önizleme, `main` üretim (demo) yayını alıyor. Sıradaki dilim D-02 (İletişim + talep kutusu + yerel SEO).
+> **Güncel durum:** Faz 4. D-01a, D-01b, görsel revizyon (K-28), D-08 galeri ve D-02 iletişim + talep kutusu + yerel SEO bitti. Vercel Git entegrasyonu açık: PR'lar önizleme, `main` üretim (demo) yayını alıyor. Sıradaki dilim D-03 (Hizmetler).
 
 ---
 
@@ -340,7 +340,7 @@ erDiagram
 | Cache Components | Açık | Herkese açık içerik ağırlıklı; müsaitlik ve "şu an açık" akışla gelen dinamik parçalar |
 | Müsaitlik hesabı | `src/domain/availability.ts` saf fonksiyon (date-fns + `@date-fns/tz`); sunucuda veriyle beslenir | Tablo testleriyle doğrulanabilir; panel ve site aynı fonksiyonu kullanır |
 | Çakışma | `btree_gist` + dışlama kısıtı (özel SQL migration) | 04-veri §7; uygulama kontrolü yarış durumunu yakalamaz |
-| Harita | MapLibre GL + OpenFreeMap | Anahtarsız, çerezsiz |
+| Harita | MapLibre GL + OpenFreeMap; yalnızca `/iletisim`'de, görünür olunca yüklenir; worker `public/vendor/`'dan (K-31) | Anahtarsız, çerezsiz |
 | E-posta | Resend + React Email; demo'da demo kutusu | Standart |
 | WhatsApp | `wa.me` bağlantısı + şablon (API yok); Cloud API P2 | K-07 |
 | Dosya depolama | Vercel Blob (panel yüklemeleri); seed görselleri `public/demo/` | Az ve küçük dosya |
@@ -610,6 +610,8 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-28 | 2026-10-22 | Görsel revizyon: tema "Stüdyo galeri"den (krem + bordo) "Pastel stüdyo"ya (allık + şeker pembesi + koyu gül vurgu); rawpixel görselleri yerine canlı renkli Pexels Lisanslı 29 fotoğraf. Pinterest kullanılmadı | Kullanıcı görselleri soluk, renkleri ağır buldu, "pinterestten olabilir" dedi. Pinterest görsellerinin lisansı yok ve başkalarının işi; Bahadır Karasu'nun işi gibi görünürdü (RSK-01). Pexels Lisansı ticari kullanıma izin verir. Pastel düğme üzerinde açık metin AA'yı geçmediği için vurgu metni ayrı token (`--brand`) |
 | K-29 | 2026-10-22 | Galeri sınıflandırması: her eserin tek **stili** (Sade · French · Simli & taşlı · Ombre · Desenli · Çiçek & kalp · Rengârenk), bir ya da daha çok **rengi** ve **uzunluğu** (kısa · orta · uzun) var; filtreler `?stil=`, `?renk=`, `?uzunluk=` (REQ-006'daki `?teknik=` yerine; teknik etikette görünür). Işık kutusu yerine her eserin kendi sayfası + önceki / sonraki | Kullanıcı "sade ya da tırnak modellerine göre" filtre istedi; ziyaretçi teknikle değil görünüşle arıyor. Eser sayfası paylaşılabilir, SEO'lu ve ışık kutusunun klavye / odak yükünü taşımıyor |
 | K-30 | 2026-10-22 | D-08 (galeri) D-02'den önce yapılır. Öncesi / sonrası kaydırıcısı (V-07) D-09'a taşındı; "Bu tasarımı istiyorum" D-05'e kadar eser numarasıyla WhatsApp'a, D-05'ten sonra randevu akışına gider | Kullanıcının en görünür isteği galeri; stok fotoğraflarda gerçek öncesi / sonrası çifti yok, kaydırıcı yükleme ve eşleştirmeyle (D-09) birlikte anlamlı |
+| K-31 | 2026-10-22 | MapLibre worker'ı `scripts/copy-vendor.mjs` ile `public/vendor/maplibre-gl-worker-<sürüm>.mjs`'e kopyalanır (git dışı), `setWorkerUrl` ile verilir; `dev`, `build` ve `vercel-build` önce bu betiği çalıştırır | MapLibre 6 worker adresini kendi modülünün yanından türetiyor; Turbopack parçalarında bu adres çözülmüyor ("Worker failed to load"). Sürüm dosya adında: güncellemede eski önbellek kullanılmaz; CSP `worker-src 'self'` yeterli |
+| K-32 | 2026-10-22 | İletişim formu: ad + (telefon ya da e-posta) + mesaj + tercih edilen dönüş kanalı; seçilen kanalın bilgisi zorunlu. Aydınlatma bağlantısı cümle olarak, kutusuz; onay kaydı `information_notice` (KVKK + form metni sürümü). Talep no `TLP-YYYY-NNNN` (İstanbul yılı, benzersiz indeksle yarışta yeniden deneme). Teşekkür sayfası `noindex`, yalnızca geçerli biçimli kodu gösterir | UC-07, BR-TLP-001, 10-yasal §3–4; WhatsApp'la dönüş seçip numara vermeyen ziyaretçiye dönülemez |
 
 **Değişiklik kaydı:**
 
@@ -620,3 +622,4 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | 2026-10-17 | v0.3 | D-01a: K-20…K-23; §10'a arayüz bileşenleri ve görsel teslimi satırları |
 | 2026-10-17 | v0.4 | D-01b: K-24…K-27; yayın satırı (Git entegrasyonu) |
 | 2026-10-22 | v0.5 | Görsel revizyon (K-28): §11 ton, renkler, tipografi, görsel dil; galeri sınıflandırması ve dilim sırası (K-29, K-30) |
+| 2026-10-22 | v0.6 | D-02: K-31 (harita worker'ı), K-32 (iletişim formu); §10 harita satırı |

@@ -10,6 +10,8 @@ import {
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 
+import { LEAD_STATUSES } from "@/config/leads";
+
 import { createdAt, id, instant, timestamps, version } from "../columns";
 
 /**
@@ -35,8 +37,6 @@ export const siteSettings = pgTable(
   },
   (table) => [check("ck_site_settings_singleton", sql`${table.id} = 'singleton'`)],
 );
-
-export const LEAD_STATUSES = ["new", "contacted", "closed", "lost", "spam"] as const;
 
 /** Every form submission lands here (talep kutusu, Z-29). */
 export const leads = pgTable(

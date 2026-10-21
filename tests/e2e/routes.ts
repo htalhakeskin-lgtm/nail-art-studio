@@ -10,6 +10,8 @@ export const publicRoutes = [
   "/galeri/takili-siyah-beyaz", // longest seed title
   "/hakkinda",
   "/sss",
+  "/iletisim",
+  "/iletisim/tesekkurler?kod=TLP-2026-0001",
   "/kvkk",
   "/gizlilik",
   "/cerez-politikasi",
@@ -21,6 +23,7 @@ export const publicRoutes = [
 /** Visited with the demo admin session (tests/e2e/panel.spec.ts signs in first). */
 export const panelRoutes = [
   "/panel",
+  "/panel/talepler",
   "/panel/galeri",
   "/panel/icerik",
   "/panel/icerik/sss/yeni",
