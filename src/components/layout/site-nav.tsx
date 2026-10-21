@@ -21,7 +21,7 @@ export function SiteNav({ items }: { items: readonly NavItem[] }) {
                 aria-current={current ? "page" : undefined}
                 className={cn(
                   "inline-flex min-h-11 items-center rounded-full px-4 text-sm font-semibold transition-colors duration-(--duration-fast) hover:bg-surface-muted lg:min-h-9",
-                  current && "bg-surface-muted text-primary",
+                  current && "bg-surface-muted text-brand",
                 )}
               >
                 {item.label}

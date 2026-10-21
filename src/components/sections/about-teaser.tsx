@@ -16,9 +16,16 @@ export function AboutTeaser({
   about: ContentBlock<"about">;
 }) {
   return (
-    <section aria-labelledby="studyo-baslik" className="bg-surface-muted section-y">
+    <section
+      aria-labelledby="studyo-baslik"
+      className="bg-linear-to-br from-accent via-surface-muted to-seftali section-y"
+    >
       <div className="container-page grid items-center gap-10 md:grid-cols-2 md:gap-16">
-        <FramedImage image={demoImages.aboutBrush} sizes="(min-width: 768px) 40vw, 100vw" />
+        <FramedImage
+          image={demoImages.aboutPalette}
+          sizes="(min-width: 768px) 40vw, 100vw"
+          className="-rotate-1"
+        />
         <div>
           {/* Editable text may hold English words: no CSS uppercase under lang="tr" ("NAİL"). */}
           <p className="text-sm font-semibold tracking-[0.12em] text-muted-foreground">

@@ -18,7 +18,7 @@ export async function MobileActionBar() {
     >
       <ul className="grid grid-cols-3">
         <li>
-          <a href={whatsappHref(settings)} className={`${item} text-primary`}>
+          <a href={whatsappHref(settings)} className={`${item} text-brand`}>
             <MessageCircle aria-hidden="true" className="size-5" />
             WhatsApp
           </a>

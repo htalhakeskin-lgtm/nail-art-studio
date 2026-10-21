@@ -52,7 +52,7 @@ export default async function AboutPage() {
             </p>
           )}
         </div>
-        <FramedImage image={demoImages.aboutBrush} sizes="(min-width: 1024px) 36rem, 100vw" lcp />
+        <FramedImage image={demoImages.aboutPalette} sizes="(min-width: 1024px) 36rem, 100vw" lcp />
       </header>
 
       <section aria-labelledby="yaklasim" className="mt-16 md:mt-24">
@@ -61,8 +61,8 @@ export default async function AboutPage() {
         </h2>
         <ol className="mt-8 grid gap-8 md:grid-cols-3">
           {about.sections.map((section, index) => (
-            <li key={section.title} className="border-t-2 border-primary pt-5">
-              <p className="font-display text-sm text-primary tabular-nums">
+            <li key={section.title} className="border-t-2 border-brand pt-5">
+              <p className="font-display text-sm text-brand tabular-nums">
                 {String(index + 1).padStart(2, "0")}
               </p>
               <h3 className="mt-2 text-xl font-medium">{section.title}</h3>
@@ -78,7 +78,7 @@ export default async function AboutPage() {
         aria-label="İletişim"
         className="mt-16 grid items-center gap-10 md:mt-24 md:grid-cols-[1fr_1.2fr] md:gap-16"
       >
-        <FramedImage image={demoImages.aboutPolish} sizes="(min-width: 768px) 40vw, 100vw" />
+        <FramedImage image={demoImages.aboutPainting} sizes="(min-width: 768px) 40vw, 100vw" />
         <div>
           <div className="max-w-prose text-lg">
             <MarkdownContent>{about.closing}</MarkdownContent>

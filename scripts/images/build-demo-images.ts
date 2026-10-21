@@ -1,7 +1,7 @@
 /**
  * Encodes the demo images listed in src/content/demo-images.ts (17-icerik §5, U-21).
  *   pnpm tsx scripts/images/build-demo-images.ts <download-dir>
- * <download-dir>/<sourceId>/original is the licensed file (kept out of the repository).
+ * <download-dir>/<sourceId>/original.jpg is the licensed file (kept out of the repository).
  * Output: public/demo/<name>-{480,960,1600}.webp — cover crop, no upscaling, metadata stripped.
  */
 import { mkdir } from "node:fs/promises";
@@ -19,7 +19,7 @@ async function main() {
   await mkdir(path.join(out, "demo"), { recursive: true });
 
   for (const [key, image] of Object.entries(demoImages)) {
-    const input = path.join(downloads, image.source.sourceId, "original");
+    const input = path.join(downloads, image.source.sourceId, "original.jpg");
     // sharp drops EXIF / XMP unless withMetadata() is called (U-13: location data never leaks).
     const master = await sharp(input)
       .rotate()

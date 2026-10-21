@@ -1,16 +1,17 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-17 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-02
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-08 (öne alındı, K-30)
 
 ## Şu an
 
-- **Etkin dilim:** D-01b ✅ (PR açık) → sıradaki D-02
-- **Son yapılan:** SSS (`faqs`, `/sss`, ana sayfa özeti), panel "İçerik" modülü (SSS ekle / düzenle / sırala / gizle, Hakkında metni), entegrasyon testi altyapısı; 107 Vitest (11 entegrasyon) + 127 e2e testi yeşil. Vercel Git entegrasyonu açık; Dependabot PR'ları sonuçlandı
-- **Sıradaki adım:** `/web-proje devam` → D-02: iletişim sayfası + form → `leads` → panel talep kutusu, teşekkür ekranı, harita + yol tarifi, ulaşım, "şu an açık", `NailSalon` JSON-LD
+- **Etkin dilim:** R-01 görsel revizyon ✅ → D-08 galeri (öne alındı)
+- **Son yapılan:** Kullanıcı geri bildirimiyle pastel tema (K-28) ve canlı renkli Pexels görselleri; giriş kolajı tırnak ucu biçimli çerçevelerde
+- **Sıradaki adım:** D-08: `gallery_items`, stil / renk / uzunluk filtreli `/galeri`, eser sayfası, ana sayfa seçkisi; ardından D-02
 
 ## Gözetimsiz çalışma notları
 
 - 2026-10-16 — Kullanıcı "tam yetkin var başla" dedi; Faz 0'da soru sorulmadı. Marka adı "Nail Art Studios" (VR-01), tek uzman (VR-02), kurgusal Kadıköy / Moda adresi (VR-03), onay beklemeli randevu (VR-10) varsayıldı. Sistem kuralı gereği plan onayında duruldu.
+- 2026-10-22 — Kullanıcı görselleri ve renkleri beğenmedi; "pinterestten olabilir" dedi, galeride işlere göre kategori / filtre önerdi, "tam yetkin var". Pinterest lisans ve başkasının işi sorunu nedeniyle kullanılmadı (K-28); kategoriler planda zaten olan galeri dilimine (D-08) taşındı ve dilim öne alındı.
 - 2026-10-16 — `kur` komutu plan onayı sayıldı (K-17). P1 bütçe aşımı ayrıca teyit edilmedi; "tam yetki" beyanıyla dahil sayıldı, D-10'dan önce hatırlatılacak. Açık sorular Q-01…Q-06 cevapsız; varsayımlar geçerli.
 
 ## Faz 3 — Kurulum kaydı
@@ -35,6 +36,7 @@
 |---|---|---|---|---|---|---|---|
 | D-01a | Tasarım sistemi + görselli giriş + Hakkında | shadcn/ui (K-22), kontrast birim testi, mobil menü (Sheet), breadcrumb + `BreadcrumbList`, `PhoneLink`, görsel boru hattı (K-21) + `docs/gorsel-kaynaklari.md`, ana sayfa giriş kolajı + "Stüdyo" bölümü, `/hakkinda` (`content_blocks.about`); Z-07, Z-08, Z-18. Kurulumda yapılanlar: token'lar, yazı tipleri, başlık, alt bilgi, mobil eylem çubuğu, demo şeridi, yasal sayfalar (REQ-009), 404 / 500 | M | P0 | ✅ | ✅ 360 / 1024 / 1280 | 81 birim + 106 e2e |
 | D-01b | SSS + panel İçerik modülü | `faqs` + seed (12 + 1 gizli), `/sss` (`<details>` akordeon, `FAQPage`), ana sayfa SSS özeti, panel `/panel/icerik`: SSS ekle / düzenle / sırala / gizle (K-24), Hakkında metni düzenleme, işlem geçmişi, `updateTag`; menüye "SSS"; entegrasyon testi altyapısı (K-25); Z-10, Z-31 | M | P0 | ✅ | ✅ 360 / 1280 | 107 Vitest (11 entegrasyon) + 127 e2e |
+| R-01 | Görsel revizyon (kullanıcı geri bildirimi) | Pastel token'lar + `--brand` (K-28), Fraunces `SOFT`, kemer / polaroid çerçeve, pastel renk lekeleri, yıldız işareti; 5 yeni Pexels görseli; ikon, manifest, tema rengi; `docs/gorsel-kaynaklari.md` | S | P0 | ✅ | ✅ 360 / 1280 | 27 token çifti |
 | D-02 | İletişim + talep kutusu + yerel SEO | İletişim sayfası ve formu → `leads` → panel talepler, teşekkür ekranı; harita + yol tarifi; WhatsApp bağlamlı bağlantı temeli (REQ-005a); `NailSalon` JSON-LD (REQ-010); Z-09, Z-13, Z-15, Z-29 | M | P0 | ⏳ | — | — |
 | D-03 | Hizmetler | `services` + seed (16), `/hizmetler`, `/hizmetler/[slug]`, panel hizmet CRUD, fiyat gösterim anahtarı (REQ-004; BR-HZM-001, 002) | M | P0 | ⏳ | — | — |
 | D-04 | Müsaitlik motoru + randevu veri modeli | `staff`, `business_hours`, `time_off`, `appointments` + dışlama kısıtı migration; `domain/availability.ts` + tablo testleri; panel müsaitlik ekranı (REQ-001a, REQ-002a, REQ-003a; BR-RND-001…005, 015) | M | P0 | ⏳ | — | — |
@@ -50,6 +52,11 @@
 **P1 onaylanmazsa:** D-10 yalnızca P0 parçalarıyla (seçki + öncesi / sonrası bölümü) D-08'e katılır; REQ-011…022 P2'ye iner.
 
 ## Etkin dilim planı
+
+**R-01 — Görsel revizyon** (✅ 2026-10-22)
+- Kabul kriterleri: tüm token çiftleri AA; `text-primary` kullanımları `text-brand`'e taşındı (pastel üzerinde açık metin yok); görseller lisanslı, kaynak ve fotoğrafçı kayıtlı; 360–1536 px taşma yok (dekoratif lekeler `overflow-hidden` bölüm içinde).
+- Dosyalar: `src/app/globals.css`, `src/lib/color.test.ts`, `src/components/common/{framed-image,pastel-blobs}.tsx`, `src/components/sections/{home-hero,about-teaser}.tsx`, `src/content/demo-images.ts`, `src/app/{layout.tsx,manifest.ts,icon.svg}`, `scripts/{generate-icons.ts,images/build-demo-images.ts}`, `public/demo/*`, `public/icons/*`.
+- Elle: ana sayfa 360 / 1280, Hakkında 360 incelendi.
 
 **D-01b — SSS + panel İçerik modülü** (✅ 2026-10-17)
 - Kabul kriterleri: `/sss` kategorilere göre gruplu, klavyeyle açılır, `FAQPage` verisi görünen sorularla birebir; gizli soru sitede ve veride yok; panelde soru ekle / düzenle / sırala / gizle, Hakkında metni düzenle; kayıttan sonra site hemen güncellenir (`updateTag`); form göndermeden önce aynı Zod şemasıyla denetlenir, ilk hatalı alana odaklanır, hatada girilen metin korunur; anonim ve yetkisiz rol reddedilir; değişiklikler işlem geçmişinde.
@@ -113,4 +120,7 @@ Faz 5'te doldurulur.
 - **`getByLabel` alt dize eşleşmesi** → "Soru" etiketi "Sık sorulan **soru**lar" bölümüyle eşleşti (gezinme bitmeden). Kısa etiketlerde `{ exact: true }` ve tıklamadan sonra URL beklemesi. Belge: 14-test. Not.
 - **Etiketli onay kutusu ve 44 px testi** → Kutu 20 px, etiketi 44 px; WCAG 2.5.8 etiketi hedef sayar. `checks.ts` etiket içindeki onay kutusunu etiketin boyutuyla ölçer. Belge: `iskelet/tests/e2e/responsive.spec.ts`. **Sisteme taşı.**
 - **Görünmeyen `span` ile erişilebilir ad** → "Gizle" + `sr-only` ": soru" adı tutarsız hesaplandı; liste eylemlerinde görünen sözcükle başlayan `aria-label`. Belge: 08-erisilebilirlik. Not.
+- **Stok görsel: Pexels otomasyonu** → Unsplash başsız tarayıcıya 403 veriyor; Pexels yalnızca görünür (headed) tarayıcıda açılıyor, CDN adresi (`images.pexels.com/photos/<no>/pexels-photo-<no>.jpeg?w=2000`) curl ile iniyor. Fotoğrafçı adı sayfa başlığından değil `ImageObject` JSON-LD `creator.name`'den okunmalı. Belge: 17-icerik §5. **Sisteme taşı.**
+- **Pastel tema ve kontrast** → Pastel ana renk düğme zemini olarak iyi, metin rengi olarak AA'yı geçmiyor. Çözüm: ayrı vurgu metni token'ı (`--brand`) ve `text-primary` yerine `text-brand`. Önerilen: iskelet token'larında "zemin ana rengi" ile "metin vurgu rengi" baştan ayrı. Belge: 06-arayuz §3. **Sisteme taşı.**
+- **Kullanıcı "Pinterest'ten al" diyebilir** → Lisanssız ve başkasının işi; sanatçı sitesinde en büyük risk başkasının tasarımını onun işi gibi göstermek. Önerilen: 17-icerik §5'e açık yasak + müşteriye anlatılacak kısa gerekçe. **Sisteme taşı.**
 - **pnpm audit: yaması olmayan dolaylı açık** → `braces` (eslint-config-next zinciri, yalnızca geliştirme). Standart muafiyete izin veriyor ama biçim tanımlı değil; `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` + gerekçe + gözden geçirme tarihi örneği eklenmeli. Belge: 15-git-ve-ci §6. **Sisteme taşı.**

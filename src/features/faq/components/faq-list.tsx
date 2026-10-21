@@ -35,7 +35,7 @@ export function FaqList({ groups, showCategories = true }: FaqListProps) {
                   <span>{item.question}</span>
                   <ChevronDown
                     aria-hidden="true"
-                    className="size-5 shrink-0 text-primary transition-transform duration-(--duration-base) group-open:rotate-180"
+                    className="size-5 shrink-0 text-brand transition-transform duration-(--duration-base) group-open:rotate-180"
                   />
                 </summary>
                 <div className="max-w-prose pb-5 text-muted-foreground">
