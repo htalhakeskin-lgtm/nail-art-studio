@@ -29,6 +29,13 @@
       "when": 1792227626837,
       "tag": "0003_faqs",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792621994198,
+      "tag": "0004_gallery_items",
+      "breakpoints": true
     }
   ]
 }

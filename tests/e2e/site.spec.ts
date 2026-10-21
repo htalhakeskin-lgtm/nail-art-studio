@@ -71,7 +71,13 @@ test("images come from pre-encoded variants, never the optimisation endpoint", a
   for (const image of await images.all()) {
     const src = (await image.getAttribute("src")) ?? "";
     expect(src).toMatch(/^\/demo\/[a-z-]+-(480|960|1600)\.webp$/);
-    expect(await image.getAttribute("alt")).not.toBe("");
+    // Meaningful alt text, unless the image only decorates a link that names itself (style tiles).
+    if ((await image.getAttribute("alt")) === "") {
+      const linkText = await image.evaluate((node) => node.closest("a")?.textContent.trim() ?? "");
+      expect(linkText).not.toBe("");
+    } else {
+      expect(await image.getAttribute("alt")).toBeTruthy();
+    }
   }
   await expect(page.locator('img[src*="/_next/image"]')).toHaveCount(0);
   const loaded = await images.first().evaluate((node) => (node as HTMLImageElement).naturalWidth);

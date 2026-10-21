@@ -1,4 +1,4 @@
-import { ExternalLink, FileText, Inbox, LayoutDashboard, LogOut } from "lucide-react";
+import { ExternalLink, FileText, Images, Inbox, LayoutDashboard, LogOut } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -10,6 +10,7 @@ import { signOut } from "../actions";
  */
 const links = [
   { href: "/panel", label: "Özet", icon: LayoutDashboard },
+  { href: "/panel/galeri", label: "Galeri", icon: Images },
   { href: "/panel/icerik", label: "İçerik", icon: FileText },
   { href: "/panel/demo-kutusu", label: "Demo kutusu", icon: Inbox },
 ] as const;

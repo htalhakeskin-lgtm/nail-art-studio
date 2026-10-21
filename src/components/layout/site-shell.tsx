@@ -8,13 +8,13 @@ import { SkipLink } from "./skip-link";
 /**
  * Public site chrome (Z-12, Z-14), shared by the (site) layout and the root 404 page.
  * The bottom padding on phones reserves room for the fixed action bar so it never covers
- * the footer (tests/e2e/responsive.spec.ts).
+ * the footer (tests/e2e/responsive.spec.ts); the extra 1 px is the bar's top border.
  */
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <>
       <SkipLink />
-      <div className="flex flex-1 flex-col pb-[calc(var(--action-bar-h)+env(safe-area-inset-bottom))] md:pb-0">
+      <div className="flex flex-1 flex-col pb-[calc(var(--action-bar-h)+1px+env(safe-area-inset-bottom))] md:pb-0">
         <SiteHeader />
         <main id="icerik" className="flex-1">
           {children}
