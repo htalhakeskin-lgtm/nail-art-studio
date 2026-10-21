@@ -4,6 +4,7 @@ import {
   formatArea,
   formatDate,
   formatDateTime,
+  formatDuration,
   formatMoney,
   formatNumber,
   formatPercent,
@@ -89,5 +90,14 @@ describe("formatPhone", () => {
     ["+4930123456", "+4930123456"],
   ])("%s → %s", (input, expected) => {
     expect(formatPhone(input)).toBe(expected);
+  });
+});
+
+describe("formatDuration", () => {
+  it("writes minutes, hours or both", () => {
+    expect(formatDuration(45)).toBe("45 dk");
+    expect(formatDuration(60)).toBe("1 sa");
+    expect(formatDuration(90)).toBe("1 sa 30 dk");
+    expect(formatDuration(150)).toBe("2 sa 30 dk");
   });
 });

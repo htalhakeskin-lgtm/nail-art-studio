@@ -10,6 +10,7 @@ export const PERMISSIONS = [
   "settings.edit",
   "users.manage",
   "audit.view",
+  "gallery.edit",
   // Feature permissions, e.g. "appointments.view", "appointments.confirm"
 ] as const;
 
@@ -20,7 +21,14 @@ export type Role = (typeof ROLES)[number];
 
 const matrix: Record<Role, readonly Permission[]> = {
   owner: PERMISSIONS,
-  admin: ["leads.view", "leads.edit", "content.edit", "settings.edit", "audit.view"],
+  admin: [
+    "leads.view",
+    "leads.edit",
+    "content.edit",
+    "gallery.edit",
+    "settings.edit",
+    "audit.view",
+  ],
   staff: ["leads.view", "leads.edit"],
 };
 

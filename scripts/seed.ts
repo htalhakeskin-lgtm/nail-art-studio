@@ -11,10 +11,12 @@ loadEnvConfig(process.cwd());
 async function main() {
   const { env } = await import("@/lib/env");
   const { db } = await import("@/server/db/client");
-  const { accounts, contentBlocks, faqs, leads, siteSettings, users } =
+  const { accounts, contentBlocks, faqs, galleryItems, leads, siteSettings, users } =
     await import("@/server/db/schema");
   const { contentBlockDefaults } = await import("@/content/content-blocks");
   const { seedFaqs } = await import("@/content/faqs");
+  const { seedGalleryItems } = await import("@/content/gallery");
+  const { demoImages } = await import("@/content/demo-images");
   const { count } = await import("drizzle-orm");
   const { newId } = await import("@/server/db/columns");
   const { siteDefaults } = await import("@/config/site-defaults");
@@ -90,6 +92,35 @@ async function main() {
     );
   }
 
+  async function seedGallery() {
+    // Only into an empty table, row by row so work numbers follow the listed order (BR-GLR-004).
+    const [existing] = await db.select({ value: count() }).from(galleryItems);
+    if ((existing?.value ?? 0) > 0) return;
+    for (const [index, item] of seedGalleryItems.entries()) {
+      const image = demoImages[item.image];
+      await db.insert(galleryItems).values({
+        slug: item.slug,
+        title: item.title,
+        description: item.description,
+        style: item.style,
+        colors: item.colors,
+        length: item.length,
+        technique: item.technique,
+        durationMinutes: item.durationMinutes,
+        imagePath: image.src,
+        imageWidth: image.width,
+        imageHeight: image.height,
+        imageAlt: image.alt,
+        creditName: image.source.creator,
+        creditUrl: image.source.landingUrl,
+        isRepresentative: true,
+        isFeatured: item.featured ?? false,
+        isPublished: item.published ?? true,
+        sortOrder: (index + 1) * 10,
+      });
+    }
+  }
+
   async function seedLeads() {
     // Fictional people only; phones use the 000 block, e-mails example.com (17 §3).
     const names = [
@@ -130,6 +161,7 @@ async function main() {
   await seedSettings();
   await seedContentBlocks();
   await seedFaqRows();
+  await seedGallery();
   await seedDemoAdmin();
   await seedLeads();
   console.log("✓ Seed tamamlandı");

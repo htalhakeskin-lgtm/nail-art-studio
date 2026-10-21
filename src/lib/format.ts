@@ -46,6 +46,14 @@ export function formatPercent(value: number, maximumFractionDigits = 1): string 
   return value < 0 ? `-%${formatted}` : `%${formatted}`;
 }
 
+/** Service length: 45 → "45 dk", 90 → "1 sa 30 dk", 120 → "2 sa". */
+export function formatDuration(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  if (hours === 0) return `${String(rest)} dk`;
+  return rest === 0 ? `${String(hours)} sa` : `${String(hours)} sa ${String(rest)} dk`;
+}
+
 /** 120 → "120 m²" */
 export function formatArea(squareMeters: number): string {
   return `${formatNumber(squareMeters, 0)}${NBSP}m²`;

@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-08 (öne alındı, K-30)
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-02
 
 ## Şu an
 
-- **Etkin dilim:** R-01 görsel revizyon ✅ → D-08 galeri (öne alındı)
-- **Son yapılan:** Kullanıcı geri bildirimiyle pastel tema (K-28) ve canlı renkli Pexels görselleri; giriş kolajı tırnak ucu biçimli çerçevelerde
-- **Sıradaki adım:** D-08: `gallery_items`, stil / renk / uzunluk filtreli `/galeri`, eser sayfası, ana sayfa seçkisi; ardından D-02
+- **Etkin dilim:** D-08 galeri ✅ (PR açık) → sıradaki D-02
+- **Son yapılan:** R-01 pastel tema + canlı Pexels görselleri (K-28); D-08 galeri: 27 eser, stil / renk / uzunluk filtresi, eser sayfası, ana sayfa seçkisi ve stil kartları, panel galeri (yayımla / seçkiye ekle); 130 Vitest (20 entegrasyon) + 184 e2e
+- **Sıradaki adım:** `/web-proje devam` → D-02: iletişim sayfası + form → `leads` → panel talep kutusu, teşekkür ekranı, harita + yol tarifi, ulaşım, "şu an açık", `NailSalon` JSON-LD
 
 ## Gözetimsiz çalışma notları
 
@@ -43,8 +43,8 @@
 | D-05 | Ziyaretçi randevu akışı | **SSS seed'indeki "Randevumu nasıl alırım?" cevabını online randevuya göre güncelle.** `/randevu` adımlı akış (360 px önce), sunucu eylemi (doğrulama + hız sınırı + kısıt → kural kodu), onay ekranı, işletmeye ve müşteriye bildirim (demo kutusu), "WhatsApp'tan ilet", tercih edilen kanal; mobil eylem çubuğuna "Randevu al" (REQ-001b, REQ-005b, REQ-018; BR-RND-003, 006, 010, 011, 014) | M | P0 | ⏳ | — | — |
 | D-06 | Randevu yönetim bağlantısı | `/randevu/yonet/[token]`: erteleme / iptal, `.ics`, Google Takvim, yenileme hatırlatıcısı + "aynı hizmetten tekrar" (REQ-002b, REQ-012; BR-RND-007, 009, 012, 013) | M | P0 (+P1 REQ-012) | ⏳ | — | — |
 | D-07 | Panel randevu | "Bugün" ekranı (3 KPI), ajanda, detay, durum geçişleri, elle randevu, WhatsApp şablonları + ayarlarda şablon düzenleme (REQ-003b, REQ-005c; BR-RND-008) | M | P0 | ⏳ | — | — |
-| D-08 | Galeri (ziyaretçi) | `gallery_items` + seed (22), `/galeri` filtreleri, eser etiketi kartı, ışık kutusu, `/galeri/[slug]`, öncesi / sonrası kaydırıcısı, "Bu tasarımı istiyorum" (REQ-006, 007, 011; BR-GLR-004) | M | P0 (+P1 REQ-011) | ⏳ | — | — |
-| D-09 | Galeri yönetimi + güvenli yükleme | `media_assets`, Vercel Blob, `sharp` varyantları, öncesi / sonrası eşleştirme, izin işareti, sıralama, fotoğraf yayın izni şablonu (REQ-008; BR-GLR-001…003) | M | P0 | ⏳ | — | — |
+| D-08 | Galeri (ziyaretçi) — öne alındı (K-30) | `gallery_items` + seed (27, 1 taslak), `/galeri` stil / renk / uzunluk filtresi (K-29), eser etiketi kartı, `/galeri/[slug]` (önceki / sonraki, benzer işler), "Bu tasarımı istiyorum" (WhatsApp + eser no), ana sayfa seçkisi + stil kartları, panel `/panel/galeri` yayımla / seçkiye ekle; menüye "Galeri"; sitemap (REQ-006, 011; BR-GLR-003, 004). Öncesi / sonrası D-09'a (K-30) | M | P0 (+P1 REQ-011) | ✅ | ✅ 360 / 1280 | 130 Vitest (20 entegrasyon) + 184 e2e |
+| D-09 | Galeri yönetimi + güvenli yükleme + öncesi / sonrası | `media_assets`, Vercel Blob, `sharp` varyantları, öncesi / sonrası eşleştirme, izin işareti, sıralama, fotoğraf yayın izni şablonu (REQ-008; BR-GLR-001…003) | M | P0 | ⏳ | — | — |
 | D-10 | Ana sayfa tamamlama | En yakın boş saatler, seçki, öncesi / sonrası bölümü, süreç adımları (REQ-015), hijyen kartı (REQ-013), örnek yorumlar + panel yorumlar (REQ-014), "Şu an açık" (REQ-016), ulaşım (REQ-017) | M | P1 | ⏳ | — | — |
 | D-11 | SEO katmanı denetimi + ölçüm | `Service`, `ImageObject`, `Person` şemaları (REQ-020), sitemap / robots / meta denetimi, Vercel Web Analytics + dönüşüm olayları (REQ-021), onay kayıtları ekranı (REQ-019), onaysız üçüncü taraf istek yok e2e | S | P0 (denetim) + P1 | ⏳ | — | — |
 | D-12 | Cila + kalite paketi | Hareket, boş / hata durumları, mikro metinler, bölüm hata sınırları, kaydedilmemiş değişiklik uyarısı, Lighthouse CI, paket boyutu (REQ-022) | M | P1 | ⏳ | — | — |
@@ -52,6 +52,13 @@
 **P1 onaylanmazsa:** D-10 yalnızca P0 parçalarıyla (seçki + öncesi / sonrası bölümü) D-08'e katılır; REQ-011…022 P2'ye iner.
 
 ## Etkin dilim planı
+
+**D-08 — Galeri** (✅ 2026-10-22)
+- Kabul kriterleri: filtreler URL'de ve paylaşılabilir; aynı seçime tekrar dokunmak filtreyi kaldırır; boş sonuçta açıklama + temizle; telefonda stil çipleri yana kayar, renk / uzunluk alttan açılan panelde, masaüstünde satır içi; eser sayfasında etiket, renk örnekleri, süre, WhatsApp mesajında eser no + ad + bağlantı (ek yok); taslak ve bilinmeyen eser "bulunamadı" sayfası + `noindex`; temsilî görselde fotoğrafçı bağlantısı; panelde yetkisiz rol reddedilir, müşteri izni olmayan gerçek iş yayımlanamaz (BR-GLR-003, eylem + `check`), eser no yeniden kullanılmaz (BR-GLR-004, identity).
+- Tablolar / migration: `gallery_items` (`0004_gallery_items.sql`: stil / renk / uzunluk / teknik / slug / izin `check`'leri, slug ve no benzersiz, `(is_published, sort_order)` indeksi).
+- Dosyalar: `src/config/gallery.ts`, `src/features/gallery/*`, `src/content/gallery.ts`, `src/components/sections/home-gallery.tsx`, `src/app/(site)/galeri/**`, `src/app/panel/(app)/galeri/page.tsx`, `src/lib/format.ts` (`formatDuration`), `scripts/seed.ts`, `public/demo/galeri-*`.
+- Testler: `filters.test.ts`, `neighbours.test.ts` (PRJ-02 mesajı), `format.test.ts`, `tests/integration/gallery-actions.test.ts` (yetki, notFound, yayımla / gizle, BR-GLR-003 eylem + veritabanı, BR-GLR-004, sabit kümeler, yalnızca yayındakiler), `tests/e2e/gallery.spec.ts` (filtre, birleşik filtre + boş durum, paylaşılan bağlantı, eser sayfası + WhatsApp, önceki / sonraki, taslak, ana sayfa stil kartı, panel gizle / yayımla); yeni rotalar taşma + 44 px + axe'ye eklendi.
+- Elle: galeri 360 / 1280, filtreli galeri 360, eser sayfası 360, ana sayfa 360 incelendi. Üretim derlemesine karşı tüm e2e geçti.
 
 **R-01 — Görsel revizyon** (✅ 2026-10-22)
 - Kabul kriterleri: tüm token çiftleri AA; `text-primary` kullanımları `text-brand`'e taşındı (pastel üzerinde açık metin yok); görseller lisanslı, kaynak ve fotoğrafçı kayıtlı; 360–1536 px taşma yok (dekoratif lekeler `overflow-hidden` bölüm içinde).
@@ -123,4 +130,8 @@ Faz 5'te doldurulur.
 - **Stok görsel: Pexels otomasyonu** → Unsplash başsız tarayıcıya 403 veriyor; Pexels yalnızca görünür (headed) tarayıcıda açılıyor, CDN adresi (`images.pexels.com/photos/<no>/pexels-photo-<no>.jpeg?w=2000`) curl ile iniyor. Fotoğrafçı adı sayfa başlığından değil `ImageObject` JSON-LD `creator.name`'den okunmalı. Belge: 17-icerik §5. **Sisteme taşı.**
 - **Pastel tema ve kontrast** → Pastel ana renk düğme zemini olarak iyi, metin rengi olarak AA'yı geçmiyor. Çözüm: ayrı vurgu metni token'ı (`--brand`) ve `text-primary` yerine `text-brand`. Önerilen: iskelet token'larında "zemin ana rengi" ile "metin vurgu rengi" baştan ayrı. Belge: 06-arayuz §3. **Sisteme taşı.**
 - **Kullanıcı "Pinterest'ten al" diyebilir** → Lisanssız ve başkasının işi; sanatçı sitesinde en büyük risk başkasının tasarımını onun işi gibi göstermek. Önerilen: 17-icerik §5'e açık yasak + müşteriye anlatılacak kısa gerekçe. **Sisteme taşı.**
+- **Cache Components: dinamik segmentte `notFound()`** → Sayfa akışa başladıktan sonra `notFound()` 404 değil 200 + `noindex` döner (Next.js belgesi). `params` Suspense dışında okunursa geliştirmede "instant shell" uyarısı; tüm sayfa parametreye bağlıysa `export const instant = false`. E2E'de durum kodu yerine "bulunamadı" başlığı ve `noindex` denetlenir. Belge: 14-test, 09-seo. **Sisteme taşı.**
+- **İstemci filtresi için History API** → `router.replace` statik sayfada her filtrede sunucuya RSC isteği atıyor, geliştirmede yük altında testleri geciktiriyordu; `window.history.replaceState` `useSearchParams` ile senkron ve gidiş-dönüş yok. Belge: 06-arayuz (filtreler). **Sisteme taşı.**
+- **Mobil eylem çubuğu kenarlığı** → Çubuğun 1 px üst kenarlığı ayrılan boşluğa katılmamıştı; sayfa yüksekliği değişince alt bilginin 1 px'i altta kalıyordu. Ayrılan boşluk `--action-bar-h + 1px`. Belge: iskelet `site-shell`. Not.
+- **Turbopack geliştirme CSS önbelleği** → `@theme`'e yeni renk eklenince sınıflar üretilmedi; `.next/dev` silinip sunucu yeniden başlatılınca düzeldi. Not.
 - **pnpm audit: yaması olmayan dolaylı açık** → `braces` (eslint-config-next zinciri, yalnızca geliştirme). Standart muafiyete izin veriyor ama biçim tanımlı değil; `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` + gerekçe + gözden geçirme tarihi örneği eklenmeli. Belge: 15-git-ve-ci §6. **Sisteme taşı.**

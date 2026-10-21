@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4. D-01a, D-01b ve görsel revizyon (K-28) bitti. Vercel Git entegrasyonu açık: PR'lar önizleme, `main` üretim (demo) yayını alıyor. Sıradaki dilim D-08 galeri (öne alındı, K-30), ardından D-02.
+> **Güncel durum:** Faz 4. D-01a, D-01b, görsel revizyon (K-28) ve D-08 galeri (öne alındı, K-30) bitti. Vercel Git entegrasyonu açık: PR'lar önizleme, `main` üretim (demo) yayını alıyor. Sıradaki dilim D-02 (İletişim + talep kutusu + yerel SEO).
 
 ---
 
@@ -99,8 +99,8 @@ Ayrıntı: [arastirma.md](arastirma.md)
 | A-16 | Panel randevu: "Bugün" ekranı (3 KPI), ajanda, durum geçişleri, elle randevu, izin / tatil blokları | S | 1 | 1 | 1 | 0 | 1 | 4 | M + S (4) | P0 | D-04, D-07 | REQ-003 |
 | X-GZL-01, V-13 | Hizmet menüsü + hizmet detay (kime uygun, süre, dayanım, bakım, SSS) + panel CRUD; fiyat gösterim anahtarı | X / Ö | 1 | 1 | 1 | 0 | 1 | 4 | M + S (4) | P0 | D-03 | REQ-004 |
 | E-01, V-28, PRJ-01 | WhatsApp entegrasyonu (API'siz): bağlamlı mesaj (hizmet, tasarım, randevu), onay ekranında "WhatsApp'tan ilet", panelde şablonlu müşteri mesajları | Ö / yeni | 1 | 1 | 0 | 0 | 1 | 3 | M (3) | P0 | D-02, D-05, D-07 | REQ-005 |
-| V-11 | Galeri: teknik / renk filtresi (URL'ye bağlı), "eser etiketi" kartı, ışık kutusu, öğe sayfası | Ö | 1 | 1 | 1 | 0 | 1 | 4 | M (3) | P0 | D-08 | REQ-006 |
-| V-07 | Öncesi / sonrası kaydırıcısı (dokunma + klavye) | S | 1 | 1 | 0 | 0 | 1 | 3 | S (1) | P0 | D-08 | REQ-007 |
+| V-11 | Galeri: stil / renk / uzunluk filtresi (URL'ye bağlı, K-29), "eser etiketi" kartı, eser sayfası (önceki / sonraki, benzer işler) | Ö | 1 | 1 | 1 | 0 | 1 | 4 | M (3) | P0 | D-08 | REQ-006 |
+| V-07 | Öncesi / sonrası kaydırıcısı (dokunma + klavye) | S | 1 | 1 | 0 | 0 | 1 | 3 | S (1) | P0 | D-09 (K-30) | REQ-007 |
 | A-13, U-13, E-17, U-21 | Galeri yönetimi: güvenli yükleme, varyant üretimi (AVIF / WebP), öncesi / sonrası eşleştirme, müşteri izni işareti, sıralama, Instagram gönderi bağlantısı | Ö / Paket | 1 | 1 | 0 | 1 | 1 | 4 | M (3) | P0 | D-09 | REQ-008 |
 | U-02 | Randevu ve iptal koşulları sayfası | Ö | 1 | 0 | 0 | 1 | 1 | 3 | S (1) | P0 | D-01 | REQ-009 |
 | G-10 | Yerel SEO paketi: `NailSalon` JSON-LD, NAP, yol tarifi bağlantıları | Paket | — | — | — | 1 | — | — | S (1) | P0 | D-02 | REQ-010 |
@@ -134,7 +134,7 @@ Ayrıntı: [arastirma.md](arastirma.md)
 | REQ-003 | Yönetici günü ve randevuları telefondan yönetir | "Bugün" ekranında günün randevuları, bekleyen onay sayısı, haftalık doluluk; randevu onay / iptal / geldi / gelmedi; elle randevu (DM / telefon) aynı kurallarla; izin / tatil bloğu eklenince o aralık sitede kapanır | BR-RND-001…003, 008, 011 | SCR-102…104 |
 | REQ-004 | Ziyaretçi hizmetleri ve ayrıntılarını görür; yönetici düzenler | Kategoriye göre liste; detayda süre, dayanım, kime uygun, bakım, SSS ve "Bu hizmet için randevu al" + "Fiyat için WhatsApp"; P-08 = `contact` iken hiçbir yerde tutar yok | BR-HZM-001, 002, BR-RND-014 | SCR-002, SCR-003, SCR-105 |
 | REQ-005 | WhatsApp her bağlamda önceden doldurulmuş mesajla açılır | Hizmet, galeri öğesi ve randevu onayında mesaj bağlamı içerir (hizmet adı, eser no, randevu kodu ve saati); panelde onay / hatırlatma / erteleme şablonları müşteri numarasıyla açılır; şablonlar site ayarlarından değişir | BR-HZM-001 | SCR-003, 005, 007, 103, 110 |
-| REQ-006 | Ziyaretçi işleri galeri gibi gezer | Teknik ve renk filtresi URL'de (`/galeri?teknik=krom`); kartta eser etiketi (no, ad, teknik, süre); ışık kutusu klavye (← → Esc) ve kaydırma ile; her öğenin paylaşılabilir sayfası | BR-GLR-004 | SCR-004, SCR-005 |
+| REQ-006 | Ziyaretçi işleri galeri gibi gezer | Stil, renk ve uzunluk filtresi URL'de (`/galeri?stil=french&renk=beyaz`, K-29); kartta eser etiketi (no, ad, stil, teknik, uzunluk); her eserin paylaşılabilir sayfası, önceki / sonraki ve benzer işler; ana sayfada seçki ve stile göre giriş kartları | BR-GLR-004 | SCR-004, SCR-005 |
 | REQ-007 | Öncesi / sonrası karşılaştırılır | Tutamaç dokunma, fare ve ok tuşlarıyla hareket eder; `role="slider"` + değer metni; görseller aynı oranda | BR-GLR-001 | SCR-001, SCR-005 |
 | REQ-008 | Yönetici galeriye güvenle iş ekler | JPEG / PNG / WebP ≤ 10 MB; sahte uzantı reddedilir; EXIF silinir; 3 genişlikte AVIF + WebP; öncesi / sonrası eşleştirme; "müşteri izni alındı" işaretlenmeden yayımlanmaz | BR-GLR-001…004 | SCR-106 |
 | REQ-009 | Randevu ve iptal koşulları açık | `/randevu-kosullari` sayfası; randevu formunda bağlantı; P-05 süresi metinde parametreden gelir | BR-RND-007 | SCR-013 |
@@ -153,7 +153,7 @@ Ayrıntı: [arastirma.md](arastirma.md)
 | SCR-001 | Ana sayfa | `/` | Vitrin | Herkes | Evet ¹ | P0 |
 | SCR-002 | Hizmetler | `/hizmetler` | Liste | Herkes | Evet | P0 |
 | SCR-003 | Hizmet detayı | `/hizmetler/[slug]` | Detay | Herkes | Evet | P0 |
-| SCR-004 | Galeri | `/galeri` (`?teknik=`, `?renk=`) | Izgara | Herkes | Evet (filtresiz) | P0 |
+| SCR-004 | Galeri | `/galeri` (`?stil=`, `?renk=`, `?uzunluk=`) | Izgara | Herkes | Evet (filtresiz) | P0 |
 | SCR-005 | Galeri öğesi | `/galeri/[slug]` | Detay | Herkes | Evet | P0 |
 | SCR-006 | Randevu al | `/randevu` (`?hizmet=`, `?tasarim=`) | Adımlı form | Herkes | Evet | P0 |
 | SCR-007 | Randevu onayı | `/randevu/onay/[kod]` | Onay | Bağlantıyla | Hayır | P0 |
@@ -190,7 +190,7 @@ Ayrıntı: [arastirma.md](arastirma.md)
 |---|---|---|---|
 | 1 | Giriş | "Tırnaklarınız için küçük sanat eserleri" + Bahadır Karasu · Kadıköy; birincil "Randevu al", ikincil "Galeriyi gez"; masaüstünde 3 eserlik asimetrik kolaj, mobilde tek eser | Kolaj parçaları sırayla belirir (opacity + translate) |
 | 2 | En yakın boş saatler | Müsaitlik motorundan ilk 3 boş saat; her biri randevuyu saat seçili açar | — |
-| 3 | Seçki | 6 öne çıkan eser, eser etiketleriyle → galeri | Üzerine gelince etiket kayar |
+| 3 | Seçki | 6 öne çıkan eser, eser etiketleriyle → galeri; altında stile göre giriş kartları (pastel zemin, her stilden bir görsel) → filtreli galeri (K-29) | Üzerine gelince kart hafifçe yükselir |
 | 4 | Öncesi / sonrası | Tek büyük kaydırıcı + "Bu tasarımı istiyorum" | Tutamaç ilk görünüşte bir kez hafifçe kayar (azaltılmış harekette yok) |
 | 5 | Hizmetler | 5 kategori kartı (Kalıcı oje, Jel, Protez, Nail art, Manikür / Pedikür); süre aralığı + "Fiyat için WhatsApp" | — |
 | 6 | Nasıl ilerliyoruz | 4 adım | — |
@@ -267,7 +267,7 @@ Ayrıntı: [arastirma.md](arastirma.md)
 | `time_off` | İzin, resmî tatil, blok | `staff_id`, `starts_at`, `ends_at` (`timestamptz`), `kind` (`leave` / `holiday` / `block`), `note`; `check (starts_at < ends_at)` |
 | `services` | Hizmet menüsü | `slug` (benzersiz), `name`, `category`, `summary`, `body`, `duration_minutes`, `refill_interval_days` (boş olabilir), `durability_text`, `aftercare`, `price_display_override`, `price_minor` (boş olabilir), `is_bookable`, `is_active`, `sort_order`, `cover_media_id` |
 | `appointments` | Randevu | `code` (benzersiz), `staff_id`, `service_id`, `starts_at`, `ends_at`, `blocked_until` (= bitiş + tampon), `status` (`pending` / `confirmed` / `completed` / `no_show` / `cancelled`), `customer_name`, `customer_phone` (E.164), `customer_email`, `note`, `preferred_channel`, `reference_gallery_item_id`, `source` (`online` / `admin`), `utm` (jsonb), `manage_token_hash`, `manage_token_expires_at`, `confirmed_at`, `cancelled_at`, `cancelled_by`, `cancel_reason`; **dışlama kısıtı** `ex_appointments_staff_overlap` (`staff_id`, `tstzrange(starts_at, blocked_until, '[)')`, durum `pending`, `confirmed`, `completed`) |
-| `gallery_items` | Galeri eseri | `slug`, `number` (eser no, sıralı), `title`, `technique`, `colors` (text[]), `styles` (text[]), `service_id`, `media_id` (sonra), `before_media_id`, `instagram_url`, `is_representative` (temsilî / stok), `consent_obtained_at`, `is_featured`, `is_published`, `sort_order` |
+| `gallery_items` | Galeri eseri | `slug`, `number` (eser no, identity: yeniden kullanılmaz), `title`, `description`, `style` (tek), `colors` (text[], en az bir), `length`, `technique`, `duration_minutes`, `image_path` / `image_width` / `image_height` / `image_alt` (D-09'da `media_id`), `credit_name` / `credit_url` (stok fotoğraf), `service_id` (D-03), `before_media_id` (D-09), `instagram_url`, `is_representative` (temsilî / stok), `consent_obtained_at`, `is_featured`, `is_published`, `sort_order`. Sabit kümeler ve BR-GLR-003 `check` kısıtıyla |
 | `media_assets` | Yüklenen görseller | `storage_key`, `variants` (jsonb: genişlik × biçim → adres), `width`, `height`, `bytes`, `mime`, `alt`, `source_note` (lisans / izin) |
 | `testimonials` | Örnek yorumlar | `display_name` ("Ayşe K."), `body`, `service_id`, `is_sample`, `is_visible`, `sort_order` |
 | `faqs` | SSS | `question`, `answer`, `category`, `sort_order`, `is_visible` |
