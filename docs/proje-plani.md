@@ -2,8 +2,8 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.4 |
-| Tarih | 2026-10-17 |
+| Belge sürümü | v0.5 |
+| Tarih | 2026-10-22 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
 | Hesap modeli | B: misafir işlem ([§8](#8-hesap-ve-yetki-modeli)) |
@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4. D-01a ve D-01b bitti (tasarım sistemi, Hakkında, SSS, panel İçerik modülü, entegrasyon testi altyapısı). Vercel Git entegrasyonu açık: PR'lar önizleme, `main` üretim (demo) yayını alıyor. Sıradaki dilim D-02 (İletişim + talep kutusu + yerel SEO).
+> **Güncel durum:** Faz 4. D-01a, D-01b ve görsel revizyon (K-28) bitti. Vercel Git entegrasyonu açık: PR'lar önizleme, `main` üretim (demo) yayını alıyor. Sıradaki dilim D-08 galeri (öne alındı, K-30), ardından D-02.
 
 ---
 
@@ -359,12 +359,12 @@ ADR'ler: S2'de sapma olmadığı için yok.
 
 | Konu | Karar |
 |---|---|
-| Ton | **"Stüdyo galeri":** şık ve minimalist zemin, pastel yüzeyler; renkli olan işlerin kendisi. Sanat teması süslemeyle değil sergileme diliyle kurulur (eser no, etiket, çerçeve, bol boşluk). |
+| Ton | **"Pastel stüdyo" (K-28):** tatlı, şeker tonlu pastel zemin (allık pembesi, lila, nane, şeftali, limon); canlı ve renkli olan işlerin kendisi. Sanat teması sergileme diliyle kurulur (eser no, etiket, çerçeve), yumuşak renk lekeleri ve küçük yıldız süsleriyle tatlandırılır. |
 | İmza öğesi | **Eser etiketi → randevu.** Her galeri kartı bir müze etiketi gibi okunur ("No. 014 · Krom Lila · Jel üzeri el boyama · ~120 dk"); öğe sayfasında öncesi / sonrası kaydırıcısı ve "Bu tasarımı istiyorum" ile randevu referans tasarımla açılır. |
 | Metin tonu | "Siz" hitabı; sıcak, kısa, net. Sanat sözcükleri ölçülü ("seçki", "eser"); "en iyi", "garantili", "kusursuz" yok. Süre ve dayanım somut ("Ortalama 3 hafta"). |
-| Renkler (token) | `--background` tuval kremi `oklch(0.985 0.008 75)` · `--foreground` mürekkep `oklch(0.24 0.02 330)` · `--primary` oje bordosu `oklch(0.45 0.13 5)` (tek hâkim renk) · `--accent` pudra `oklch(0.9 0.04 15)` · kategori yüzeyleri (pastel, yalnızca zemin): lila `oklch(0.9 0.04 300)`, nane `oklch(0.92 0.04 165)`, şeftali `oklch(0.92 0.045 60)`, gök `oklch(0.92 0.035 240)`. Pastel üzerinde metin her zaman `--foreground`. Kontrast birim testi D-01'de. |
-| Tipografi | Başlık: **Fraunces** (değişken, italik vurgularla sanatsal); gövde: **Manrope**. İkisi de `latin-ext`; `İ`, `ş`, `ğ` görsel denetimi D-01'de. 4 ağırlık. |
-| Görsel dil | Yakın çekim el / tırnak, yumuşak gün ışığı, krem / pastel fon; galeri görselleri ince çerçeveli ve keskin köşeli (tablo çerçevesi), arayüz öğeleri `--radius` 12 px. İkon: Lucide, ince çizgi. Tek el çizimi fırça darbesi SVG'si bölüm ayracı olarak. |
+| Renkler (token) | `--background` allık `oklch(0.985 0.012 350)` · `--foreground` mürdüm `oklch(0.3 0.06 335)` · `--primary` şeker pembesi `oklch(0.82 0.1 352)` (düğme ve vurgu zemini; üzerinde mürdüm metin) · `--brand` koyu gül `oklch(0.52 0.17 355)` (bağlantı, vurgu metni, odak çerçevesi) · `--accent` lavanta pembesi `oklch(0.92 0.045 320)` · pastel yüzeyler (yalnızca zemin): lila `oklch(0.9 0.06 305)`, nane `oklch(0.92 0.06 170)`, şeftali `oklch(0.92 0.06 55)`, gök `oklch(0.92 0.05 235)`, limon `oklch(0.95 0.08 100)`. Pastel üzerinde metin her zaman `--foreground`. 27 çift AA birim testinde. |
+| Tipografi | Başlık: **Fraunces** (değişken, `SOFT` 100 ile yuvarlak uçlu, italik vurgularla); gövde: **Manrope**. İkisi de `latin-ext`; `İ`, `ş`, `ğ` görsel denetimi D-01'de. 4 ağırlık. |
+| Görsel dil | Canlı renkli yakın çekim tırnak; galeri görselleri beyaz kenarlı "polaroid" çerçevede, girişte tırnak ucu biçimli kemer (`rounded-t-full`), yumuşak pembe gölge (`--glow`); arayüz `--radius` 16 px, düğmeler hap biçimli. Bölüm zeminlerinde bulanık pastel renk lekeleri (dekoratif, `aria-hidden`). İkon: Lucide, ince çizgi; marka işareti dört köşeli yıldız. |
 | Hareket | Motion: bölüm girişleri (opacity + translate), etiket kayması, kaydırıcı tutamacı. Yalnızca `transform` / `opacity`. `prefers-reduced-motion`'da tümü kapalı. |
 | Koyu / açık | Yalnızca açık (karanlık mod P2) |
 | Tema presetleri | Gerekmiyor (tek marka); token yapısı white-label'a hazır |
@@ -607,6 +607,9 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-25 | 2026-10-17 | Entegrasyon testleri gerçek PostgreSQL'de (`app_test`): Vitest `unit` / `integration` projeleri, `.env.test` (gizli değer yok, depoda), migration'lar test açılışında yalnızca `*_test` veritabanına uygulanır; oturum, IP ve önbellek etiketi sahte | 14-test §2–3 (S2: her eylem için yetki testi); yanlış veritabanını silme riskine karşı ad denetimi |
 | K-26 | 2026-10-17 | Dependabot: `@types/node` ve PostgreSQL Docker imajında major güncellemeler yok sayılır | Tipler çalışma zamanı Node 24 ile, yerel PostgreSQL Neon (17) ile aynı major'da kalır |
 | K-27 | 2026-10-17 | Vercel Git entegrasyonu açıldı (kullanıcı GitHub bağlantısını ekledi); `main` her birleşmede üretim (demo) yayını alır | Hobby planında GitHub "noreply" yazarlı commit'lerin CLI yayını engelleniyordu; entegrasyonla PR önizlemeleri de otomatik |
+| K-28 | 2026-10-22 | Görsel revizyon: tema "Stüdyo galeri"den (krem + bordo) "Pastel stüdyo"ya (allık + şeker pembesi + koyu gül vurgu); rawpixel görselleri yerine canlı renkli Pexels Lisanslı 29 fotoğraf. Pinterest kullanılmadı | Kullanıcı görselleri soluk, renkleri ağır buldu, "pinterestten olabilir" dedi. Pinterest görsellerinin lisansı yok ve başkalarının işi; Bahadır Karasu'nun işi gibi görünürdü (RSK-01). Pexels Lisansı ticari kullanıma izin verir. Pastel düğme üzerinde açık metin AA'yı geçmediği için vurgu metni ayrı token (`--brand`) |
+| K-29 | 2026-10-22 | Galeri sınıflandırması: her eserin tek **stili** (Sade · French · Simli & taşlı · Ombre · Desenli · Çiçek & kalp · Rengârenk), bir ya da daha çok **rengi** ve **uzunluğu** (kısa · orta · uzun) var; filtreler `?stil=`, `?renk=`, `?uzunluk=` (REQ-006'daki `?teknik=` yerine; teknik etikette görünür). Işık kutusu yerine her eserin kendi sayfası + önceki / sonraki | Kullanıcı "sade ya da tırnak modellerine göre" filtre istedi; ziyaretçi teknikle değil görünüşle arıyor. Eser sayfası paylaşılabilir, SEO'lu ve ışık kutusunun klavye / odak yükünü taşımıyor |
+| K-30 | 2026-10-22 | D-08 (galeri) D-02'den önce yapılır. Öncesi / sonrası kaydırıcısı (V-07) D-09'a taşındı; "Bu tasarımı istiyorum" D-05'e kadar eser numarasıyla WhatsApp'a, D-05'ten sonra randevu akışına gider | Kullanıcının en görünür isteği galeri; stok fotoğraflarda gerçek öncesi / sonrası çifti yok, kaydırıcı yükleme ve eşleştirmeyle (D-09) birlikte anlamlı |
 
 **Değişiklik kaydı:**
 
@@ -616,3 +619,4 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | 2026-10-16 | v0.2 | Onay; kurulum kararları K-16…K-19; P-13…P-15 parametreleri; §10'a Markdown ve panel render satırları |
 | 2026-10-17 | v0.3 | D-01a: K-20…K-23; §10'a arayüz bileşenleri ve görsel teslimi satırları |
 | 2026-10-17 | v0.4 | D-01b: K-24…K-27; yayın satırı (Git entegrasyonu) |
+| 2026-10-22 | v0.5 | Görsel revizyon (K-28): §11 ton, renkler, tipografi, görsel dil; galeri sınıflandırması ve dilim sırası (K-29, K-30) |

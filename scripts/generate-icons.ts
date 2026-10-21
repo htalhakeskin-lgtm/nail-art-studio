@@ -9,7 +9,7 @@ import path from "node:path";
 import sharp from "sharp";
 
 const root = process.cwd();
-const BACKGROUND = "#8d2e4b";
+const BACKGROUND = "#f7a9cb";
 
 async function main() {
   const svg = await readFile(path.join(root, "src/app/icon.svg"));

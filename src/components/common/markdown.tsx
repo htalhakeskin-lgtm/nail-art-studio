@@ -28,7 +28,7 @@ const components: Components = {
     href.startsWith("/") ? (
       <Link
         href={href as Route}
-        className="text-primary underline decoration-1 underline-offset-4 hover:decoration-2"
+        className="text-brand underline decoration-1 underline-offset-4 hover:decoration-2"
       >
         {children}
       </Link>
@@ -36,7 +36,7 @@ const components: Components = {
       <a
         href={href}
         rel="noopener noreferrer"
-        className="text-primary underline decoration-1 underline-offset-4 hover:decoration-2"
+        className="text-brand underline decoration-1 underline-offset-4 hover:decoration-2"
       >
         {children}
       </a>

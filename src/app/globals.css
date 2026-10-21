@@ -4,32 +4,35 @@
 @import "shadcn/tailwind.css";
 
 /*
- * Design tokens (06-arayuz §3, plan §11 "Stüdyo galeri"). Cream canvas, ink text, one
- * dominant colour (nail-polish burgundy) and pastel surfaces that only ever sit behind
- * foreground text. Every text / UI pair is checked by src/lib/color.test.ts (AA).
+ * Design tokens (06-arayuz §3, plan §11 "Pastel stüdyo", K-28). Blush canvas, plum text and a
+ * candy palette: --primary is a bubblegum surface (buttons, highlights) with plum text on it;
+ * --brand is the deep rose used for links, accent text and the focus ring. Pastel surfaces only
+ * ever sit behind --foreground. Every text / UI pair is checked by src/lib/color.test.ts (AA).
  * shadcn/ui names (card, popover, secondary, muted, destructive) alias these tokens so the
  * generated components follow the brand without editing them.
  */
 :root {
-  --background: oklch(0.985 0.008 75); /* #fdf9f4 canvas cream */
-  --foreground: oklch(0.24 0.02 330); /* #251c24 ink */
-  --surface: oklch(0.995 0.004 75);
-  --surface-muted: oklch(0.955 0.012 60); /* #f6eee8 */
-  --muted-foreground: oklch(0.47 0.02 330); /* #625760 */
-  --border: oklch(0.88 0.015 40); /* decorative dividers only */
-  --input: oklch(0.6 0.02 330); /* form field borders: ≥ 3:1 (WCAG 1.4.11) */
-  --ring: oklch(0.45 0.13 5);
+  --background: oklch(0.985 0.012 350); /* #fff7fb blush */
+  --foreground: oklch(0.3 0.06 335); /* #40213a plum */
+  --surface: oklch(0.995 0.006 350);
+  --surface-muted: oklch(0.96 0.025 345); /* #ffebf6 */
+  --muted-foreground: oklch(0.48 0.06 335); /* #73516b */
+  --border: oklch(0.91 0.03 345); /* decorative dividers only */
+  --input: oklch(0.6 0.06 340); /* form field borders: ≥ 3:1 (WCAG 1.4.11) */
+  --ring: oklch(0.52 0.17 355);
 
-  --primary: oklch(0.45 0.13 5); /* #8d2e4b nail-polish burgundy */
-  --primary-foreground: oklch(0.985 0.008 75);
-  --accent: oklch(0.9 0.04 15); /* #f8d4d5 powder pink */
-  --accent-foreground: oklch(0.24 0.02 330);
+  --primary: oklch(0.82 0.1 352); /* #f7a9cb bubblegum */
+  --primary-foreground: oklch(0.3 0.06 335);
+  --brand: oklch(0.52 0.17 355); /* #ae316e deep rose: links and accent text */
+  --accent: oklch(0.92 0.045 320); /* #f2dbf8 lavender pink */
+  --accent-foreground: oklch(0.3 0.06 335);
 
-  /* Pastel category surfaces (backgrounds only; text on them is --foreground). */
-  --lila: oklch(0.9 0.04 300);
-  --nane: oklch(0.92 0.04 165);
-  --seftali: oklch(0.92 0.045 60);
-  --gok: oklch(0.92 0.035 240);
+  /* Pastel surfaces (backgrounds only; text on them is --foreground). */
+  --lila: oklch(0.9 0.06 305);
+  --nane: oklch(0.92 0.06 170);
+  --seftali: oklch(0.92 0.06 55);
+  --gok: oklch(0.92 0.05 235);
+  --limon: oklch(0.95 0.08 100);
 
   --success: oklch(0.45 0.1 155);
   --success-muted: oklch(0.94 0.04 155);
@@ -50,7 +53,10 @@
   --muted: var(--surface-muted);
   --destructive: var(--danger);
 
-  --radius: 0.75rem;
+  /* Soft candy shadow under framed works and cards. */
+  --glow: 0 18px 40px -18px oklch(0.6 0.12 350 / 0.45);
+
+  --radius: 1rem;
   --section-y: 4rem;
   --action-bar-h: 4.25rem;
 
@@ -78,12 +84,14 @@
   --color-ring: var(--ring);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-brand: var(--brand);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-lila: var(--lila);
   --color-nane: var(--nane);
   --color-seftali: var(--seftali);
   --color-gok: var(--gok);
+  --color-limon: var(--limon);
   --color-success: var(--success);
   --color-success-muted: var(--success-muted);
   --color-warning: var(--warning);
@@ -113,6 +121,8 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
+  --shadow-glow: var(--glow);
+
   --ease-out: var(--ease-out);
   --ease-in-out: var(--ease-in-out);
 }
@@ -140,6 +150,14 @@
     font-family: var(--font-display);
     line-height: 1.15;
     text-wrap: balance;
+  }
+
+  /* Fraunces at its softest: rounded terminals for the sweet, candy-like tone (K-28). */
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-variation-settings: "SOFT" 100;
   }
 
   p {

@@ -1,16 +1,15 @@
 /**
  * Demo images (17-icerik §5): the single registry for files in public/demo, their alt text and
- * licence. scripts/images/build-demo-images.ts crops and encodes them from the clean 1024 px
- * previews (the larger rawpixel sizes carry a watermark); docs/gorsel-kaynaklari.md
- * lists the same entries. All are representative stock ("temsilî"), never presented as
- * Bahadır Karasu's own work or hands (RSK-01, RSK-03).
+ * licence. scripts/images/build-demo-images.ts crops and encodes them from the Pexels
+ * originals; docs/gorsel-kaynaklari.md lists the same entries. All are representative stock
+ * ("temsilî"), never presented as Bahadır Karasu's own work or hands (RSK-01, RSK-03, K-28).
  */
 export type DemoImageSource = {
   /** Folder name under the download directory passed to the build script. */
   sourceId: string;
   landingUrl: string;
   creator: string;
-  licence: "CC0 1.0";
+  licence: "Pexels License";
 };
 
 export type DemoImage = {
@@ -25,53 +24,54 @@ export type DemoImage = {
   source: DemoImageSource;
 };
 
-const rawpixel = (id: string, path: string): DemoImageSource => ({
-  sourceId: id,
-  landingUrl: `https://www.rawpixel.com/image/${path}`,
-  creator: "rawpixel (CC0 kamu malı koleksiyonu)",
-  licence: "CC0 1.0",
+/** Pexels photo page slug ("pink-flower-on-hand-…-20758448"); its trailing number is the id. */
+const pexels = (slug: string, creator: string): DemoImageSource => ({
+  sourceId: slug.slice(slug.lastIndexOf("-") + 1),
+  landingUrl: `https://www.pexels.com/photo/${slug}/`,
+  creator,
+  licence: "Pexels License",
 });
 
+/** 4:5 portrait, the largest crop every chosen original allows (1333 px short side). */
+const PORTRAIT = { width: 1064, height: 1330 } as const;
+
 export const demoImages = {
-  heroPetal: {
-    src: "/demo/hero-yaprak",
-    width: 546,
-    height: 683,
+  heroDots: {
+    src: "/demo/hero-puantiye",
+    ...PORTRAIT,
     position: "attention",
-    alt: "Açık pembe ojeli parmakların üzerinde kurutulmuş pembe çiçek yaprağı",
-    source: rawpixel("586dc1ba", "3293333/free-photo-image-woman-hands-manicure-flowers-skin"),
+    alt: "Pembe, sarı, mavi ve beyaz tırnaklarda renkli puantiye nail art",
+    source: pexels("a-person-holding-bottles-of-nail-polish-7066298", "locrifa"),
   },
-  heroStripes: {
-    src: "/demo/hero-cizgili",
-    width: 546,
-    height: 683,
+  heroBloom: {
+    src: "/demo/hero-pembe-cicek",
+    ...PORTRAIT,
     position: "attention",
-    alt: "Kırmızı ojeli tırnaklar; bir tırnakta beyaz çizgili nail art deseni",
-    source: rawpixel("96b67803", "5922590/free-manicure-image-public-domain-cc0-photo"),
+    alt: "Şeker pembesi taşlı tırnaklar ve elin üzerinde pembe bir krizantem",
+    source: pexels("pink-flower-and-woman-manicure-20715643", "mehrab zahedbeigi"),
   },
-  heroBottles: {
-    src: "/demo/hero-oje-siseleri",
-    width: 546,
-    height: 683,
+  heroBlossom: {
+    src: "/demo/hero-bahar",
+    ...PORTRAIT,
     position: "centre",
-    alt: "Pudradan kırmızıya renk sırasıyla dizilmiş etiketsiz oje şişeleri",
-    source: rawpixel("6b535409", "5906601/photo-image-public-domain-art-pink"),
+    alt: "Pastel turkuaz tırnaklar ve pembe bahar çiçekleri",
+    source: pexels("hand-touching-flowers-17323334", "Valeria Boltneva"),
   },
-  aboutBrush: {
-    src: "/demo/hakkinda-firca",
-    width: 1024,
-    height: 683,
+  aboutPalette: {
+    src: "/demo/hakkinda-renk-paleti",
+    width: 1200,
+    height: 800,
     position: "centre",
-    alt: "Pembe eldivenli bir nail artist ince fırçayla tırnağa desen çiziyor",
-    source: rawpixel("68c8be6a", "5926347/photo-image-public-domain-hand-pink"),
+    alt: "Pembe havlu üzerinde yelpaze biçiminde renk kartelası; bir parmak renk seçiyor",
+    source: pexels("finger-pointing-at-nail-color-palette-7755241", "RDNE Stock project"),
   },
-  aboutPolish: {
-    src: "/demo/hakkinda-bordo-oje",
-    width: 910,
-    height: 683,
-    position: "east",
-    alt: "Tırnaklara bordo kalıcı oje sürülüyor",
-    source: rawpixel("e1f6ae16", "3299322/free-photo-image-nail-polish-manicure"),
+  aboutPainting: {
+    src: "/demo/hakkinda-pembe-oje",
+    width: 1200,
+    height: 900,
+    position: "centre",
+    alt: "Tırnaklara şeker pembesi oje sürülüyor; yanda açık oje şişesi",
+    source: pexels("woman-s-pink-pedicure-973405", "Element5 Digital"),
   },
 } as const satisfies Record<string, DemoImage>;
 

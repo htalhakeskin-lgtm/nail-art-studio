@@ -29,7 +29,7 @@ export default async function PanelHomePage() {
             {"href" in card && (
               <Link
                 href={card.href}
-                className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
+                className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-brand underline-offset-4 hover:underline"
               >
                 Mesajları gör
               </Link>

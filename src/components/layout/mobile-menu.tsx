@@ -57,7 +57,7 @@ export function MobileMenu({ items, whatsappHref, phoneHref, instagramHref }: Mo
                       aria-current={current ? "page" : undefined}
                       className={cn(
                         "flex min-h-12 items-center rounded-lg px-3 font-display text-xl hover:bg-surface-muted",
-                        current && "text-primary",
+                        current && "text-brand",
                       )}
                     >
                       {link.label}

@@ -22,7 +22,7 @@ export default async function NotFound() {
     <SiteShell>
       <section className="container-page section-y">
         <div className="mx-auto max-w-prose text-center">
-          <p className="font-display text-6xl text-primary italic">404</p>
+          <p className="font-display text-6xl text-brand italic">404</p>
           <h1 className="mt-4 text-3xl font-medium md:text-4xl">Bu sayfayı bulamadık</h1>
           <p className="mt-4 text-muted-foreground">
             Bağlantı eskimiş ya da adres yanlış yazılmış olabilir. Aşağıdaki sayfalardan devam
@@ -33,7 +33,7 @@ export default async function NotFound() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="inline-flex min-h-11 items-center font-semibold text-primary underline-offset-4 hover:underline"
+                  className="inline-flex min-h-11 items-center font-semibold text-brand underline-offset-4 hover:underline"
                 >
                   {link.label}
                 </Link>
@@ -42,7 +42,7 @@ export default async function NotFound() {
             <li>
               <a
                 href={whatsappHref(settings)}
-                className="inline-flex min-h-11 items-center font-semibold text-primary underline-offset-4 hover:underline"
+                className="inline-flex min-h-11 items-center font-semibold text-brand underline-offset-4 hover:underline"
               >
                 WhatsApp&apos;tan yazın
               </a>
