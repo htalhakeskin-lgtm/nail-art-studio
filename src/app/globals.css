@@ -285,3 +285,57 @@
 .delayed-skeleton {
   animation: appear 1ms linear 300ms both;
 }
+
+/* Drawers on a native <dialog> (src/components/ui/drawer.tsx, K-43). */
+.drawer {
+  position: fixed;
+  margin: 0;
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: var(--glow);
+}
+
+.drawer[data-side="right"] {
+  inset: 0 0 0 auto;
+  width: min(20rem, 85vw);
+  height: 100dvh;
+  border-left: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.drawer[data-side="bottom"] {
+  inset: auto 0 0 0;
+  width: 100%;
+  max-height: 85dvh;
+  border-top: 1px solid var(--border);
+  border-radius: 1.5rem 1.5rem 0 0;
+}
+
+.drawer::backdrop {
+  background: oklch(0 0 0 / 0.1);
+}
+
+body:has(.drawer[open]) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .drawer[open] {
+    transition: translate var(--duration-base) var(--ease-out);
+    translate: 0 0;
+  }
+
+  @starting-style {
+    .drawer[data-side="right"][open] {
+      translate: 100% 0;
+    }
+
+    .drawer[data-side="bottom"][open] {
+      translate: 0 100%;
+    }
+  }
+}

@@ -5,16 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Drawer, type DrawerHandle } from "@/components/ui/drawer";
 import {
   GALLERY_COLORS,
   GALLERY_LENGTHS,
@@ -61,6 +52,8 @@ export function GalleryBrowser({ items }: { items: GalleryCardData[] }) {
   const limit = page.query === query ? page.count : GALLERY_PAGE_SIZE;
   const shown = visible.slice(0, limit);
   const grid = useRef<HTMLDivElement>(null);
+  const filterDrawer = useRef<DrawerHandle>(null);
+  const filterTrigger = useRef<HTMLButtonElement>(null);
   const showMore = () => {
     setPage({ query, count: limit + GALLERY_PAGE_SIZE });
     // Keyboard and screen reader users continue from the first newly shown work.
@@ -187,34 +180,51 @@ export function GalleryBrowser({ items }: { items: GalleryCardData[] }) {
               Filtreleri temizle
             </Button>
           )}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="sm" className="lg:hidden">
-                <SlidersHorizontal aria-hidden="true" />
-                Renk ve uzunluk
-                {secondaryCount > 0 && (
-                  <span className="ml-1 inline-flex size-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                    {secondaryCount}
-                    <span className="sr-only"> seçili</span>
-                  </span>
-                )}
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="bottom" className="max-h-[85dvh] gap-0 rounded-t-[1.5rem]">
-              <SheetHeader className="border-b px-5 py-4">
-                <SheetTitle className="text-xl">Renk ve uzunluk</SheetTitle>
-                <SheetDescription className="sr-only">
-                  Galeriyi renge ve tırnak uzunluğuna göre süzün
-                </SheetDescription>
-              </SheetHeader>
+          <Button
+            ref={filterTrigger}
+            variant="outline"
+            size="sm"
+            className="lg:hidden"
+            aria-haspopup="dialog"
+            onClick={() => filterDrawer.current?.open()}
+          >
+            <SlidersHorizontal aria-hidden="true" />
+            Renk ve uzunluk
+            {secondaryCount > 0 && (
+              <span className="ml-1 inline-flex size-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                {secondaryCount}
+                <span className="sr-only"> seçili</span>
+              </span>
+            )}
+          </Button>
+          <Drawer
+            ref={filterDrawer}
+            side="bottom"
+            labelledBy="filtre-baslik"
+            returnFocus={filterTrigger}
+          >
+            <div className="flex max-h-[85dvh] flex-col">
+              <div className="flex items-center justify-between border-b px-5 py-3">
+                <h2 id="filtre-baslik" className="text-xl">
+                  Renk ve uzunluk
+                </h2>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Kapat"
+                  onClick={() => filterDrawer.current?.close()}
+                >
+                  <X aria-hidden="true" className="size-5" />
+                </Button>
+              </div>
               <div className="overflow-y-auto px-5 py-5">{colourAndLength}</div>
-              <SheetFooter className="border-t px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-                <SheetClose asChild>
-                  <Button size="lg">{visible.length} eseri göster</Button>
-                </SheetClose>
-              </SheetFooter>
-            </SheetContent>
-          </Sheet>
+              <div className="border-t px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+                <Button size="lg" className="w-full" onClick={() => filterDrawer.current?.close()}>
+                  {visible.length} eseri göster
+                </Button>
+              </div>
+            </div>
+          </Drawer>
         </div>
       </div>
 
