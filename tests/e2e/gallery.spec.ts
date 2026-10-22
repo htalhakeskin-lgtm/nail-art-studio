@@ -92,7 +92,11 @@ test.describe("gallery work page", () => {
     await expect(page.getByText("No. 003").first()).toBeVisible();
     await expect(page.getByText("Protez tırnak").first()).toBeVisible();
 
-    const request = page.getByRole("link", { name: "Bu tasarımı istiyorum" });
+    await expect(page.getByRole("link", { name: "Bu tasarımı istiyorum" })).toHaveAttribute(
+      "href",
+      "/randevu?tasarim=gokkusagi-stiletto#adim-gun",
+    );
+    const request = page.getByRole("link", { name: "WhatsApp'tan sorun" });
     const href = (await request.getAttribute("href")) ?? "";
     expect(href).toMatch(/^https:\/\/wa\.me\/905423115888\?text=/);
     const message = new URL(href).searchParams.get("text") ?? "";

@@ -2,7 +2,7 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.8 |
+| Belge sürümü | v0.9 |
 | Tarih | 2026-10-22 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4. D-01…D-03, D-08 ve D-04 (müsaitlik motoru + randevu veri modeli) bitti. Sıradaki: D-05 ziyaretçi randevu akışı → D-06 yönetim bağlantısı → D-07 panel randevu.
+> **Güncel durum:** Faz 4. D-01…D-05 ve D-08 bitti; ziyaretçi online randevu alabiliyor. Sıradaki: D-06 yönetim bağlantısı (erteleme / iptal, takvim) → D-07 panel randevu.
 
 ---
 
@@ -615,6 +615,7 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-33 | 2026-10-22 | Hizmet kategorileri 6 (Kalıcı oje, Jel, Protez, Nail art, Manikür ve pedikür, Bakım); hizmet SSS'si hizmet satırında (jsonb, panelde 3 soru); fiyat gösterimi panelde tek düğme (yetki `settings.edit`), hizmet bazında üzerine yazılabilir; WhatsApp mesajları P-08 ne olursa olsun tutar içermez; D-05'e kadar "Bu hizmet için randevu al" WhatsApp'ı hizmet adıyla açar | Plan §19 seed'i 6 kategori sayıyor (Bakım dahil); ayrı SSS tablosu S2 için fazla; sohbet geçmişindeki fiyat sonraki fiyat değişikliğinde yanıltır (BR-HZM-001) |
 | K-34 | 2026-10-22 | `business_hours` tablosu yapılmadı: tek uzman olduğu için haftalık saatlerin tek kaynağı `site_settings.openingHours` (alt bilgi, "şu an açık", JSON-LD ve müsaitlik motoru aynı veriyi okur). İzin / tatil / blok `time_off`'ta (uzmana bağlı); tüm günü kapatan kayıtlar "şu an açık" satırında da tatil sayılır. P-01…P-07 `site_settings.booking`'de, panelden değişir. Yeni yetkiler: `appointments.view`, `appointments.manage` (personel dahil), `availability.edit` (sahip, yönetici) | Aynı saat iki yerde tutulursa site ile takvim çelişir; ikinci uzman gelirse (S3) saatler uzman tablosuna taşınır, `time_off` ve randevular zaten uzmana bağlı |
 | K-35 | 2026-10-22 | Randevu arayüzü: yerel tarih / saat seçici yok; yatay gün şeridi (dolu gün gri) + yalnızca boş saatlerin düğme ızgarası. Hatırlatma ve onay mesajları yalnızca randevu bilgisi taşır (kampanya yok) | arastirma §9: kaydırmalı seçiciler mobilde sürtünme; işlem bildirimi ile ticari ileti ayrımı (İYS) |
+| K-36 | 2026-10-22 | Randevu akışı adres parametreleriyle ilerler (`/randevu?hizmet=&tasarim=&tarih=&saat=`): her adım düz bağlantı, sunucu her istekte canlı müsaitliği hesaplar; JavaScript olmadan da çalışır, ayrı API yok. Onay ekranı, randevunun gizli yönetim bağlantısıdır (`/randevu/yonet/<token>?yeni=1`); ayrıntılar 4 karakterlik kodla değil yalnızca 32 baytlık token ile görülür. Galeri eseri hizmeti tekniğinden önerir (kalıcı oje + desenli → el boyaması nail art); ziyaretçi değiştirebilir. Telefon başına günde 3 talep (P-10) | Kod tahmin edilebilir (~280 bin olasılık): kodla ayrıntı gösteren sayfa kişisel veriyi açardı (BR-RND-009); URL'deki seçimler paylaşılabilir ve geri tuşuyla doğal çalışır |
 
 **Değişiklik kaydı:**
 
@@ -628,3 +629,4 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | 2026-10-22 | v0.6 | D-02: K-31 (harita worker'ı), K-32 (iletişim formu); §10 harita satırı |
 | 2026-10-22 | v0.7 | D-03: K-33; `services` satırı ve P-08 yeri |
 | 2026-10-22 | v0.8 | D-04: K-34 (saatlerin tek kaynağı, `business_hours` yok), K-35 (randevu arayüzü, mesaj içeriği); arastirma §9 |
+| 2026-10-22 | v0.9 | D-05: K-36 (URL ile ilerleyen akış, onay ekranı = yönetim bağlantısı) |

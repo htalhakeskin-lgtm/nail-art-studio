@@ -5,7 +5,7 @@ import { and, asc, eq, gt, inArray, lt } from "drizzle-orm";
 import { SLOT_HOLDING_STATUSES } from "@/config/booking";
 import { getSiteSettings } from "@/features/site";
 import { db } from "@/server/db/client";
-import { appointments, staff, timeOff } from "@/server/db/schema";
+import { appointments, galleryItems, services, staff, timeOff } from "@/server/db/schema";
 
 import type { AvailabilityContext, Interval } from "./domain/availability";
 import { addDays, istanbulDate, istanbulDateTime } from "./domain/time";
@@ -97,4 +97,73 @@ export async function listClosedDays(now: Date): Promise<{ date: string; label: 
     if (closure) days.push({ date, label: timeOffKindLabels[closure.kind] });
   }
   return days;
+}
+
+export type ManagedAppointment = {
+  id: string;
+  code: string;
+  status: (typeof appointments.$inferSelect)["status"];
+  startsAt: Date;
+  endsAt: Date;
+  customerName: string;
+  serviceId: string;
+  serviceName: string;
+  serviceSlug: string;
+  refillIntervalDays: number | null;
+  reference: { slug: string; title: string; number: number; imagePath: string } | null;
+};
+
+/**
+ * BR-RND-009: the appointment behind a manage link, or null for an unknown or expired link.
+ * The caller passes the token's hash; the raw token is never compared or stored.
+ */
+export async function getAppointmentByTokenHash(
+  hash: string,
+  now: Date,
+): Promise<ManagedAppointment | null> {
+  const [row] = await db
+    .select({
+      id: appointments.id,
+      code: appointments.code,
+      status: appointments.status,
+      startsAt: appointments.startsAt,
+      endsAt: appointments.endsAt,
+      customerName: appointments.customerName,
+      expiresAt: appointments.manageTokenExpiresAt,
+      serviceId: services.id,
+      serviceName: services.name,
+      serviceSlug: services.slug,
+      refillIntervalDays: services.refillIntervalDays,
+      referenceSlug: galleryItems.slug,
+      referenceTitle: galleryItems.title,
+      referenceNumber: galleryItems.number,
+      referenceImage: galleryItems.imagePath,
+    })
+    .from(appointments)
+    .innerJoin(services, eq(services.id, appointments.serviceId))
+    .leftJoin(galleryItems, eq(galleryItems.id, appointments.referenceGalleryItemId))
+    .where(eq(appointments.manageTokenHash, hash))
+    .limit(1);
+  if (!row || !row.expiresAt || row.expiresAt <= now) return null;
+  return {
+    id: row.id,
+    code: row.code,
+    status: row.status,
+    startsAt: row.startsAt,
+    endsAt: row.endsAt,
+    customerName: row.customerName,
+    serviceId: row.serviceId,
+    serviceName: row.serviceName,
+    serviceSlug: row.serviceSlug,
+    refillIntervalDays: row.refillIntervalDays,
+    reference:
+      row.referenceSlug && row.referenceTitle && row.referenceNumber && row.referenceImage
+        ? {
+            slug: row.referenceSlug,
+            title: row.referenceTitle,
+            number: row.referenceNumber,
+            imagePath: row.referenceImage,
+          }
+        : null,
+  };
 }

@@ -10,6 +10,8 @@ export const rateLimits = {
   publicForm: { key: "public-form", limit: 5, windowSeconds: 3600 },
   /** P-10 Appointment creation: 5 per IP per hour */
   appointmentCreate: { key: "appointment-create", limit: 5, windowSeconds: 3600 },
+  /** P-10 Appointments per phone number: 3 per day */
+  appointmentPerPhone: { key: "appointment-phone", limit: 3, windowSeconds: 86400 },
   /** P-14 Panel uploads */
   upload: { key: "upload", limit: 30, windowSeconds: 600 },
   /** P-15 Failed panel sign-ins: 10 per IP per 15 minutes (on top of Better Auth's own limiter) */

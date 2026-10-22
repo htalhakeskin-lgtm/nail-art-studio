@@ -15,6 +15,42 @@ const templates = {
     text: (d: { code: string; companyName: string }) =>
       `Merhaba,\n\n${d.companyName} olarak talebinizi aldık. Talep numaranız: ${d.code}. En kısa sürede size dönüş yapacağız.`,
   },
+  appointmentRequestedBusiness: {
+    subject: (d: { code: string; serviceName: string; when: string; status: string }) =>
+      `Yeni randevu: ${d.code}`,
+    text: (d: { code: string; serviceName: string; when: string; status: string }) =>
+      [
+        "Siteden yeni bir randevu geldi.",
+        `Kod: ${d.code}`,
+        `Hizmet: ${d.serviceName}`,
+        `Tarih: ${d.when}`,
+        `Durum: ${d.status}`,
+        "Ayrıntılar ve onay için panelde Randevular bölümünü açın.",
+      ].join("\n"),
+  },
+  appointmentReceivedVisitor: {
+    subject: (d: { code: string; companyName: string }) => `Randevu talebiniz alındı (${d.code})`,
+    text: (d: {
+      code: string;
+      companyName: string;
+      serviceName: string;
+      when: string;
+      confirmed: boolean;
+      manageUrl: string;
+    }) =>
+      [
+        "Merhaba,",
+        "",
+        d.confirmed
+          ? `${d.companyName} randevunuz onaylandı.`
+          : `${d.companyName} randevu talebinizi aldık; onayladığımızda size haber vereceğiz.`,
+        `Kod: ${d.code}`,
+        `Hizmet: ${d.serviceName}`,
+        `Tarih: ${d.when}`,
+        "",
+        `Randevunuzu görmek, ertelemek ya da iptal etmek için: ${d.manageUrl}`,
+      ].join("\n"),
+  },
   appointmentReminder: {
     subject: (d: { startsAt: string; companyName: string }) =>
       `Randevu hatırlatması: ${formatDateTime(d.startsAt)}`,

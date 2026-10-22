@@ -32,7 +32,7 @@ async function main() {
   const { seedGalleryItems } = await import("@/content/gallery");
   const { seedServices } = await import("@/content/services");
   const { demoImages } = await import("@/content/demo-images");
-  const { count } = await import("drizzle-orm");
+  const { and, count, eq } = await import("drizzle-orm");
   const { newId } = await import("@/server/db/columns");
   const { siteDefaults } = await import("@/config/site-defaults");
   const { hashPassword } = await import("better-auth/crypto");
@@ -105,6 +105,28 @@ async function main() {
         return { ...faq, isVisible: faq.isVisible ?? true, sortOrder };
       }),
     );
+  }
+
+  /**
+   * Seed answers that changed with a later slice are updated only if the owner never edited
+   * them (the stored text still equals the old default): panel edits always win.
+   */
+  async function refreshUntouchedFaqs() {
+    const replaced = [
+      {
+        question: "Randevumu nasıl alırım?",
+        previous:
+          "WhatsApp'tan yazmanız ya da aramanız yeterli; uygun saatleri birlikte belirleriz. Yaptırmak istediğiniz tasarımın fotoğrafını da ekleyebilirsiniz.",
+      },
+    ];
+    for (const { question, previous } of replaced) {
+      const current = seedFaqs.find((faq) => faq.question === question);
+      if (!current) continue;
+      await db
+        .update(faqs)
+        .set({ answer: current.answer })
+        .where(and(eq(faqs.question, question), eq(faqs.answer, previous)));
+    }
   }
 
   async function seedGallery() {
@@ -312,6 +334,7 @@ async function main() {
   await seedSettings();
   await seedContentBlocks();
   await seedFaqRows();
+  await refreshUntouchedFaqs();
   await seedGallery();
   await seedServiceRows();
   await seedBooking();
