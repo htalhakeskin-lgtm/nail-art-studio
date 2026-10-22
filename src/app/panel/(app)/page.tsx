@@ -6,6 +6,15 @@ import { formatNumber } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Özet" };
 
+/** Every module, also on phones where the bottom bar has room for five. */
+const sections = [
+  { href: "/panel/talepler", label: "Talepler", hint: "İletişim formundan gelen mesajlar" },
+  { href: "/panel/hizmetler", label: "Hizmetler", hint: "Menü, süreler, fiyat gösterimi" },
+  { href: "/panel/galeri", label: "Galeri", hint: "Yayımla, ana sayfa seçkisi" },
+  { href: "/panel/icerik", label: "İçerik", hint: "Hakkında metni, SSS" },
+  { href: "/panel/demo-kutusu", label: "Demo kutusu", hint: "Gönderilecek bildirimler" },
+] as const;
+
 /**
  * Panel home. Becomes the "Bugün" screen (agenda + 3 KPIs) in D-07; until then it shows the
  * records that already exist.
@@ -37,6 +46,25 @@ export default async function PanelHomePage() {
           </li>
         ))}
       </ul>
+
+      <nav aria-labelledby="bolumler" className="mt-10">
+        <h2 id="bolumler" className="text-xl font-medium">
+          Bölümler
+        </h2>
+        <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {sections.map((section) => (
+            <li key={section.href}>
+              <Link
+                href={section.href}
+                className="flex min-h-14 flex-col justify-center rounded-xl border bg-surface px-4 py-2 hover:bg-surface-muted"
+              >
+                <span className="font-semibold">{section.label}</span>
+                <span className="text-sm text-muted-foreground">{section.hint}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </>
   );
 }

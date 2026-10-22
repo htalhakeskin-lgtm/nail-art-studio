@@ -11,6 +11,7 @@ export const PERMISSIONS = [
   "users.manage",
   "audit.view",
   "gallery.edit",
+  "services.edit",
   // Feature permissions, e.g. "appointments.view", "appointments.confirm"
 ] as const;
 
@@ -26,6 +27,7 @@ const matrix: Record<Role, readonly Permission[]> = {
     "leads.edit",
     "content.edit",
     "gallery.edit",
+    "services.edit",
     "settings.edit",
     "audit.view",
   ],

@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   LogOut,
   MessagesSquare,
+  Scissors,
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -20,8 +21,9 @@ const links = [
   { href: "/panel", label: "Özet", icon: LayoutDashboard },
   { href: "/panel/talepler", label: "Talepler", icon: MessagesSquare },
   { href: "/panel/galeri", label: "Galeri", icon: Images },
+  // The phone tab bar has five slots; the rest are linked from the overview page.
+  { href: "/panel/hizmetler", label: "Hizmetler", icon: Scissors, tab: false },
   { href: "/panel/icerik", label: "İçerik", icon: FileText },
-  // Not in the phone tab bar (five slots); reachable from the overview card.
   { href: "/panel/demo-kutusu", label: "Demo kutusu", icon: Inbox, tab: false },
 ] as const;
 

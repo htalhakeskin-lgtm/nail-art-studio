@@ -4,6 +4,10 @@
  */
 export const publicRoutes = [
   "/",
+  "/hizmetler",
+  "/hizmetler/kalici-oje",
+  "/hizmetler/manikur-ve-pedikur-bir-arada-kalici-oje-ile-uzun-bakim", // longest name
+  "/hizmetler/ozel-tasarim-danismanligi", // not bookable online
   "/galeri",
   "/galeri?stil=sade&uzunluk=kisa",
   "/galeri/renkli-puantiye",
@@ -24,6 +28,8 @@ export const publicRoutes = [
 export const panelRoutes = [
   "/panel",
   "/panel/talepler",
+  "/panel/hizmetler",
+  "/panel/hizmetler/yeni",
   "/panel/galeri",
   "/panel/icerik",
   "/panel/icerik/sss/yeni",

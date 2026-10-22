@@ -35,6 +35,7 @@ export const siteDefaults = {
     },
     holidays: [] as { date: string; label: string }[],
   },
+  pricing: { display: "contact" },
   social: { instagram: "bahadirkarasunails", facebook: "", linkedin: "", youtube: "" },
   theme: { preset: "studyo-galeri" },
   features: { appointments: true, blog: false, newsletter: false },

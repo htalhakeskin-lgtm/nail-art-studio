@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-03
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-04
 
 ## Şu an
 
-- **Etkin dilim:** D-02 ✅ (PR açık) → sıradaki D-03
-- **Son yapılan:** D-02: `/iletisim` (form, "şu an açık", saatler, harita, yol tarifi, ulaşım), `NailSalon` JSON-LD (ana sayfa + iletişim), teşekkür sayfası, panel "Talepler" (liste, durum, not, WhatsApp ile yanıt); 153 Vitest (30 entegrasyon) + 211 e2e
-- **Sıradaki adım:** `/web-proje devam` → D-03: hizmetler (`services` + seed, `/hizmetler`, hizmet detayı, panel CRUD, fiyat gösterim anahtarı)
+- **Etkin dilim:** D-03 ✅ (PR açık) → sıradaki D-04 (randevu sistemi, kullanıcı isteği)
+- **Son yapılan:** D-03: `services` + 16 hizmet, `/hizmetler`, hizmet detayı (`Service` JSON-LD), ana sayfa hizmet kartları, panel hizmet listesi / formu / sıralama / gizleme, fiyat gösterim anahtarı (P-08); canlı veritabanına galeri seed'i yüklendi
+- **Sıradaki adım:** Randevu sistemi: D-04 müsaitlik motoru + randevu veri modeli, D-05 ziyaretçi akışı, D-06 yönetim bağlantısı, D-07 panel randevu
 
 ## Gözetimsiz çalışma notları
 
@@ -38,7 +38,7 @@
 | D-01b | SSS + panel İçerik modülü | `faqs` + seed (12 + 1 gizli), `/sss` (`<details>` akordeon, `FAQPage`), ana sayfa SSS özeti, panel `/panel/icerik`: SSS ekle / düzenle / sırala / gizle (K-24), Hakkında metni düzenleme, işlem geçmişi, `updateTag`; menüye "SSS"; entegrasyon testi altyapısı (K-25); Z-10, Z-31 | M | P0 | ✅ | ✅ 360 / 1280 | 107 Vitest (11 entegrasyon) + 127 e2e |
 | R-01 | Görsel revizyon (kullanıcı geri bildirimi) | Pastel token'lar + `--brand` (K-28), Fraunces `SOFT`, kemer / polaroid çerçeve, pastel renk lekeleri, yıldız işareti; 5 yeni Pexels görseli; ikon, manifest, tema rengi; `docs/gorsel-kaynaklari.md` | S | P0 | ✅ | ✅ 360 / 1280 | 27 token çifti |
 | D-02 | İletişim + talep kutusu + yerel SEO | `/iletisim`: iletişim kartları, form → `leads` (+ onay kaydı, demo kutusu bildirimi), "şu an açık" (REQ-016), saatler, MapLibre harita (K-31), Google / Apple / Yandex yol tarifi, ulaşım (REQ-017); teşekkür sayfası; panel `/panel/talepler` + detay (durum, not, WhatsApp ile yanıt, kayıtlar); ana sayfaya konum özeti; `NailSalon` JSON-LD (REQ-010); menüye "İletişim" (Z-09, Z-13, Z-15, Z-29; BR-TLP-001, K-32) | M | P0 (+P1 REQ-016, 017) | ✅ | ✅ 360 / 1280 | 153 Vitest (30 entegrasyon) + 211 e2e |
-| D-03 | Hizmetler | `services` + seed (16), `/hizmetler`, `/hizmetler/[slug]`, panel hizmet CRUD, fiyat gösterim anahtarı (REQ-004; BR-HZM-001, 002) | M | P0 | ⏳ | — | — |
+| D-03 | Hizmetler | `services` + seed (16; 1 randevuya kapalı, uzun ad, yenilemesiz), `/hizmetler` (kategori atlama bağlantıları), `/hizmetler/[slug]` (süre, dayanım, yenileme, kime uygun, uygulama, bakım, SSS, `Service` JSON-LD, WhatsApp ile randevu / fiyat), ana sayfa kategori kartları, panel `/panel/hizmetler` (ekle / düzenle / sırala / gizle) + P-08 anahtarı; menüye "Hizmetler" (REQ-004; BR-HZM-001, 002, K-33) | M | P0 | ✅ | ✅ 360 / 1280 | 166 Vitest (38 entegrasyon) + e2e |
 | D-04 | Müsaitlik motoru + randevu veri modeli | `staff`, `business_hours`, `time_off`, `appointments` + dışlama kısıtı migration; `domain/availability.ts` + tablo testleri; panel müsaitlik ekranı (REQ-001a, REQ-002a, REQ-003a; BR-RND-001…005, 015) | M | P0 | ⏳ | — | — |
 | D-05 | Ziyaretçi randevu akışı | **SSS seed'indeki "Randevumu nasıl alırım?" cevabını online randevuya göre güncelle.** `/randevu` adımlı akış (360 px önce), sunucu eylemi (doğrulama + hız sınırı + kısıt → kural kodu), onay ekranı, işletmeye ve müşteriye bildirim (demo kutusu), "WhatsApp'tan ilet", tercih edilen kanal; mobil eylem çubuğuna "Randevu al" (REQ-001b, REQ-005b, REQ-018; BR-RND-003, 006, 010, 011, 014) | M | P0 | ⏳ | — | — |
 | D-06 | Randevu yönetim bağlantısı | `/randevu/yonet/[token]`: erteleme / iptal, `.ics`, Google Takvim, yenileme hatırlatıcısı + "aynı hizmetten tekrar" (REQ-002b, REQ-012; BR-RND-007, 009, 012, 013) | M | P0 (+P1 REQ-012) | ⏳ | — | — |
@@ -52,6 +52,13 @@
 **P1 onaylanmazsa:** D-10 yalnızca P0 parçalarıyla (seçki + öncesi / sonrası bölümü) D-08'e katılır; REQ-011…022 P2'ye iner.
 
 ## Etkin dilim planı
+
+**D-03 — Hizmetler** (✅ 2026-10-22)
+- Kabul kriterleri: P-08 = `contact` iken sayfada, JSON-LD'de ve WhatsApp metinlerinde tutar yok; panelden açılınca tutar `1.250 ₺` biçiminde görünür, hizmet bazında üzerine yazılabilir; kısa ad benzersiz ve Türkçe ASCII (BR-HZM-002, eylem + `check`); gizli hizmet sitede yok (BR-RND-014 hazırlığı); randevuya kapalı hizmette "WhatsApp'tan danışın"; tutar formda TL yazılır, kuruş saklanır (`lib/money`); yetkisiz rol reddedilir; değişiklikler işlem geçmişinde.
+- Tablolar / migration: `services` + `site_settings.pricing` (`0005_services.sql`).
+- Dosyalar: `src/config/services.ts`, `src/server/db/schema/services.ts`, `src/features/services/*`, `src/content/services.ts`, `src/components/sections/home-services.tsx`, `src/app/(site)/hizmetler/**`, `src/app/panel/(app)/hizmetler/**`, `src/app/panel/(app)/page.tsx` (bölüm bağlantıları), `scripts/seed.ts`.
+- Testler: `price.test.ts` (BR-HZM-001 dört durum, WhatsApp metni, süre aralığı), `tests/integration/service-actions.test.ts` (yetki, kuruş, boş SSS, BR-HZM-002, Türkçe alan hataları, kategori değişimi, gizleme, sıralama, P-08), `tests/e2e/services.spec.ts` (menü + detay, BR-HZM-001 sayfa / JSON-LD / WhatsApp, randevuya kapalı hizmet, panel fiyat aç / kapa, ekle + çift kısa ad); yeni rotalar taşma + 44 px + axe'ye eklendi.
+- Elle: hizmetler 1280, hizmet detayı 360 incelendi.
 
 **D-02 — İletişim + talep kutusu + yerel SEO** (✅ 2026-10-22)
 - Kabul kriterleri: form aynı Zod şemasıyla tarayıcıda ve sunucuda denetlenir, ilk hatalı alana odaklanır, hatada yazılanlar korunur; ad + (telefon ya da e-posta) zorunlu, seçilen dönüş kanalının bilgisi zorunlu (BR-TLP-001); telefon E.164 saklanır; honeypot + süre denetimi + IP başına saatte 5 (P-10); her talepte onay kaydı (metin sürümü, tuzlu IP karması) ve demo kutusuna işletme bildirimi (e-posta verildiyse ziyaretçiye de); teşekkür sayfası `noindex`, kod yalnızca geçerli biçimdeyse gösterilir; "şu an açık" İstanbul saatine ve tatile göre, istek anında; `NailSalon` verisi sayfadaki ad, adres, telefonla aynı, fiyat ve puan yok; panelde talep açılınca okundu, durum ve not işlem geçmişinde; yetkisiz kullanıcı reddedilir.
@@ -96,7 +103,6 @@ Faz 5'te doldurulur.
 
 ## Bilinen sorunlar
 
-- **Canlıda galeri boş** (2026-10-22): `vercel-build` migration'ı uyguladı ama demo eserler canlı veritabanına yüklenmedi (`pnpm db:seed` bu oturumda izin sisteminde durdu). Yapılacak: canlı `DATABASE_URL` ile `pnpm db:seed`, ardından yeniden yayın.
 - **Yerelde `content.spec` panel testleri kararsız** (2026-10-22): yerel `next start` ile kayıttan sonra `/hakkinda` ve `/sss` bazen eski içeriği gösteriyor; CI'da geçiyor. İncelenecek.
 
 ## Dersler

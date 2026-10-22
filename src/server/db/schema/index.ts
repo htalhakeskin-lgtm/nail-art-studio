@@ -4,4 +4,5 @@ export * from "./content";
 export * from "./core";
 export * from "./faqs";
 export * from "./gallery";
+export * from "./services";
 // export * from "./appointments";  ← feature tables, one file per feature

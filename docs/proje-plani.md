@@ -2,7 +2,7 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.6 |
+| Belge sürümü | v0.7 |
 | Tarih | 2026-10-22 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4. D-01a, D-01b, görsel revizyon (K-28), D-08 galeri ve D-02 iletişim + talep kutusu + yerel SEO bitti. Vercel Git entegrasyonu açık: PR'lar önizleme, `main` üretim (demo) yayını alıyor. Sıradaki dilim D-03 (Hizmetler).
+> **Güncel durum:** Faz 4. D-01a, D-01b, görsel revizyon (K-28), D-08 galeri, D-02 iletişim ve D-03 hizmetler bitti. Vercel Git entegrasyonu açık: PR'lar önizleme, `main` üretim (demo) yayını alıyor. Sıradaki: randevu sistemi (D-04 müsaitlik motoru → D-05 ziyaretçi akışı → D-06 yönetim bağlantısı → D-07 panel).
 
 ---
 
@@ -265,7 +265,7 @@ Ayrıntı: [arastirma.md](arastirma.md)
 | `staff` | Uzman (tek satır; çok uzmana hazır) | `name`, `slug`, `title`, `bio`, `is_active` |
 | `business_hours` | Haftalık çalışma saatleri | `staff_id`, `weekday` (1–7), `opens_at`, `closes_at` (`time`); satır yoksa kapalı |
 | `time_off` | İzin, resmî tatil, blok | `staff_id`, `starts_at`, `ends_at` (`timestamptz`), `kind` (`leave` / `holiday` / `block`), `note`; `check (starts_at < ends_at)` |
-| `services` | Hizmet menüsü | `slug` (benzersiz), `name`, `category`, `summary`, `body`, `duration_minutes`, `refill_interval_days` (boş olabilir), `durability_text`, `aftercare`, `price_display_override`, `price_minor` (boş olabilir), `is_bookable`, `is_active`, `sort_order`, `cover_media_id` |
+| `services` | Hizmet menüsü | `slug` (benzersiz, `check`), `name`, `category` (6 sabit), `summary`, `suitable_for`, `body`, `aftercare` (Markdown), `durability_text`, `duration_minutes` (5–600), `refill_interval_days` (boş olabilir), `price_minor` (kuruş, boş olabilir), `price_display_override`, `faqs` (jsonb, en fazla 3), `cover_image_path` (D-09'da `cover_media_id`), `is_bookable`, `is_active`, `sort_order` |
 | `appointments` | Randevu | `code` (benzersiz), `staff_id`, `service_id`, `starts_at`, `ends_at`, `blocked_until` (= bitiş + tampon), `status` (`pending` / `confirmed` / `completed` / `no_show` / `cancelled`), `customer_name`, `customer_phone` (E.164), `customer_email`, `note`, `preferred_channel`, `reference_gallery_item_id`, `source` (`online` / `admin`), `utm` (jsonb), `manage_token_hash`, `manage_token_expires_at`, `confirmed_at`, `cancelled_at`, `cancelled_by`, `cancel_reason`; **dışlama kısıtı** `ex_appointments_staff_overlap` (`staff_id`, `tstzrange(starts_at, blocked_until, '[)')`, durum `pending`, `confirmed`, `completed`) |
 | `gallery_items` | Galeri eseri | `slug`, `number` (eser no, identity: yeniden kullanılmaz), `title`, `description`, `style` (tek), `colors` (text[], en az bir), `length`, `technique`, `duration_minutes`, `image_path` / `image_width` / `image_height` / `image_alt` (D-09'da `media_id`), `credit_name` / `credit_url` (stok fotoğraf), `service_id` (D-03), `before_media_id` (D-09), `instagram_url`, `is_representative` (temsilî / stok), `consent_obtained_at`, `is_featured`, `is_published`, `sort_order`. Sabit kümeler ve BR-GLR-003 `check` kısıtıyla |
 | `media_assets` | Yüklenen görseller | `storage_key`, `variants` (jsonb: genişlik × biçim → adres), `width`, `height`, `bytes`, `mime`, `alt`, `source_note` (lisans / izin) |
@@ -322,7 +322,7 @@ erDiagram
 | P-05 | Ziyaretçi erteleme / iptal sınırı | 24 saat | `site_settings.booking` |
 | P-06 | Telefon başına en fazla gelecek randevu | 2 | `site_settings.booking` |
 | P-07 | Online randevu modu | `request` (onay beklemeli) | `site_settings.booking` |
-| P-08 | Fiyat gösterimi | `contact` | `site_settings.price_display` |
+| P-08 | Fiyat gösterimi | `contact` | `site_settings.pricing.display` (hizmet bazında `price_display_override`) |
 | P-09 | Yönetim bağlantısı geçerliliği | Randevu bitişi + 30 gün | `config/limits.ts` |
 | P-10 | Hız sınırları | Randevu: IP başına 5 / saat, telefon başına 3 / gün · Form: IP başına 5 / saat | `config/limits.ts` |
 | P-11 | Yükleme boyut sınırı | 10 MB | `config/limits.ts` |
@@ -612,6 +612,7 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-30 | 2026-10-22 | D-08 (galeri) D-02'den önce yapılır. Öncesi / sonrası kaydırıcısı (V-07) D-09'a taşındı; "Bu tasarımı istiyorum" D-05'e kadar eser numarasıyla WhatsApp'a, D-05'ten sonra randevu akışına gider | Kullanıcının en görünür isteği galeri; stok fotoğraflarda gerçek öncesi / sonrası çifti yok, kaydırıcı yükleme ve eşleştirmeyle (D-09) birlikte anlamlı |
 | K-31 | 2026-10-22 | MapLibre worker'ı `scripts/copy-vendor.mjs` ile `public/vendor/maplibre-gl-worker-<sürüm>.mjs`'e kopyalanır (git dışı), `setWorkerUrl` ile verilir; `dev`, `build` ve `vercel-build` önce bu betiği çalıştırır | MapLibre 6 worker adresini kendi modülünün yanından türetiyor; Turbopack parçalarında bu adres çözülmüyor ("Worker failed to load"). Sürüm dosya adında: güncellemede eski önbellek kullanılmaz; CSP `worker-src 'self'` yeterli |
 | K-32 | 2026-10-22 | İletişim formu: ad + (telefon ya da e-posta) + mesaj + tercih edilen dönüş kanalı; seçilen kanalın bilgisi zorunlu. Aydınlatma bağlantısı cümle olarak, kutusuz; onay kaydı `information_notice` (KVKK + form metni sürümü). Talep no `TLP-YYYY-NNNN` (İstanbul yılı, benzersiz indeksle yarışta yeniden deneme). Teşekkür sayfası `noindex`, yalnızca geçerli biçimli kodu gösterir | UC-07, BR-TLP-001, 10-yasal §3–4; WhatsApp'la dönüş seçip numara vermeyen ziyaretçiye dönülemez |
+| K-33 | 2026-10-22 | Hizmet kategorileri 6 (Kalıcı oje, Jel, Protez, Nail art, Manikür ve pedikür, Bakım); hizmet SSS'si hizmet satırında (jsonb, panelde 3 soru); fiyat gösterimi panelde tek düğme (yetki `settings.edit`), hizmet bazında üzerine yazılabilir; WhatsApp mesajları P-08 ne olursa olsun tutar içermez; D-05'e kadar "Bu hizmet için randevu al" WhatsApp'ı hizmet adıyla açar | Plan §19 seed'i 6 kategori sayıyor (Bakım dahil); ayrı SSS tablosu S2 için fazla; sohbet geçmişindeki fiyat sonraki fiyat değişikliğinde yanıltır (BR-HZM-001) |
 
 **Değişiklik kaydı:**
 
@@ -623,3 +624,4 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | 2026-10-17 | v0.4 | D-01b: K-24…K-27; yayın satırı (Git entegrasyonu) |
 | 2026-10-22 | v0.5 | Görsel revizyon (K-28): §11 ton, renkler, tipografi, görsel dil; galeri sınıflandırması ve dilim sırası (K-29, K-30) |
 | 2026-10-22 | v0.6 | D-02: K-31 (harita worker'ı), K-32 (iletişim formu); §10 harita satırı |
+| 2026-10-22 | v0.7 | D-03: K-33; `services` satırı ve P-08 yeri |
