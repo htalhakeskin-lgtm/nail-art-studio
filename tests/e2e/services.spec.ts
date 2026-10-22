@@ -34,9 +34,13 @@ test("BR-HZM-001: no amount on the page, in the data or in WhatsApp texts", asyn
   await expect(page.getByText("Fiyat bilgisi için iletişime geçin").first()).toBeVisible();
   await expect(page.locator("main")).not.toContainText("₺");
 
-  const booking = page.getByRole("link", { name: "Bu hizmet için randevu al" });
-  const message = new URL((await booking.getAttribute("href")) ?? "").searchParams.get("text");
-  expect(message).toContain("Şu hizmet için randevu almak istiyorum: Kalıcı oje");
+  await expect(page.getByRole("link", { name: "Bu hizmet için randevu al" })).toHaveAttribute(
+    "href",
+    "/randevu?hizmet=kalici-oje#adim-gun",
+  );
+  const priceLink = page.getByRole("link", { name: "Fiyat için WhatsApp" });
+  const message = new URL((await priceLink.getAttribute("href")) ?? "").searchParams.get("text");
+  expect(message).toContain("Şu hizmetin fiyatını öğrenebilir miyim: Kalıcı oje");
   expect(message).not.toMatch(/₺|\d+,\d{2}/);
 
   const structured = await page.locator('script[type="application/ld+json"]').allTextContents();

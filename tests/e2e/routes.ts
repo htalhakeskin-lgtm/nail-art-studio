@@ -4,6 +4,9 @@
  */
 export const publicRoutes = [
   "/",
+  "/randevu",
+  "/randevu?hizmet=kalici-oje",
+  "/randevu?tasarim=renkli-puantiye",
   "/hizmetler",
   "/hizmetler/kalici-oje",
   "/hizmetler/manikur-ve-pedikur-bir-arada-kalici-oje-ile-uzun-bakim", // longest name

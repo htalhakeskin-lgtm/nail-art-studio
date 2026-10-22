@@ -66,8 +66,8 @@ export async function generateMetadata({
 
 /**
  * SCR-003 (REQ-004): what the service is, who it suits, how it goes, how long it lasts,
- * aftercare and questions. Booking happens on WhatsApp until online booking ships (D-05);
- * a service that cannot be booked online says so. No amount anywhere while P-08 is "contact".
+ * aftercare and questions. Bookable services open the online booking with the service chosen
+ * (UC-02); a service that cannot be booked online sends people to WhatsApp (BR-RND-014). No amount anywhere while P-08 is "contact".
  */
 export default async function ServicePage({ params }: PageProps<"/hizmetler/[slug]">) {
   const { slug } = await params;
@@ -145,16 +145,21 @@ export default async function ServicePage({ params }: PageProps<"/hizmetler/[slu
           </dl>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="lg">
-              <a href={whatsappHref(settings, serviceBookingMessage(greeting, service))}>
-                {service.isBookable ? (
+            {service.isBookable ? (
+              <Button asChild size="lg">
+                <Link href={`/randevu?hizmet=${service.slug}#adim-gun` as Route}>
                   <CalendarHeart aria-hidden="true" />
-                ) : (
+                  Bu hizmet için randevu al
+                </Link>
+              </Button>
+            ) : (
+              <Button asChild size="lg">
+                <a href={whatsappHref(settings, serviceBookingMessage(greeting, service))}>
                   <MessageCircle aria-hidden="true" />
-                )}
-                {service.isBookable ? "Bu hizmet için randevu al" : "WhatsApp'tan danışın"}
-              </a>
-            </Button>
+                  WhatsApp&apos;tan danışın
+                </a>
+              </Button>
+            )}
             {!price && (
               <Button asChild size="lg" variant="outline">
                 <a href={whatsappHref(settings, servicePriceMessage(greeting, service))}>
@@ -166,7 +171,7 @@ export default async function ServicePage({ params }: PageProps<"/hizmetler/[slu
           </div>
           <p className="mt-3 text-sm text-muted-foreground">
             {service.isBookable
-              ? "Randevu talebiniz WhatsApp'ta hizmet adıyla açılır; uygun günü birlikte seçeriz."
+              ? "Boş günleri ve saatleri görüp online randevu alabilirsiniz."
               : "Bu hizmet online randevuyla değil, WhatsApp üzerinden planlanır."}
           </p>
 

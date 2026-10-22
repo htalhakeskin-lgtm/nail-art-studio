@@ -1,4 +1,4 @@
-import { MessageCircle } from "lucide-react";
+import { CalendarHeart, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { SiteNav } from "./site-nav";
 
 /**
  * Sticky header (Z-12, 07-mobil §4). Phone: logo + menu button (contact actions also live in
- * the bottom action bar). Desktop: logo, navigation and the WhatsApp action.
+ * the bottom action bar). Desktop: logo, navigation, "Randevu al" and (wide screens) WhatsApp.
  */
 export async function SiteHeader() {
   const settings = await getSiteSettings();
@@ -27,11 +27,17 @@ export async function SiteHeader() {
         </Link>
         <div className="flex items-center gap-2">
           <SiteNav items={siteNav} />
-          <Button asChild className="hidden md:inline-flex">
+          <Button asChild variant="outline" className="hidden xl:inline-flex">
             <a href={whatsappHref(settings)}>
               <MessageCircle aria-hidden="true" />
-              WhatsApp&apos;tan yazın
+              WhatsApp
             </a>
+          </Button>
+          <Button asChild className="hidden md:inline-flex">
+            <Link href="/randevu">
+              <CalendarHeart aria-hidden="true" />
+              Randevu al
+            </Link>
           </Button>
           <MobileMenu
             items={siteNav}

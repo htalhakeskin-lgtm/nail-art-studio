@@ -13,9 +13,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const legal = Object.values(legalDocuments).map((document) => document.path);
   const [works, services] = await Promise.all([listPublishedGalleryItems(), listActiveServices()]);
   return [
-    ...["/", "/hizmetler", "/galeri", "/hakkinda", "/sss", "/iletisim", ...legal].map((path) => ({
-      url: absoluteUrl(path),
-    })),
+    ...["/", "/randevu", "/hizmetler", "/galeri", "/hakkinda", "/sss", "/iletisim", ...legal].map(
+      (path) => ({
+        url: absoluteUrl(path),
+      }),
+    ),
     ...services.map((service) => ({
       url: absoluteUrl(`/hizmetler/${service.slug}`),
       lastModified: service.updatedAt,

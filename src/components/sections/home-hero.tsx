@@ -1,4 +1,5 @@
-import { Camera, MessageCircle } from "lucide-react";
+import { CalendarHeart, Camera, MessageCircle } from "lucide-react";
+import Link from "next/link";
 
 import { FramedImage } from "@/components/common/framed-image";
 import { PastelBlobs, Sparkle } from "@/components/common/pastel-blobs";
@@ -33,8 +34,14 @@ export function HomeHero({ settings }: { settings: SiteSettings }) {
             desenlere, tasarımı birlikte seçer, her işi bir eser gibi özenle uygularız.
           </p>
           <p className="mt-3 font-semibold">Nail artist: {settings.company.owner}</p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Button asChild size="lg">
+              <Link href="/randevu">
+                <CalendarHeart aria-hidden="true" />
+                Randevu al
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
               <a href={whatsappHref(settings)}>
                 <MessageCircle aria-hidden="true" />
                 WhatsApp&apos;tan yazın

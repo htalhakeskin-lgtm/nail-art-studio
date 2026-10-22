@@ -17,7 +17,7 @@ export const seedFaqs: SeedFaq[] = [
     category: "randevu",
     question: "Randevumu nasıl alırım?",
     answer:
-      "WhatsApp'tan yazmanız ya da aramanız yeterli; uygun saatleri birlikte belirleriz. Yaptırmak istediğiniz tasarımın fotoğrafını da ekleyebilirsiniz.",
+      "[Online randevu](/randevu) sayfasından hizmeti seçip boş gün ve saati görebilirsiniz; talebinizi onayladığımızda WhatsApp'tan haber veririz. Galeride beğendiğiniz bir işin sayfasındaki \"Bu tasarımı istiyorum\" düğmesi randevuyu o tasarımla açar. Dilerseniz WhatsApp'tan yazabilir ya da arayabilirsiniz.",
   },
   {
     category: "randevu",

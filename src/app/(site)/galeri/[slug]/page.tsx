@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarHeart, MessageCircle } from "lucide-react";
 import type { Metadata, Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -67,8 +67,8 @@ export async function generateMetadata({ params }: PageProps<"/galeri/[slug]">):
 }
 
 /**
- * SCR-005 (REQ-006, PRJ-02, K-29): one work with its museum-style label, "Bu tasarımı
- * istiyorum" (WhatsApp with the work number until online booking joins in D-05), previous /
+ * SCR-005 (REQ-006, REQ-011, PRJ-02, K-29): one work with its museum-style label, "Bu tasarımı
+ * istiyorum" (online booking with the work as reference; WhatsApp as the second way), previous /
  * next and similar works.
  */
 export default async function GalleryWorkPage({ params }: PageProps<"/galeri/[slug]">) {
@@ -157,23 +157,30 @@ export default async function GalleryWorkPage({ params }: PageProps<"/galeri/[sl
             </div>
           </dl>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Button asChild size="lg">
-              <a href={whatsappHref(settings, request)}>
-                <MessageCircle aria-hidden="true" />
+              <Link href={`/randevu?tasarim=${item.slug}#adim-gun` as Route}>
+                <CalendarHeart aria-hidden="true" />
                 Bu tasarımı istiyorum
-              </a>
+              </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href={`/galeri${galleryQuery({ style: item.style })}` as Route}>
-                Benzer stilde diğer işler
-              </Link>
+              <a href={whatsappHref(settings, request)}>
+                <MessageCircle aria-hidden="true" />
+                WhatsApp&apos;tan sorun
+              </a>
             </Button>
           </div>
           <p className="mt-3 text-sm text-muted-foreground">
-            WhatsApp mesajına eser numarası eklenir; tasarımı tırnak yapınıza göre birlikte
-            uyarlarız. Fiyat bilgisi için de yazabilirsiniz.
+            Randevu bu eser referans olarak eklenmiş açılır; tasarımı tırnak yapınıza göre birlikte
+            uyarlarız. WhatsApp mesajına da eser numarası eklenir.
           </p>
+          <Link
+            href={`/galeri${galleryQuery({ style: item.style })}` as Route}
+            className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-brand underline-offset-4 hover:underline"
+          >
+            Benzer stilde diğer işler
+          </Link>
 
           {env.DEMO_MODE && item.isRepresentative && item.creditName && (
             <p className="mt-6 text-xs text-muted-foreground">
