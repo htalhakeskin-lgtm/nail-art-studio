@@ -2,7 +2,7 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.9 |
+| Belge sürümü | v0.10 |
 | Tarih | 2026-10-22 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4. D-01…D-05 ve D-08 bitti; ziyaretçi online randevu alabiliyor. Sıradaki: D-06 yönetim bağlantısı (erteleme / iptal, takvim) → D-07 panel randevu.
+> **Güncel durum:** Faz 4. D-01…D-06 ve D-08 bitti; ziyaretçi randevu alıp yönetebiliyor. Sıradaki: D-07 panel randevu (Bugün, ajanda, onay, elle randevu, WhatsApp şablonları).
 
 ---
 
@@ -616,6 +616,7 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-34 | 2026-10-22 | `business_hours` tablosu yapılmadı: tek uzman olduğu için haftalık saatlerin tek kaynağı `site_settings.openingHours` (alt bilgi, "şu an açık", JSON-LD ve müsaitlik motoru aynı veriyi okur). İzin / tatil / blok `time_off`'ta (uzmana bağlı); tüm günü kapatan kayıtlar "şu an açık" satırında da tatil sayılır. P-01…P-07 `site_settings.booking`'de, panelden değişir. Yeni yetkiler: `appointments.view`, `appointments.manage` (personel dahil), `availability.edit` (sahip, yönetici) | Aynı saat iki yerde tutulursa site ile takvim çelişir; ikinci uzman gelirse (S3) saatler uzman tablosuna taşınır, `time_off` ve randevular zaten uzmana bağlı |
 | K-35 | 2026-10-22 | Randevu arayüzü: yerel tarih / saat seçici yok; yatay gün şeridi (dolu gün gri) + yalnızca boş saatlerin düğme ızgarası. Hatırlatma ve onay mesajları yalnızca randevu bilgisi taşır (kampanya yok) | arastirma §9: kaydırmalı seçiciler mobilde sürtünme; işlem bildirimi ile ticari ileti ayrımı (İYS) |
 | K-36 | 2026-10-22 | Randevu akışı adres parametreleriyle ilerler (`/randevu?hizmet=&tasarim=&tarih=&saat=`): her adım düz bağlantı, sunucu her istekte canlı müsaitliği hesaplar; JavaScript olmadan da çalışır, ayrı API yok. Onay ekranı, randevunun gizli yönetim bağlantısıdır (`/randevu/yonet/<token>?yeni=1`); ayrıntılar 4 karakterlik kodla değil yalnızca 32 baytlık token ile görülür. Galeri eseri hizmeti tekniğinden önerir (kalıcı oje + desenli → el boyaması nail art); ziyaretçi değiştirebilir. Telefon başına günde 3 talep (P-10) | Kod tahmin edilebilir (~280 bin olasılık): kodla ayrıntı gösteren sayfa kişisel veriyi açardı (BR-RND-009); URL'deki seçimler paylaşılabilir ve geri tuşuyla doğal çalışır |
+| K-37 | 2026-10-22 | Yönetim bağlantısı: erteleme aynı gün şeridi / saat ızgarasıyla, randevunun kendi saati boş sayılarak; iptal isteğe bağlı nedenle; ikisi de `WHERE status IN (pending, confirmed)` ile ve işletmeye demo kutusu bildirimiyle. `.ics` ve yenileme `.ics`'i aynı gizli bağlantı altında route handler (dosya indirme istisnası, 05-sunucu); Google Takvim bağlantısı. Yenileme hatırlatıcısı e-posta değil ziyaretçinin kendi takvimi (K-35, İYS) | Hesapsız müşteri (Model B) kendi randevusunu tek bağlantıyla yönetir; sunucudan zamanlanmış hatırlatma Hobby cron sınırı ve ticari ileti riski taşır |
 
 **Değişiklik kaydı:**
 
@@ -630,3 +631,4 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | 2026-10-22 | v0.7 | D-03: K-33; `services` satırı ve P-08 yeri |
 | 2026-10-22 | v0.8 | D-04: K-34 (saatlerin tek kaynağı, `business_hours` yok), K-35 (randevu arayüzü, mesaj içeriği); arastirma §9 |
 | 2026-10-22 | v0.9 | D-05: K-36 (URL ile ilerleyen akış, onay ekranı = yönetim bağlantısı) |
+| 2026-10-22 | v0.10 | D-06: K-37 (erteleme / iptal, takvim dosyaları, yenileme) |

@@ -14,9 +14,9 @@ async function withDb<T>(run: (pool: Pool) => Promise<T>): Promise<T> {
   }
 }
 
-/** Picks the first free day and the first free time, as a visitor would. */
-async function pickFirstFreeSlot(page: Page) {
-  await page.getByRole("list", { name: "Günler" }).getByRole("link").first().click();
+/** Picks a free day (the first by default) and its first free time, as a visitor would. */
+async function pickFirstFreeSlot(page: Page, dayIndex = 0) {
+  await page.getByRole("list", { name: "Günler" }).getByRole("link").nth(dayIndex).click();
   await expect(page.getByRole("heading", { level: 2, name: "3. Saat" })).toBeVisible();
   await page.getByRole("region", { name: "3. Saat" }).getByRole("link").first().click();
   await expect(page.getByRole("heading", { level: 2, name: "4. Bilgileriniz" })).toBeVisible();
@@ -72,6 +72,8 @@ test("an unknown manage link shows the not-found page", async ({ page }) => {
 test.describe("sending a booking", () => {
   // Writes data and counts against the per-IP limit: one project runs it.
   test.skip(({ isMobile }) => isMobile, "writes shared data: the desktop project runs it");
+  // One worker for both tests: a parallel worker's afterAll would delete the other's booking.
+  test.describe.configure({ mode: "serial" });
 
   test.beforeAll(async () => {
     await withDb((pool) => pool.query("delete from action_rate_limits"));
@@ -126,5 +128,50 @@ test.describe("sending a booking", () => {
     const text = new URL((await share.getAttribute("href")) ?? "").searchParams.get("text") ?? "";
     expect(text).toMatch(/Kod: NAS-[A-Z0-9]{4}/);
     expect(text).not.toMatch(/₺/);
+  });
+
+  test("UC-03: the visitor reschedules, downloads the calendar file and cancels", async ({
+    page,
+  }) => {
+    await page.goto("/randevu?hizmet=kalici-oje");
+    // The fourth free day is always more than P-05 (24 h) away, so changes are allowed.
+    await pickFirstFreeSlot(page, 3);
+    await page.getByLabel("Adınız").fill(E2E_NAME);
+    await page.getByRole("textbox", { name: "Telefon" }).fill("0532 000 66 44");
+    await page.waitForFunction(
+      () =>
+        Date.now() -
+          Number(document.querySelector<HTMLInputElement>('[name="formStartedAt"]')?.value) >
+        1600,
+    );
+    await page
+      .getByRole("button", { name: /Randevu/ })
+      .last()
+      .click();
+    await expect(page).toHaveURL(/\/randevu\/yonet\/[A-Za-z0-9_-]{43}\?yeni=1$/);
+    const manageUrl = page.url().replace(/\?.*$/, "");
+
+    const ics = await page.request.get(`${manageUrl}/takvim.ics`);
+    expect(ics.headers()["content-type"]).toContain("text/calendar");
+    expect(await ics.text()).toContain("SUMMARY:Nail Art Studios: Kalıcı oje");
+
+    await page.getByRole("link", { name: "Ertele" }).click();
+    await page.getByRole("list", { name: "Günler" }).getByRole("link").nth(1).click();
+    await expect(page).toHaveURL(/islem=ertele&tarih=/);
+    await page
+      .getByRole("link", { name: /^\d{2}:\d{2}$/ })
+      .first()
+      .click();
+    await page.getByRole("button", { name: "Yeni saati onayla" }).click();
+    await expect(page.getByRole("status")).toContainText("Randevunuz yeni saate taşındı");
+
+    await page.getByRole("link", { name: "İptal et" }).click();
+    await page.getByLabel("İptal nedeni").fill("Planım değişti");
+    await page.getByRole("button", { name: "Randevuyu iptal et" }).click();
+    await expect(page.getByRole("status")).toContainText("Randevunuz iptal edildi");
+    await expect(
+      page.getByText("İptal edildi", { exact: true }).filter({ visible: true }),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "Ertele" })).toHaveCount(0);
   });
 });

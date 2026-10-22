@@ -9,15 +9,16 @@ import { Button } from "@/components/ui/button";
 import {
   addDays,
   AppointmentForm,
+  DayStrip,
   daysWithAvailability,
   getAvailabilityContext,
   getBookableStaff,
-  groupByDayPart,
   istanbulClock,
   istanbulDate,
   istanbulDateTime,
   serviceSlugForWork,
   slotsForDay,
+  TimeGrid,
 } from "@/features/booking";
 import { formatWorkNumber, listPublishedGalleryItems } from "@/features/gallery";
 import {
@@ -29,7 +30,6 @@ import {
 import { getSiteSettings, whatsappHref } from "@/features/site";
 import { formatDate, formatDuration } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
-import { cn } from "@/lib/utils";
 
 /** Live availability on every request; the whole page depends on the chosen service and day. */
 export const instant = false;
@@ -40,9 +40,6 @@ export const metadata: Metadata = pageMetadata({
     "Hizmeti seçin, boş günü ve saati görün, randevu talebinizi bir dakikada gönderin. Kadıköy Moda, Nail Art Studios.",
   path: "/randevu",
 });
-
-const weekdayShort = new Intl.DateTimeFormat("tr-TR", { weekday: "short", timeZone: "UTC" });
-const monthShort = new Intl.DateTimeFormat("tr-TR", { month: "short", timeZone: "UTC" });
 
 type Params = { hizmet?: string; tasarim?: string; tarih?: string; saat?: string };
 
@@ -232,58 +229,12 @@ export default async function BookingPage({ searchParams }: PageProps<"/randevu"
                 </Button>
               </div>
             ) : (
-              <ul
-                aria-label="Günler"
-                className="-mx-4 mt-4 flex snap-x gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-wrap sm:px-0"
-              >
-                {days.map((day) => {
-                  const date = new Date(`${day.date}T12:00:00Z`);
-                  const label = `${formatDate(date, "withWeekday")}${day.slots === 0 ? ", dolu ya da kapalı" : ""}`;
-                  const content = (
-                    <>
-                      <span className="text-xs font-semibold">
-                        {day.date === today ? "Bugün" : weekdayShort.format(date)}
-                      </span>
-                      <span className="font-display text-2xl leading-none tabular-nums">
-                        {date.getUTCDate()}
-                      </span>
-                      <span className="text-xs">{monthShort.format(date)}</span>
-                    </>
-                  );
-                  const box =
-                    "flex h-20 w-16 shrink-0 snap-start flex-col items-center justify-center gap-0.5 rounded-[1.1rem] border";
-                  return (
-                    <li key={day.date}>
-                      {day.slots === 0 ? (
-                        <span
-                          aria-label={label}
-                          role="img"
-                          className={cn(
-                            box,
-                            "border-dashed bg-surface-muted text-muted-foreground line-through decoration-1",
-                          )}
-                        >
-                          {content}
-                        </span>
-                      ) : (
-                        <Link
-                          href={href({ ...base, tarih: day.date }, "adim-saat")}
-                          aria-label={label}
-                          aria-current={day.date === chosenDate ? "date" : undefined}
-                          className={cn(
-                            box,
-                            day.date === chosenDate
-                              ? "border-transparent bg-primary text-primary-foreground shadow-glow"
-                              : "bg-surface hover:bg-surface-muted",
-                          )}
-                        >
-                          {content}
-                        </Link>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
+              <DayStrip
+                days={days}
+                today={today}
+                chosen={chosenDate}
+                hrefFor={(date) => href({ ...base, tarih: date }, "adim-saat")}
+              />
             )}
           </section>
         )}
@@ -306,34 +257,11 @@ export default async function BookingPage({ searchParams }: PageProps<"/randevu"
                 Seçtiğiniz saat artık boş değil. Lütfen başka bir saat seçin.
               </p>
             )}
-            <div className="mt-4 space-y-4">
-              {groupByDayPart(slots).map((group) => (
-                <div key={group.label}>
-                  <h3 className="font-sans text-sm font-bold">{group.label}</h3>
-                  <ul className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-6">
-                    {group.slots.map((slot) => (
-                      <li key={slot.clock}>
-                        <Link
-                          href={href(
-                            { ...base, tarih: chosenDate, saat: slot.clock },
-                            "adim-bilgi",
-                          )}
-                          aria-current={slot === chosenSlot ? "time" : undefined}
-                          className={cn(
-                            "flex min-h-11 items-center justify-center rounded-full border text-sm font-semibold tabular-nums",
-                            slot === chosenSlot
-                              ? "border-transparent bg-primary text-primary-foreground shadow-glow"
-                              : "bg-surface hover:bg-surface-muted",
-                          )}
-                        >
-                          {slot.clock}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+            <TimeGrid
+              slots={slots}
+              chosen={chosenSlot?.clock}
+              hrefFor={(clock) => href({ ...base, tarih: chosenDate, saat: clock }, "adim-bilgi")}
+            />
           </section>
         )}
 
