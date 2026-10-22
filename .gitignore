@@ -52,3 +52,4 @@ next-env.d.ts
 
 # Copied from node_modules before dev / build (scripts/copy-vendor.mjs)
 /public/vendor/
+/.lighthouseci/

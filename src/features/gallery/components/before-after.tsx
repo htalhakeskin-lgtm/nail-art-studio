@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Before / after slider (V-07, REQ-007). A native range input lies over both photos, so touch,
  * mouse and arrow keys work everywhere and screen readers hear "slider" with a spoken value.
- * The "after" photo is revealed with clip-path (no transition: nothing animates but the user).
+ * The "after" photo is revealed with clip-path (no transition: nothing animates but the user);
+ * the handle nudges once the first time the slider scrolls into view (plan §6, CSS, K-43).
  */
 export function BeforeAfter({
   before,
@@ -20,8 +21,28 @@ export function BeforeAfter({
   sizes: string;
 }) {
   const [position, setPosition] = useState(50);
+  const [seen, setSeen] = useState(false);
+  const figure = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const node = figure.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        setSeen(true);
+        observer.disconnect();
+      },
+      { threshold: 0.6 },
+    );
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <figure className="space-y-2">
+    <figure ref={figure} data-nudge={seen ? "on" : undefined} className="space-y-2">
       <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-surface-muted select-none">
         <Image src={before.src} alt={before.alt} fill sizes={sizes} className="object-cover" />
         <div className="absolute inset-0" style={{ clipPath: `inset(0 0 0 ${String(position)}%)` }}>
@@ -32,7 +53,7 @@ export function BeforeAfter({
           className="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-surface shadow"
           style={{ left: `${String(position)}%` }}
         >
-          <span className="absolute top-1/2 left-1/2 flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-brand shadow-glow">
+          <span className="nudge absolute top-1/2 left-1/2 flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-brand shadow-glow">
             ⇆
           </span>
         </div>

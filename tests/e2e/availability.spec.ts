@@ -17,6 +17,9 @@ async function withDb<T>(run: (pool: Pool) => Promise<T>): Promise<T> {
 }
 
 test.describe("panel availability", () => {
+  // afterAll cleans shared rows: run this block in one worker so it never deletes data a test in
+  // another worker is still using (fullyParallel).
+  test.describe.configure({ mode: "serial" });
   test.use({ storageState: ADMIN_STATE });
   // Changes shared data: one project runs it, so parallel runs never collide.
   test.skip(({ isMobile }) => isMobile, "changes shared data: the desktop project runs it");

@@ -8,7 +8,6 @@ import { PastelBlobs } from "@/components/common/pastel-blobs";
 import { Button } from "@/components/ui/button";
 import {
   addDays,
-  AppointmentForm,
   DayStrip,
   daysWithAvailability,
   getAvailabilityContext,
@@ -20,6 +19,7 @@ import {
   slotsForDay,
   TimeGrid,
 } from "@/features/booking";
+import { AppointmentForm } from "@/features/booking/forms";
 import { formatWorkNumber, listPublishedGalleryItems } from "@/features/gallery";
 import {
   listActiveServices,

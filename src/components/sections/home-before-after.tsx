@@ -3,7 +3,8 @@ import type { Route } from "next";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { BeforeAfter, formatWorkNumber, type GalleryItem } from "@/features/gallery";
+import { formatWorkNumber, type GalleryItem } from "@/features/gallery";
+import { BeforeAfter } from "@/features/gallery/client";
 
 /**
  * Home §4 (plan §6, REQ-007, V-07): one large before / after slider. Shown only when a real
@@ -14,7 +15,7 @@ export function HomeBeforeAfter({ items }: { items: GalleryItem[] }) {
   if (!work?.beforeImagePath || !work.beforeImageAlt) return null;
 
   return (
-    <section aria-labelledby="oncesi-sonrasi" className="container-page section-y">
+    <section aria-labelledby="oncesi-sonrasi" className="reveal container-page section-y">
       <div className="grid items-center gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
         <div className="mx-auto w-full max-w-md">
           <BeforeAfter

@@ -1,20 +1,17 @@
 "use client";
 
-import { SlidersHorizontal, X } from "lucide-react";
+import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Drawer, type DrawerHandle } from "@/components/ui/drawer";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { GALLERY_COLORS, GALLERY_LENGTHS, GALLERY_STYLES } from "@/config/gallery";
+  GALLERY_COLORS,
+  GALLERY_LENGTHS,
+  GALLERY_PAGE_SIZE,
+  GALLERY_STYLES,
+} from "@/config/gallery";
 import { cn } from "@/lib/utils";
 
 import {
@@ -27,7 +24,7 @@ import {
   parseGalleryFilters,
   toggleFilter,
 } from "../domain/filters";
-import { galleryColorLabels, galleryLengthLabels, galleryStyleLabels } from "../schemas";
+import { galleryColorLabels, galleryLengthLabels, galleryStyleLabels } from "../labels";
 import type { GalleryCardData } from "../types";
 import { GalleryGrid } from "./gallery-grid";
 import { Swatch } from "./swatch";
@@ -47,6 +44,23 @@ export function GalleryBrowser({ items }: { items: GalleryCardData[] }) {
   const pathname = usePathname();
   const filters = parseGalleryFilters(useSearchParams());
   const visible = filterGalleryItems(items, filters);
+  // Any filter change, even back to an earlier one, starts again from the first page; the state
+  // is reset during render (React's "adjusting state on a prop change", no effect).
+  const query = galleryQuery(filters);
+  const [page, setPage] = useState({ query, count: GALLERY_PAGE_SIZE });
+  if (page.query !== query) setPage({ query, count: GALLERY_PAGE_SIZE });
+  const limit = page.query === query ? page.count : GALLERY_PAGE_SIZE;
+  const shown = visible.slice(0, limit);
+  const grid = useRef<HTMLDivElement>(null);
+  const filterDrawer = useRef<DrawerHandle>(null);
+  const filterTrigger = useRef<HTMLButtonElement>(null);
+  const showMore = () => {
+    setPage({ query, count: limit + GALLERY_PAGE_SIZE });
+    // Keyboard and screen reader users continue from the first newly shown work.
+    requestAnimationFrame(() => {
+      grid.current?.querySelectorAll<HTMLAnchorElement>("li a")[limit]?.focus();
+    });
+  };
   const secondaryCount = Number(Boolean(filters.color)) + Number(Boolean(filters.length));
 
   // The native History API updates useSearchParams without a server round trip (the grid is
@@ -149,7 +163,9 @@ export function GalleryBrowser({ items }: { items: GalleryCardData[] }) {
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <p aria-live="polite" className="text-sm font-semibold text-muted-foreground">
-          {visible.length} eser gösteriliyor
+          {shown.length < visible.length
+            ? `${String(shown.length)} / ${String(visible.length)} eser gösteriliyor`
+            : `${String(visible.length)} eser gösteriliyor`}
         </p>
         <div className="flex flex-wrap items-center gap-2">
           {activeFilterCount(filters) > 0 && (
@@ -164,40 +180,70 @@ export function GalleryBrowser({ items }: { items: GalleryCardData[] }) {
               Filtreleri temizle
             </Button>
           )}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="sm" className="lg:hidden">
-                <SlidersHorizontal aria-hidden="true" />
-                Renk ve uzunluk
-                {secondaryCount > 0 && (
-                  <span className="ml-1 inline-flex size-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                    {secondaryCount}
-                    <span className="sr-only"> seçili</span>
-                  </span>
-                )}
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="bottom" className="max-h-[85dvh] gap-0 rounded-t-[1.5rem]">
-              <SheetHeader className="border-b px-5 py-4">
-                <SheetTitle className="text-xl">Renk ve uzunluk</SheetTitle>
-                <SheetDescription className="sr-only">
-                  Galeriyi renge ve tırnak uzunluğuna göre süzün
-                </SheetDescription>
-              </SheetHeader>
+          <Button
+            ref={filterTrigger}
+            variant="outline"
+            size="sm"
+            className="lg:hidden"
+            aria-haspopup="dialog"
+            onClick={() => filterDrawer.current?.open()}
+          >
+            <SlidersHorizontal aria-hidden="true" />
+            Renk ve uzunluk
+            {secondaryCount > 0 && (
+              <span className="ml-1 inline-flex size-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                {secondaryCount}
+                <span className="sr-only"> seçili</span>
+              </span>
+            )}
+          </Button>
+          <Drawer
+            ref={filterDrawer}
+            side="bottom"
+            labelledBy="filtre-baslik"
+            returnFocus={filterTrigger}
+          >
+            <div className="flex max-h-[85dvh] flex-col">
+              <div className="flex items-center justify-between border-b px-5 py-3">
+                <h2 id="filtre-baslik" className="text-xl">
+                  Renk ve uzunluk
+                </h2>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Kapat"
+                  onClick={() => filterDrawer.current?.close()}
+                >
+                  <X aria-hidden="true" className="size-5" />
+                </Button>
+              </div>
               <div className="overflow-y-auto px-5 py-5">{colourAndLength}</div>
-              <SheetFooter className="border-t px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-                <SheetClose asChild>
-                  <Button size="lg">{visible.length} eseri göster</Button>
-                </SheetClose>
-              </SheetFooter>
-            </SheetContent>
-          </Sheet>
+              <div className="border-t px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+                <Button size="lg" className="w-full" onClick={() => filterDrawer.current?.close()}>
+                  {visible.length} eseri göster
+                </Button>
+              </div>
+            </div>
+          </Drawer>
         </div>
       </div>
 
       <h2 className="sr-only">Eserler</h2>
       {visible.length > 0 ? (
-        <GalleryGrid items={visible} className="mt-6" />
+        <div ref={grid}>
+          <GalleryGrid items={shown} className="mt-6" />
+          {visible.length > shown.length && (
+            <div className="mt-8 flex justify-center">
+              <Button variant="outline" size="lg" onClick={showMore}>
+                <ChevronDown aria-hidden="true" />
+                Daha fazla iş göster
+                <span className="text-muted-foreground">
+                  ({visible.length - shown.length} kaldı)
+                </span>
+              </Button>
+            </div>
+          )}
+        </div>
       ) : (
         <div className="mt-6 rounded-[1.5rem] border border-dashed bg-surface p-8 text-center">
           <p className="font-semibold">Bu seçime uyan eser yok</p>

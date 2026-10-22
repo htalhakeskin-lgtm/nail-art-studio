@@ -4,6 +4,7 @@ import { type SubmitEvent, useActionState, useState } from "react";
 import type { z } from "zod";
 
 import { FormField } from "@/components/common/form-field";
+import { UnsavedChangesGuard } from "@/components/common/unsaved-changes-guard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TIME_OFF_KINDS } from "@/config/booking";
@@ -73,6 +74,7 @@ export function WeeklyHoursForm({ initial }: { initial: WeeklyHoursValues }) {
 
   return (
     <form action={action} onSubmit={onSubmit} noValidate className="space-y-3">
+      <UnsavedChangesGuard />
       <ServerError state={state} />
       <ul className="divide-y rounded-xl border bg-surface">
         {WEEKDAYS.map((day, index) => {
@@ -136,6 +138,7 @@ export function TimeOffForm({ today }: { today: string }) {
 
   return (
     <form action={action} onSubmit={onSubmit} noValidate className="space-y-4">
+      <UnsavedChangesGuard />
       <ServerError state={state} />
       <div className="grid gap-4 sm:grid-cols-3">
         <FormField name="kind" label="Tür" error={errorFor("kind")}>
@@ -230,6 +233,7 @@ export function BookingRulesForm({ initial }: { initial: BookingRulesValues }) {
 
   return (
     <form action={action} onSubmit={onSubmit} noValidate className="space-y-4">
+      <UnsavedChangesGuard />
       <ServerError state={state} />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {ruleFields.map((field) => (

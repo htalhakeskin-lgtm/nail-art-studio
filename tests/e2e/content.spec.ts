@@ -44,6 +44,9 @@ test.describe("FAQ page", () => {
 });
 
 test.describe("panel content module", () => {
+  // afterAll cleans shared rows: run this block in one worker so it never deletes data a test in
+  // another worker is still using (fullyParallel).
+  test.describe.configure({ mode: "serial" });
   test.use({ storageState: ADMIN_STATE });
   // These tests change shared data: one project runs them, so parallel runs never collide.
   test.skip(({ isMobile }) => isMobile, "changes shared data: the desktop project runs it");

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { Breadcrumbs } from "@/components/common/panel-breadcrumbs";
-import { GalleryItemForm } from "@/features/gallery";
+import { GalleryItemForm } from "@/features/gallery/forms";
 
 export const metadata: Metadata = { title: "Yeni iş" };
 

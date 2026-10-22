@@ -5,7 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import { formatWorkNumber } from "../domain/neighbours";
-import { galleryLengthLabels, galleryStyleLabels, galleryTechniqueLabels } from "../schemas";
+import { galleryLengthLabels, galleryStyleLabels, galleryTechniqueLabels } from "../labels";
 import type { GalleryCardData } from "../types";
 
 /**

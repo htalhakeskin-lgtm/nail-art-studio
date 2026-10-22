@@ -23,7 +23,6 @@ import {
   appointmentEvent,
   appointmentShareMessage,
   appointmentStatusLabels,
-  CancelForm,
   canSelfManage,
   DayStrip,
   daysWithAvailability,
@@ -38,10 +37,10 @@ import {
   istanbulDate,
   istanbulDateTime,
   refillDate,
-  RescheduleForm,
   slotsForDay,
   TimeGrid,
 } from "@/features/booking";
+import { CancelForm, RescheduleForm } from "@/features/booking/forms";
 import { formatWorkNumber } from "@/features/gallery";
 import { getSiteSettings, phoneHref, whatsappHref } from "@/features/site";
 import { formatDate, formatDuration } from "@/lib/format";

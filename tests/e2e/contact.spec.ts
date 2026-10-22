@@ -53,6 +53,9 @@ test("form checks fields before sending and focuses the first problem", async ({
 });
 
 test.describe("sending a request", () => {
+  // afterAll cleans shared rows: run this block in one worker so it never deletes data a test in
+  // another worker is still using (fullyParallel).
+  test.describe.configure({ mode: "serial" });
   // Writes data and counts against the per-IP limit: one project runs it.
   test.skip(({ isMobile }) => isMobile, "writes shared data: the desktop project runs it");
 

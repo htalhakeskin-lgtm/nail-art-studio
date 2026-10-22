@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-12
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** Faz 5 (kalite kapıları)
 
 ## Şu an
 
-- **Etkin dilim:** D-11 ✅ (PR açık); sıradaki D-12
-- **Son yapılan:** D-11 (+ K-42: galeri gezintisindeki aralıklı genel hata sayfasının kök nedeni `partialPrefetching`, kapatıldı): `ImageObject` / `Person` şemaları, başlık ve açıklama sığdırma (denetim `/hizmetler` başlığını 63 karakterde yakaladı), canlı robots'ta yönetim bağlantısı dışlandı, Vercel Web Analytics açıldı + 7 dönüşüm olayı (adres temizleme), `/panel/onaylar` onay kayıtları + CSV, tohumda her örnek form için onay kaydı
-- **Sıradaki adım:** D-12: hareket (azaltılmış harekete saygılı), boş / hata durumları, bölüm hata sınırları, kaydedilmemiş değişiklik uyarısı, Lighthouse CI, paket boyutu
+- **Etkin dilim:** D-12 ✅ (PR açık) → Faz 4 tamam
+- **Son yapılan:** D-12: CSS hareket (azaltılmış harekette yok), yazı tipi 507 → 118 KB, istemci formları `forms` girişine (ziyaretçi sayfalarında Zod yok), galeri 12'şerli, Lighthouse CI + boyut bütçeleri, panel hata / yükleniyor ekranları, randevu iskeleti, bölüm hata sınırı, kaydedilmemiş değişiklik uyarısı
+- **Sıradaki adım:** Faz 5: `docs/kalite-kapilari.md` raporu; ardından Faz 6 yayın listesi, Faz 7 portfolyo, Faz 8 dersler
 
 ## Gözetimsiz çalışma notları
 
@@ -48,11 +48,17 @@
 | D-09 | Galeri yönetimi + güvenli yükleme + öncesi / sonrası | `media_assets`, `media_files`, `gallery_items` öncesi sütunları (`0008`); `src/server/media/{image,storage}.ts`, `/media/[file]`; panel "Yeni iş" / düzenle (yükleme alanı, renkler, izin, yayımla, seçki); eser sayfasında öncesi / sonrası kaydırıcısı (V-07); Vercel Blob deposu (REQ-007, REQ-008; BR-GLR-001…004; K-39) | M | P0 | ✅ | ✅ 1280 | 7 birim + 8 entegrasyon + 2 e2e |
 | D-10 | Ana sayfa tamamlama | En yakın boş saatler (Suspense, istek başına), öncesi / sonrası bölümü, süreç adımları (REQ-015), hijyen kartı (REQ-013), örnek yorumlar + panel Yorumlar (REQ-014, SCR-107), `testimonials` (`0009`); "Şu an açık" (REQ-016) ve ulaşım (REQ-017) D-02'de konum bölümüyle gelmişti (K-40) | M | P1 | ✅ | ✅ 360 / 1280 | 7 entegrasyon + 4 e2e |
 | D-11 | SEO katmanı denetimi + ölçüm | `ImageObject` (eser), `Person` (Hakkında), `Service` (D-03) şemaları (REQ-020); başlık ≤ 60 / açıklama ≤ 160 sığdırma ve tüm site haritası için denetim; Vercel Web Analytics (çerezsiz, birinci taraf) + dönüşüm olayları (REQ-021); onay kayıtları ekranı + CSV (REQ-019, SCR-111); onaysız üçüncü taraf istek ve çerez yok e2e (K-41) | S | P0 (denetim) + P1 | ✅ | ✅ 360 / 1280 | 9 birim + 3 entegrasyon + 20 e2e |
-| D-12 | Cila + kalite paketi | Hareket, boş / hata durumları, mikro metinler, bölüm hata sınırları, kaydedilmemiş değişiklik uyarısı, Lighthouse CI, paket boyutu (REQ-022) | M | P1 | ⏳ | — | — |
+| D-12 | Cila + kalite paketi | CSS hareket (kolaj, kaydırmayla belirme, tutamaç), yazı tipi kırpma, `client` / `forms` girişleri, galeri 12'şerli, Lighthouse CI + bütçeler, panel `error` / `loading`, randevu iskeleti, bölüm hata sınırı, kaydedilmemiş değişiklik uyarısı (REQ-022, K-43) | M | P1 | ✅ | ✅ 360 / 1280 | 3 e2e + Lighthouse CI |
 
 **P1 onaylanmazsa:** D-10 yalnızca P0 parçalarıyla (seçki + öncesi / sonrası bölümü) D-08'e katılır; REQ-011…022 P2'ye iner.
 
 ## Etkin dilim planı
+
+**D-12 — Cila + kalite paketi** (✅ 2026-10-22)
+- Kabul kriterleri: hareket yalnızca `translate` / `opacity`, azaltılmış harekette çalışan animasyon yok, bölümler sonunda tam görünür; Lighthouse CI'da erişilebilirlik ve en iyi uygulama ≥ 0,95, CLS ≤ 0,1, bütçeler (betik, yazı tipi, görsel, üçüncü taraf) aşılmaz; galeri ilk yük görseli ≤ 300 KB; panel ekranı hata verirse menü kalır ve "Tekrar dene" çıkar; değişmiş formdan çıkarken onay sorulur, değişmemişte sorulmaz.
+- Dosyalar: `src/app/globals.css`, `src/app/layout.tsx`, `src/components/sections/*`, `src/features/gallery/components/{before-after,gallery-browser}.tsx`, `src/features/gallery/labels.ts`, `src/features/*/{client,forms}.ts`, `eslint.config.mjs`, `src/components/common/{section-boundary,unsaved-changes-guard}.tsx`, `src/app/panel/(app)/{error,loading}.tsx`, `src/app/(site)/randevu/loading.tsx`, `lighthouserc.json`, `.github/workflows/ci.yml`, `playwright.config.ts`.
+- Testler: `tests/e2e/motion.spec.ts` (yalnızca izin verilen özellikler, azaltılmış harekette animasyon yok), `tests/e2e/unsaved.spec.ts` (değişmemiş form sormaz, vazgeçince metin kalır, onaylayınca çıkar), `gallery.spec.ts` (12 + daha fazla, odak 13. esere, filtre sayfayı sıfırlar); Lighthouse CI 5 sayfa.
+- Elle: 360 / 1280 giriş bölümü hareketle incelendi; Lighthouse ölçümleri K-43'te.
 
 **D-11 — SEO katmanı denetimi + ölçüm** (✅ 2026-10-22)
 - Kabul kriterleri: herkese açık her dizinlenebilir sayfada başlık 10–60, açıklama 50–160 karakter, canonical yolu sayfanın kendisi, `og:*`, tek `h1`, demo'da `noindex`; site haritasındaki her sayfanın başlığı ≤ 60; şemalarda kurgusal bilgi ya da `Review` yok, stok fotoğraf işletmeye atfedilmez; ziyaretçi sayfalarında harita karoları dışında üçüncü taraf istek ve hiç çerez yok; analitikte yönetim anahtarı ve sorgu gitmez; onay kayıtları yalnızca `audit.view` ile, CSV indirme yetkisizlere 404.
@@ -155,6 +161,12 @@ Faz 5'te doldurulur.
 - **Yerelde `content.spec` panel testleri kararsız** (2026-10-22): yerel `next start` ile kayıttan sonra `/hakkinda` ve `/sss` bazen eski içeriği gösteriyor; CI'da geçiyor. İncelenecek.
 
 ## Dersler
+
+- **`fullyParallel` + `afterAll` temizliği = başka işçinin verisini silmek** → Ne oldu: aynı `describe`'daki iki test farklı işçilerde koştu; kısa testin işçisi `afterAll`'ı çalıştırıp diğerinin kullandığı satırı sildi (`hata=notFound`, "Gizle" düğmesi yok). D-07'de bir dosyada düzeltilmişti, yedi dosyada daha vardı. Kural: paylaşılan veriyi `afterAll` ile temizleyen her `describe` `mode: "serial"`. Önerilen: test şablonunda zorunlu. Belge: 14-test §7. **Sisteme taşı.**
+- **Barrel'dan dışa aktarılan istemci bileşeni her sayfaya taşınır** → Ne oldu: `@/features/content`'ten yalnızca sorgu içe aktaran ana sayfa, aynı barrel'daki `"use client"` formları ve Zod'u (33 KB gz) yükledi; Turbopack istemci referanslarını barrel üzerinden ağaçtan atmıyor. Çözüm: `index.ts` (sunucu + paylaşılan), `client.ts` (Zod'suz ziyaretçi bileşenleri), `forms.ts` (formlar); ESLint deseni üçüne izin verir. Denetim: sayfa HTML'indeki `<script src>` parçalarında `zod` aramak. Belge: 02-mimari (özellik klasörü), iskelet. **Sisteme taşı.**
+- **Değişken yazı tipinin ekseni ve italiği pahalı** → Fraunces `opsz` + `SOFT` + italik × latin / latin-ext = 507 KB, LCP'yi benzetimde ~2,5 sn geciktiriyordu. Kullanılan eksen dışındakileri ve italiği çıkarmak 118 KB. Önerilen: 06-arayuz yazı tipi bölümüne "eksen / stil başına maliyet, bütçe ≤ 175 KB" ve Lighthouse CI'da `resource-summary:font:size`. **Sisteme taşı.**
+- **Statik kabuktaki Suspense yedeği de görsel yükler** → Galeride istemci tarafı sayfalama yetmedi; `useSearchParams` yedeği tüm ızgarayı basıyordu. Yedek ile ilk istemci durumu aynı olmalı. **Sisteme taşı.**
+- **Kaydırmaya bağlı CSS animasyonu ve testler** → `animation-timeline: view()` süre kullanmadığı için genel "reduce" sıfırlaması onu durdurmaz: kural `prefers-reduced-motion: no-preference` içinde olmalı. Yarı saydam bölümler axe kontrastını bozduğundan Playwright varsayılanı `reducedMotion: "reduce"`, hareket ayrı testte. Belge: 08-erisilebilirlik, 14-test. **Sisteme taşı.**
 
 - **Vercel CLI `api` ve Git Bash** → Ne oldu: `vercel api /web/insights/toggle` "Use an API path starting with /" dedi: MSYS yolu `C:/Program Files/Git/web/...`'e çeviriyor. `MSYS_NO_PATHCONV=1` ile çalıştı; `projectId` gövdede değil sorguda. Web Analytics'i panelsiz açmanın yolu: `POST /web/insights/toggle?projectId=…` gövde `{"value":true}`. Belge: 16-ortamlar §6. **Sisteme taşı.**
 - **Write aracı `\uFEFF` kaçışını gerçek karaktere çevirebiliyor** → Ne oldu: CSV BOM'u için yazılan `"\uFEFF"` dosyaya görünmez karakter olarak düştü (kod çalıştı ama okunamaz). Önerilen: görünmez karakterleri kod içinde `String.fromCharCode` ya da kaçışla yazıp `grep - **Yatay kaydırmalı liste ve klavye** → Bağlam: yorum kartları. Ne oldu: axe `scrollable-region-focusable` kaydırılan öğenin odaklanabilir olmasını ister, `jsx-a11y/no-noninteractive-tabindex` ise `<ul tabIndex={0}>`'ı reddeder. Çözüm: `aria-label`'lı listeye `tabIndex={0}` + gerekçeli tek satırlık eslint istisnası (JSX özniteliğinin üstünde `//` yorumu; `{/* */}` yorumu sonraki satırı kapsamaz). Belge: 08-erisilebilirlik (karusel / yatay liste). **Sisteme taşı.**

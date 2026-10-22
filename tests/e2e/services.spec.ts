@@ -58,6 +58,9 @@ test("a service that cannot be booked online sends people to WhatsApp", async ({
 });
 
 test.describe("panel services", () => {
+  // afterAll cleans shared rows: run this block in one worker so it never deletes data a test in
+  // another worker is still using (fullyParallel).
+  test.describe.configure({ mode: "serial" });
   test.use({ storageState: ADMIN_STATE });
   // Changes shared data: one project runs it, so parallel runs never collide.
   test.skip(({ isMobile }) => isMobile, "changes shared data: the desktop project runs it");

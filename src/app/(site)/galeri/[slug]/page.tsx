@@ -9,7 +9,6 @@ import { Sparkle } from "@/components/common/pastel-blobs";
 import { JsonLd } from "@/components/common/safe-html";
 import { Button } from "@/components/ui/button";
 import {
-  BeforeAfter,
   designRequestMessage,
   formatWorkNumber,
   galleryColorLabels,
@@ -25,6 +24,7 @@ import {
   toCardData,
   workImageData,
 } from "@/features/gallery";
+import { BeforeAfter } from "@/features/gallery/client";
 import { getSiteSettings, whatsappHref } from "@/features/site";
 import { env } from "@/lib/env";
 import { formatDuration } from "@/lib/format";

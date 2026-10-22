@@ -84,8 +84,14 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/features/*/*", "!@/features/*/index"],
-              message: "Import another feature only through its public index: @/features/<name>.",
+              group: [
+                "@/features/*/*",
+                "!@/features/*/index",
+                "!@/features/*/client",
+                "!@/features/*/forms",
+              ],
+              message:
+                "Import a feature only through its public entries: @/features/<name>, …/client (visitor widgets, no Zod) or …/forms (forms).",
             },
           ],
         },

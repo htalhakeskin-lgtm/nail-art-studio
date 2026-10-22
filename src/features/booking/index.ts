@@ -6,10 +6,6 @@ export {
   saveWeeklyHours,
 } from "./availability-actions";
 export { appointmentEvent, refillEvent } from "./calendar";
-export { AppointmentForm } from "./components/appointment-form";
-export { BookingRulesForm, TimeOffForm, WeeklyHoursForm } from "./components/availability-forms";
-export { CancelForm, RescheduleForm } from "./components/manage-forms";
-export { ManualAppointmentForm } from "./components/manual-appointment-form";
 export { appointmentStatusTone, PanelAppointmentList } from "./components/panel-appointment-list";
 export { DayStrip, TimeGrid } from "./components/slot-picker";
 export {

@@ -1,4 +1,4 @@
-import type { GalleryColor, GalleryLength, GalleryStyle, GalleryTechnique } from "./schemas";
+import type { GalleryColor, GalleryLength, GalleryStyle, GalleryTechnique } from "./labels";
 
 /** What a card and the client-side filter need; plain data, safe to pass to the browser. */
 export type GalleryCardData = {

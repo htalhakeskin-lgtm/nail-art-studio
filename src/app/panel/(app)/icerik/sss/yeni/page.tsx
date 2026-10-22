@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { Breadcrumbs } from "@/components/common/panel-breadcrumbs";
-import { FaqForm } from "@/features/faq";
+import { FaqForm } from "@/features/faq/forms";
 
 export const metadata: Metadata = { title: "Yeni soru" };
 

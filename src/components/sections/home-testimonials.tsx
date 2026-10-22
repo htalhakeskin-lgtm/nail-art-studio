@@ -11,7 +11,7 @@ export function HomeTestimonials({ items }: { items: PublicTestimonial[] }) {
   if (shown.length === 0) return null;
 
   return (
-    <section aria-labelledby="yorumlar-baslik" className="section-y">
+    <section aria-labelledby="yorumlar-baslik" className="reveal section-y">
       <div className="container-page">
         <h2 id="yorumlar-baslik" className="text-3xl font-medium md:text-5xl">
           Müşterilerimiz ne diyor

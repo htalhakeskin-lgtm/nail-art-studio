@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { Breadcrumbs } from "@/components/common/panel-breadcrumbs";
-import { ServiceForm } from "@/features/services";
+import { ServiceForm } from "@/features/services/forms";
 
 export const metadata: Metadata = { title: "Yeni hizmet" };
 

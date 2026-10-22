@@ -11,8 +11,7 @@ import { publicEnv } from "@/lib/public-env";
 const fraunces = Fraunces({
   subsets: ["latin", "latin-ext"],
   variable: "--font-fraunces",
-  style: ["normal", "italic"],
-  axes: ["opsz", "SOFT"],
+  axes: ["SOFT"],
   display: "swap",
 });
 

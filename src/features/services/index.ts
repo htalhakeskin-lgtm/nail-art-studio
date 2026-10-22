@@ -10,7 +10,6 @@ export {
   toggleServiceActiveForm,
 } from "./actions";
 export { ServiceCard } from "./components/service-card";
-export { ServiceForm } from "./components/service-form";
 export { ServicePanelList } from "./components/service-panel-list";
 export {
   CONTACT_FOR_PRICE,

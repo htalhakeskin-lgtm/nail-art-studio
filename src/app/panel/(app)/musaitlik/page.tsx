@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { ruleMessages } from "@/config/rules";
 import {
   addDays,
-  BookingRulesForm,
   deleteTimeOffForm,
   getAvailabilityContext,
   getBookableStaff,
@@ -14,11 +13,10 @@ import {
   istanbulDateTime,
   listUpcomingTimeOff,
   nextSlots,
-  TimeOffForm,
   timeOffKindLabels,
   WEEKDAYS,
-  WeeklyHoursForm,
 } from "@/features/booking";
+import { BookingRulesForm, TimeOffForm, WeeklyHoursForm } from "@/features/booking/forms";
 import { getSiteSettings } from "@/features/site";
 import { formatDate, formatDateTime } from "@/lib/format";
 

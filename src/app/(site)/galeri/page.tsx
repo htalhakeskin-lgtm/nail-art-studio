@@ -3,12 +3,9 @@ import { Suspense } from "react";
 
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { PastelBlobs } from "@/components/common/pastel-blobs";
-import {
-  GalleryBrowser,
-  GalleryGrid,
-  listPublishedGalleryItems,
-  toCardData,
-} from "@/features/gallery";
+import { GALLERY_PAGE_SIZE } from "@/config/gallery";
+import { GalleryGrid, listPublishedGalleryItems, toCardData } from "@/features/gallery";
+import { GalleryBrowser } from "@/features/gallery/client";
 import { env } from "@/lib/env";
 import { pageMetadata } from "@/lib/seo";
 
@@ -59,7 +56,7 @@ export default async function GalleryPage() {
                 {/* Same height as the chip row, so nothing shifts when the filters arrive. */}
                 <div aria-hidden="true" className="h-[3.25rem]" />
                 <h2 className="sr-only">Eserler</h2>
-                <GalleryGrid items={items} className="mt-14" />
+                <GalleryGrid items={items.slice(0, GALLERY_PAGE_SIZE)} className="mt-14" />
               </>
             }
           >
