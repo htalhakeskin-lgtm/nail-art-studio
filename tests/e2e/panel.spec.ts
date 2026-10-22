@@ -46,7 +46,7 @@ test.describe("signed-in owner", () => {
 
   test("sees the overview and the demo outbox", async ({ page }) => {
     await page.goto("/panel");
-    await expect(page.getByRole("heading", { level: 1, name: "Özet" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Bugün" })).toBeVisible();
     await page.goto("/panel/demo-kutusu");
     await expect(page.getByRole("heading", { level: 1, name: "Demo kutusu" })).toBeVisible();
   });

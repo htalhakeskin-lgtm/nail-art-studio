@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-07
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-09
 
 ## Şu an
 
-- **Etkin dilim:** D-06 ✅ (PR açık) → sıradaki D-07
-- **Son yapılan:** D-06: yönetim bağlantısında erteleme (gün şeridi + saat, kendi saati boş sayılır) ve iptal (P-05 sınırı), `.ics` + Google Takvim, yenileme hatırlatıcısı `.ics` + "aynı hizmetten tekrar randevu"; gün şeridi ve saat ızgarası ortak bileşen
-- **Sıradaki adım:** D-07: panel "Bugün" (3 KPI), ajanda, randevu detayı, durum geçişleri (onayla / tamamlandı / gelmedi / iptal), elle randevu, WhatsApp şablonları
+- **Etkin dilim:** D-07 ✅ (PR açık) → randevu sistemi tamam; sıradaki D-09
+- **Son yapılan:** D-07: panel "Bugün" (3 gösterge, günün ajandası, onay bekleyenler + Onayla), `/panel/randevular` (gün / hafta, durum), randevu detayı (durum geçişleri, iptal nedeni, referans tasarım, WhatsApp şablonları, bağlantı yenileme, geçmiş), elle randevu; telefon alt çubuğu yenilendi
+- **Sıradaki adım:** D-09: galeri yönetimi + güvenli yükleme (Vercel Blob, sharp varyantları), öncesi / sonrası eşleştirme, izin işareti
 
 ## Gözetimsiz çalışma notları
 
@@ -42,7 +42,7 @@
 | D-04 | Müsaitlik motoru + randevu veri modeli | `staff`, `time_off`, `appointments` + `ex_appointments_staff_overlap` (`0006`, `0007`), `site_settings.booking`; `domain/{time,availability,status,code}.ts`; panel `/panel/musaitlik` (saatler, izin / tatil / blok, P-01…P-07, önizleme); "şu an açık" panel kapalı zamanlarını okur; seed (REQ-001a, REQ-002a, REQ-003a; BR-RND-001…005, 008, 010, 015; K-34, K-35) | M | P0 | ✅ | ✅ 360 | 25 birim + 9 entegrasyon + e2e |
 | D-05 | Ziyaretçi randevu akışı | `/randevu` URL ile ilerleyen adımlar (K-36): hizmet, gün şeridi (dolu gün kesikli), sabah / öğleden sonra / akşam saat düğmeleri, bilgiler + özet; `requestAppointment` (honeypot, IP + telefon sınırı, BR-RND-014, 006, 001…005, dışlama kısıtı, onay kaydı, bildirimler), saat dolarsa girilenler korunarak en yakın iki saat; onay ekranı = `/randevu/yonet/[token]` (kod, durum, referans tasarım, "WhatsApp'tan ilet"); galeri ve hizmet sayfasından randevu, alt çubuk / başlık / giriş "Randevu al"; SSS cevabı güncellendi (REQ-001b, REQ-005b, REQ-011, REQ-018; BR-RND-003, 006, 009, 010, 011, 014) | M | P0 | ✅ | ✅ 390 / 1280 | 3 birim + 9 entegrasyon + 6 e2e |
 | D-06 | Randevu yönetim bağlantısı | `/randevu/yonet/[token]`: erteleme (BR-RND-012) ve iptal (BR-RND-007, 008), `takvim.ics` + Google Takvim (E-08, E-09), `yenileme.ics` + "aynı hizmetten tekrar randevu" (REQ-012, BR-RND-013), 24 saatten az kalınca WhatsApp / telefon; işletmeye bildirim; `DayStrip` / `TimeGrid` ortak (REQ-002b; K-37) | M | P0 (+P1 REQ-012) | ✅ | ✅ 360 | 8 birim + 7 entegrasyon + 1 e2e |
-| D-07 | Panel randevu | "Bugün" ekranı (3 KPI), ajanda, detay, durum geçişleri, elle randevu, WhatsApp şablonları + ayarlarda şablon düzenleme (REQ-003b, REQ-005c; BR-RND-008) | M | P0 | ⏳ | — | — |
+| D-07 | Panel randevu | "Bugün" ekranı (bugün / onay bekleyen / bu hafta, günün ajandası, tek dokunuş Onayla), `/panel/randevular` gün / hafta + durum, `/panel/randevular/[id]` (BR-RND-008 koşullu geçişler, iptal nedeni, müşteriye onay e-postası → demo kutusu, WhatsApp onay / hatırlatma / değişiklik şablonları, yönetim bağlantısını yenileyip gönderme, geçmiş), `/panel/randevular/yeni` elle randevu (UC-05, onaylı, P-03 hariç aynı kurallar); alt çubuk Bugün · Randevular · Talepler · Galeri · Site (REQ-003b, REQ-005c; BR-RND-008, 011; K-38) | M | P0 | ✅ | ✅ 360 | 3 birim + 9 entegrasyon + 3 e2e |
 | D-08 | Galeri (ziyaretçi) — öne alındı (K-30) | `gallery_items` + seed (27, 1 taslak), `/galeri` stil / renk / uzunluk filtresi (K-29), eser etiketi kartı, `/galeri/[slug]` (önceki / sonraki, benzer işler), "Bu tasarımı istiyorum" (WhatsApp + eser no), ana sayfa seçkisi + stil kartları, panel `/panel/galeri` yayımla / seçkiye ekle; menüye "Galeri"; sitemap (REQ-006, 011; BR-GLR-003, 004). Öncesi / sonrası D-09'a (K-30) | M | P0 (+P1 REQ-011) | ✅ | ✅ 360 / 1280 | 130 Vitest (20 entegrasyon) + 184 e2e |
 | D-09 | Galeri yönetimi + güvenli yükleme + öncesi / sonrası | `media_assets`, Vercel Blob, `sharp` varyantları, öncesi / sonrası eşleştirme, izin işareti, sıralama, fotoğraf yayın izni şablonu (REQ-008; BR-GLR-001…003) | M | P0 | ⏳ | — | — |
 | D-10 | Ana sayfa tamamlama | En yakın boş saatler, seçki, öncesi / sonrası bölümü, süreç adımları (REQ-015), hijyen kartı (REQ-013), örnek yorumlar + panel yorumlar (REQ-014), "Şu an açık" (REQ-016), ulaşım (REQ-017) | M | P1 | ⏳ | — | — |
@@ -52,6 +52,13 @@
 **P1 onaylanmazsa:** D-10 yalnızca P0 parçalarıyla (seçki + öncesi / sonrası bölümü) D-08'e katılır; REQ-011…022 P2'ye iner.
 
 ## Etkin dilim planı
+
+**D-07 — Panel randevu** (✅ 2026-10-22)
+- Kabul kriterleri: geçişler yalnızca BR-RND-008'e göre ve görülen duruma koşullu (çift dokunuş tek değişiklik); onayda e-posta varsa müşteriye bildirim (demo kutusu, tutar yok); iptal saati serbest bırakır ve neden saklanır; elle randevu aynı saat / kapalı zaman / çakışma kurallarıyla, onaylı ve kaynak `admin`; WhatsApp şablonları müşterinin numarasıyla, tutar ve kampanya içermez; bağlantı gönderimi yeni token üretir, eskisi çalışmaz; anonim kullanıcı reddedilir; her değişiklik geçmişte.
+- Tablolar / migration: yok.
+- Dosyalar: `src/features/booking/{panel-actions,panel-queries}.ts`, `src/features/booking/domain/templates.ts`, `src/features/booking/components/{panel-appointment-list,manual-appointment-form}.tsx`, `src/app/panel/(app)/page.tsx`, `src/app/panel/(app)/randevular/**`, `src/features/panel/components/panel-shell.tsx`, `src/server/channels/templates.ts`.
+- Testler: `templates.test.ts`, `tests/integration/booking-panel.test.ts` (anonim ret, onay + e-posta, geçersiz geçişler `it.each`, çift değişiklik, iptal + saat serbest, elle randevu onaylı / BR-RND-003 / 001, bağlantı yenileme), `tests/e2e/panel-appointments.spec.ts` (Bugün, ajanda hafta + durum, elle randevu → şablon → iptal); panel rotaları taşma + axe'de.
+- Elle: Bugün ve randevu detayı 360 incelendi.
 
 **D-06 — Randevu yönetim bağlantısı** (✅ 2026-10-22)
 - Kabul kriterleri: yalnızca doğru token'la açılır (BR-RND-009); başlangıca P-05 saatten az kala değişiklik yok, WhatsApp / telefon yönlendirmesi (BR-RND-007); erteleme yeni saati BR-RND-001…005'ten geçirir, kendi eski saati boş sayılır, kod korunur, onay beklemeli modda yeniden `pending` (BR-RND-012), çakışmada `23P01` → BR-RND-003; iptal saati serbest bırakır, ikinci iptal ve bitmiş randevu reddedilir (BR-RND-008); her değişiklik işlem geçmişinde ve işletmeye demo kutusunda; `.ics` UTC, kaçışlı, 75 bayt satır katlamalı; yenileme tarihi İstanbul günü + aralık, aralık yoksa gösterilmez (BR-RND-013).

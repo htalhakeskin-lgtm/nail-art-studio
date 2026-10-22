@@ -15,6 +15,6 @@ setup("sign in as the demo admin", async ({ page }) => {
   await page.getByLabel("E-posta").fill(email);
   await page.getByLabel("Şifre").fill(password);
   await page.getByRole("button", { name: "Giriş yap" }).click();
-  await expect(page.getByRole("heading", { level: 1, name: "Özet" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Bugün" })).toBeVisible();
   await page.context().storageState({ path: ADMIN_STATE });
 });

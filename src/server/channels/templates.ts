@@ -51,6 +51,27 @@ const templates = {
         `Randevunuzu görmek, ertelemek ya da iptal etmek için: ${d.manageUrl}`,
       ].join("\n"),
   },
+  appointmentConfirmedVisitor: {
+    subject: (d: { code: string; companyName: string }) => `Randevunuz onaylandı (${d.code})`,
+    text: (d: {
+      code: string;
+      companyName: string;
+      serviceName: string;
+      when: string;
+      address: string;
+    }) =>
+      [
+        "Merhaba,",
+        "",
+        `${d.companyName} randevunuz onaylandı.`,
+        `Kod: ${d.code}`,
+        `Hizmet: ${d.serviceName}`,
+        `Tarih: ${d.when}`,
+        `Adres: ${d.address}`,
+        "",
+        "Değişiklik için randevu e-postanızdaki bağlantıyı kullanabilir ya da WhatsApp'tan yazabilirsiniz.",
+      ].join("\n"),
+  },
   appointmentChangedBusiness: {
     subject: (d: { code: string; change: string; when: string; serviceName: string }) =>
       `Randevu ${d.change}: ${d.code}`,
