@@ -2,7 +2,7 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.7 |
+| Belge sürümü | v0.8 |
 | Tarih | 2026-10-22 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4. D-01a, D-01b, görsel revizyon (K-28), D-08 galeri, D-02 iletişim ve D-03 hizmetler bitti. Vercel Git entegrasyonu açık: PR'lar önizleme, `main` üretim (demo) yayını alıyor. Sıradaki: randevu sistemi (D-04 müsaitlik motoru → D-05 ziyaretçi akışı → D-06 yönetim bağlantısı → D-07 panel).
+> **Güncel durum:** Faz 4. D-01…D-03, D-08 ve D-04 (müsaitlik motoru + randevu veri modeli) bitti. Sıradaki: D-05 ziyaretçi randevu akışı → D-06 yönetim bağlantısı → D-07 panel randevu.
 
 ---
 
@@ -263,7 +263,7 @@ Ayrıntı: [arastirma.md](arastirma.md)
 |---|---|---|
 | `site_settings` | Firma bilgisi, iletişim, tema, özellik anahtarları (tek satır; iskelet) | + `whatsapp_e164`, `instagram_handle`, `booking` (jsonb: P-01…P-07, P-09, P-10), `price_display` (P-08), `whatsapp_templates` (jsonb) |
 | `staff` | Uzman (tek satır; çok uzmana hazır) | `name`, `slug`, `title`, `bio`, `is_active` |
-| `business_hours` | Haftalık çalışma saatleri | `staff_id`, `weekday` (1–7), `opens_at`, `closes_at` (`time`); satır yoksa kapalı |
+| ~~`business_hours`~~ | (K-34 ile kaldırıldı) | Haftalık saatler `site_settings.openingHours` içinde tek kaynak |
 | `time_off` | İzin, resmî tatil, blok | `staff_id`, `starts_at`, `ends_at` (`timestamptz`), `kind` (`leave` / `holiday` / `block`), `note`; `check (starts_at < ends_at)` |
 | `services` | Hizmet menüsü | `slug` (benzersiz, `check`), `name`, `category` (6 sabit), `summary`, `suitable_for`, `body`, `aftercare` (Markdown), `durability_text`, `duration_minutes` (5–600), `refill_interval_days` (boş olabilir), `price_minor` (kuruş, boş olabilir), `price_display_override`, `faqs` (jsonb, en fazla 3), `cover_image_path` (D-09'da `cover_media_id`), `is_bookable`, `is_active`, `sort_order` |
 | `appointments` | Randevu | `code` (benzersiz), `staff_id`, `service_id`, `starts_at`, `ends_at`, `blocked_until` (= bitiş + tampon), `status` (`pending` / `confirmed` / `completed` / `no_show` / `cancelled`), `customer_name`, `customer_phone` (E.164), `customer_email`, `note`, `preferred_channel`, `reference_gallery_item_id`, `source` (`online` / `admin`), `utm` (jsonb), `manage_token_hash`, `manage_token_expires_at`, `confirmed_at`, `cancelled_at`, `cancelled_by`, `cancel_reason`; **dışlama kısıtı** `ex_appointments_staff_overlap` (`staff_id`, `tstzrange(starts_at, blocked_until, '[)')`, durum `pending`, `confirmed`, `completed`) |
@@ -326,7 +326,7 @@ erDiagram
 | P-09 | Yönetim bağlantısı geçerliliği | Randevu bitişi + 30 gün | `config/limits.ts` |
 | P-10 | Hız sınırları | Randevu: IP başına 5 / saat, telefon başına 3 / gün · Form: IP başına 5 / saat | `config/limits.ts` |
 | P-11 | Yükleme boyut sınırı | 10 MB | `config/limits.ts` |
-| P-12 | Çalışma saatleri (örnek) | Salı–Cumartesi 10:00–20:00, Pazar 11:00–18:00, Pazartesi kapalı | `business_hours` (D-04'e kadar `site_settings.openingHours`) |
+| P-12 | Çalışma saatleri (örnek) | Salı–Cumartesi 10:00–20:00, Pazar 11:00–18:00, Pazartesi kapalı | `site_settings.openingHours` (K-34; panel: Müsaitlik) |
 | P-13 | Formu doldurmanın en kısa süresi (bot denetimi) | 1,5 sn | `config/limits.ts` |
 | P-14 | Panel yükleme hız sınırı | 30 / 10 dk | `config/limits.ts` |
 | P-15 | Başarısız panel girişi sınırı (yalnızca başarısız denemeler sayılır) | IP başına 10 / 15 dk | `config/limits.ts` |
@@ -613,6 +613,8 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-31 | 2026-10-22 | MapLibre worker'ı `scripts/copy-vendor.mjs` ile `public/vendor/maplibre-gl-worker-<sürüm>.mjs`'e kopyalanır (git dışı), `setWorkerUrl` ile verilir; `dev`, `build` ve `vercel-build` önce bu betiği çalıştırır | MapLibre 6 worker adresini kendi modülünün yanından türetiyor; Turbopack parçalarında bu adres çözülmüyor ("Worker failed to load"). Sürüm dosya adında: güncellemede eski önbellek kullanılmaz; CSP `worker-src 'self'` yeterli |
 | K-32 | 2026-10-22 | İletişim formu: ad + (telefon ya da e-posta) + mesaj + tercih edilen dönüş kanalı; seçilen kanalın bilgisi zorunlu. Aydınlatma bağlantısı cümle olarak, kutusuz; onay kaydı `information_notice` (KVKK + form metni sürümü). Talep no `TLP-YYYY-NNNN` (İstanbul yılı, benzersiz indeksle yarışta yeniden deneme). Teşekkür sayfası `noindex`, yalnızca geçerli biçimli kodu gösterir | UC-07, BR-TLP-001, 10-yasal §3–4; WhatsApp'la dönüş seçip numara vermeyen ziyaretçiye dönülemez |
 | K-33 | 2026-10-22 | Hizmet kategorileri 6 (Kalıcı oje, Jel, Protez, Nail art, Manikür ve pedikür, Bakım); hizmet SSS'si hizmet satırında (jsonb, panelde 3 soru); fiyat gösterimi panelde tek düğme (yetki `settings.edit`), hizmet bazında üzerine yazılabilir; WhatsApp mesajları P-08 ne olursa olsun tutar içermez; D-05'e kadar "Bu hizmet için randevu al" WhatsApp'ı hizmet adıyla açar | Plan §19 seed'i 6 kategori sayıyor (Bakım dahil); ayrı SSS tablosu S2 için fazla; sohbet geçmişindeki fiyat sonraki fiyat değişikliğinde yanıltır (BR-HZM-001) |
+| K-34 | 2026-10-22 | `business_hours` tablosu yapılmadı: tek uzman olduğu için haftalık saatlerin tek kaynağı `site_settings.openingHours` (alt bilgi, "şu an açık", JSON-LD ve müsaitlik motoru aynı veriyi okur). İzin / tatil / blok `time_off`'ta (uzmana bağlı); tüm günü kapatan kayıtlar "şu an açık" satırında da tatil sayılır. P-01…P-07 `site_settings.booking`'de, panelden değişir. Yeni yetkiler: `appointments.view`, `appointments.manage` (personel dahil), `availability.edit` (sahip, yönetici) | Aynı saat iki yerde tutulursa site ile takvim çelişir; ikinci uzman gelirse (S3) saatler uzman tablosuna taşınır, `time_off` ve randevular zaten uzmana bağlı |
+| K-35 | 2026-10-22 | Randevu arayüzü: yerel tarih / saat seçici yok; yatay gün şeridi (dolu gün gri) + yalnızca boş saatlerin düğme ızgarası. Hatırlatma ve onay mesajları yalnızca randevu bilgisi taşır (kampanya yok) | arastirma §9: kaydırmalı seçiciler mobilde sürtünme; işlem bildirimi ile ticari ileti ayrımı (İYS) |
 
 **Değişiklik kaydı:**
 
@@ -625,3 +627,4 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | 2026-10-22 | v0.5 | Görsel revizyon (K-28): §11 ton, renkler, tipografi, görsel dil; galeri sınıflandırması ve dilim sırası (K-29, K-30) |
 | 2026-10-22 | v0.6 | D-02: K-31 (harita worker'ı), K-32 (iletişim formu); §10 harita satırı |
 | 2026-10-22 | v0.7 | D-03: K-33; `services` satırı ve P-08 yeri |
+| 2026-10-22 | v0.8 | D-04: K-34 (saatlerin tek kaynağı, `business_hours` yok), K-35 (randevu arayüzü, mesaj içeriği); arastirma §9 |

@@ -1,4 +1,5 @@
 import {
+  CalendarClock,
   ExternalLink,
   FileText,
   Images,
@@ -23,6 +24,7 @@ const links = [
   { href: "/panel/galeri", label: "Galeri", icon: Images },
   // The phone tab bar has five slots; the rest are linked from the overview page.
   { href: "/panel/hizmetler", label: "Hizmetler", icon: Scissors, tab: false },
+  { href: "/panel/musaitlik", label: "Müsaitlik", icon: CalendarClock, tab: false },
   { href: "/panel/icerik", label: "İçerik", icon: FileText },
   { href: "/panel/demo-kutusu", label: "Demo kutusu", icon: Inbox, tab: false },
 ] as const;

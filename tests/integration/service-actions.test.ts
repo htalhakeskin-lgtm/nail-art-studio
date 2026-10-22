@@ -20,7 +20,7 @@ vi.mock("@/server/request", async (importOriginal) => ({
 }));
 
 const { db } = await import("@/server/db/client");
-const { auditLogs, siteSettings } = await import("@/server/db/schema");
+const { appointments, auditLogs, siteSettings } = await import("@/server/db/schema");
 const { listActiveServices, moveService, saveService, setPriceDisplay, toggleServiceActive } =
   await import("@/features/services");
 
@@ -53,6 +53,7 @@ async function create(overrides: Record<string, unknown> = {}) {
 }
 
 beforeEach(async () => {
+  await db.delete(appointments); // they reference services
   await db.delete(services);
   await db.delete(auditLogs);
   await db.delete(siteSettings);
