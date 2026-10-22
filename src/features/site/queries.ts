@@ -48,6 +48,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       theme: section("theme", row.theme),
       features: section("features", row.features),
       seo: section("seo", row.seo),
+      pricing: section("pricing", row.pricing),
     };
   } catch (error) {
     // Build without a database (first deploy, local build): render with the defaults.

@@ -5,10 +5,12 @@ import { AboutTeaser } from "@/components/sections/about-teaser";
 import { FaqTeaser } from "@/components/sections/faq-teaser";
 import { HomeGallery } from "@/components/sections/home-gallery";
 import { HomeHero } from "@/components/sections/home-hero";
+import { HomeServices } from "@/components/sections/home-services";
 import { LocationTeaser } from "@/components/sections/location-teaser";
 import { getContentBlock } from "@/features/content";
 import { getVisibleFaqGroups } from "@/features/faq";
 import { listPublishedGalleryItems } from "@/features/gallery";
+import { listActiveServices } from "@/features/services";
 import { getSiteSettings, localBusinessData } from "@/features/site";
 import { absoluteUrl, jsonLd, pageMetadata } from "@/lib/seo";
 
@@ -22,20 +24,22 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /**
  * Home (Z-07, plan §6 "Ana sayfa kurgusu"). Sections join as their slices ship: nearest free
- * slots (D-05), before / after (D-09), services (D-03), process and hygiene
+ * slots (D-05), before / after (D-09), process and hygiene
  * (D-10), reviews (D-10). NailSalon data mirrors the location block (REQ-010).
  */
 export default async function HomePage() {
-  const [settings, about, faqGroups, works] = await Promise.all([
+  const [settings, about, faqGroups, works, services] = await Promise.all([
     getSiteSettings(),
     getContentBlock("about"),
     getVisibleFaqGroups(),
     listPublishedGalleryItems(),
+    listActiveServices(),
   ]);
   return (
     <>
       <HomeHero settings={settings} />
       <HomeGallery items={works} />
+      <HomeServices items={services} settings={settings} />
       <AboutTeaser settings={settings} about={about} />
       <FaqTeaser groups={faqGroups} />
       <LocationTeaser settings={settings} />

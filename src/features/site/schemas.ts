@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { PRICE_DISPLAY_MODES } from "@/config/services";
+
 /**
  * Shape of the site_settings row (02-mimari §4). The table stores each section as jsonb, so
  * every read goes through these schemas (03-kod: external data is `unknown` until parsed).
@@ -43,6 +45,7 @@ export const siteSettingsSchema = z.object({
   contact: contactSchema,
   openingHours: openingHoursSchema,
   social: socialSchema,
+  pricing: z.object({ display: z.enum(PRICE_DISPLAY_MODES) }),
   theme: z.object({ preset: z.string() }),
   features: z.object({ appointments: z.boolean(), blog: z.boolean(), newsletter: z.boolean() }),
   seo: z.object({

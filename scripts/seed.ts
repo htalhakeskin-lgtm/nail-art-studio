@@ -11,11 +11,12 @@ loadEnvConfig(process.cwd());
 async function main() {
   const { env } = await import("@/lib/env");
   const { db } = await import("@/server/db/client");
-  const { accounts, contentBlocks, faqs, galleryItems, leads, siteSettings, users } =
+  const { accounts, contentBlocks, faqs, galleryItems, leads, services, siteSettings, users } =
     await import("@/server/db/schema");
   const { contentBlockDefaults } = await import("@/content/content-blocks");
   const { seedFaqs } = await import("@/content/faqs");
   const { seedGalleryItems } = await import("@/content/gallery");
+  const { seedServices } = await import("@/content/services");
   const { demoImages } = await import("@/content/demo-images");
   const { count } = await import("drizzle-orm");
   const { newId } = await import("@/server/db/columns");
@@ -121,6 +122,26 @@ async function main() {
     }
   }
 
+  async function seedServiceRows() {
+    // Only into an empty table: panel edits are never overwritten.
+    const [existing] = await db.select({ value: count() }).from(services);
+    if ((existing?.value ?? 0) > 0) return;
+    const orders = new Map<string, number>();
+    await db.insert(services).values(
+      seedServices.map(({ image, isBookable, ...service }) => {
+        const sortOrder = (orders.get(service.category) ?? 0) + 10;
+        orders.set(service.category, sortOrder);
+        return {
+          ...service,
+          aftercare: service.aftercare || null,
+          coverImagePath: demoImages[image].src,
+          isBookable: isBookable ?? true,
+          sortOrder,
+        };
+      }),
+    );
+  }
+
   async function seedLeads() {
     // Fictional people only; phones use the 000 block, e-mails example.com (17 §3).
     const names = [
@@ -162,6 +183,7 @@ async function main() {
   await seedContentBlocks();
   await seedFaqRows();
   await seedGallery();
+  await seedServiceRows();
   await seedDemoAdmin();
   await seedLeads();
   console.log("✓ Seed tamamlandı");
