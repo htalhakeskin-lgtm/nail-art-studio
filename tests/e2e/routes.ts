@@ -29,6 +29,7 @@ export const panelRoutes = [
   "/panel",
   "/panel/talepler",
   "/panel/hizmetler",
+  "/panel/musaitlik",
   "/panel/hizmetler/yeni",
   "/panel/galeri",
   "/panel/icerik",

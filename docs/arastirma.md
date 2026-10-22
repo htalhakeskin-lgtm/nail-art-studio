@@ -97,6 +97,19 @@ Karar mantığı §4: (1) Sürekli büyüyen kişisel veriyi tekrar görme zorun
 | Sektör modülü | X-GZL-01 (hizmet menüsü), X-GZL-04 (portfolyo → tek uzman profili), X-GZL-14 (stil galerisi → "Bu tasarımı istiyorum" olarak) | X-GZL-02 / 03 / 05 tek uzman ve S2 nedeniyle P2 |
 | Araştırma | PRJ-01 WhatsApp randevu köprüsü (API'siz) · PRJ-02 "Bu tasarımı istiyorum" · PRJ-03 yenileme (dolgu) hatırlatıcısı · eser etiketi biçiminde galeri kartı | Katalogda yok → Faz 8'de kataloğa önerilecek |
 
+## 9. Randevu sistemi ek araştırması (2026-10-22)
+
+Kullanıcı randevu sistemini öne aldı; plan §5 (V-30, A-16, PRJ-01…03) ve §9 (BR-RND-001…015) zaten tanımlı. Bu tur, uygulamadan önce arayüz ve yasal varsayımları yeniden doğrulamak için yapıldı.
+
+| Soru | Bulgu | Karar |
+|---|---|---|
+| Telefonda tarih / saat nasıl seçtirilir? | Yerel (iOS / Android) kaydırmalı saat seçicileri randevuda en büyük sürtünme kaynağı sayılıyor; ayrı saat / dakika açılır listeleri dönüşümü düşürüyor ([UX Movement](https://uxmovement.substack.com/p/the-best-mobile-ui-for-picking-date), [Eleken](https://www.eleken.co/blog-posts/time-picker-ux)). Kullanıcılar boş saate tek bakışta ulaşmayı önemsiyor ([CALMA çalışması](https://researchgate.net/profile/Sunil-2/publication/380574218_CALMA_A_Personalized_Android-Based_Salon_Appointment_Booking_System/links/664435c67091b94e932be66c/CALMA-A-Personalized-Android-Based-Salon-Appointment-Booking-System.pdf)) | Yerel seçici yok: yatay kayan **gün şeridi** (dolu gün gri) + yalnızca boş saatlerin **düğme ızgarası** (≥ 44 px), sabah / öğleden sonra gruplu |
+| Onay beklemeli mi, anında mı? | Pending ile anında onay arasındaki gelmeme farkını ölçen birincil veri bulunamadı; kaynaklar anında "talebiniz alındı" ekranını ve kolay erteleme / iptali öneriyor ([Fluent Booking](https://fluentbooking.com/articles/reduce-no-shows-salon/), [Goldie](https://heygoldie.com/blog/deal-with-nail-salon-no-show-appointments), [SumUp](https://www.sumup.com/en-gb/bookings/?path=%2F)) | P-07 = `request` korunur (tek uzman, tasarım süresi değişken); onay ekranı hemen kod + durum + "WhatsApp'tan ilet" verir; P-07 panelden `instant`'a çevrilebilir |
+| Gelmemeyi ne azaltır? | Mesajdan onay / erteleme / iptal imkânı ve otomatik hatırlatma (satıcı iddiaları; rakam doğrulanamadı) ([Zenoti](https://www.zenoti.com/salon-management-software/nail-salon-booking)) | Yönetim bağlantısıyla tek dokunuş erteleme / iptal (D-06); kapora yok (ödeme paketi dışı); hatırlatma demo kutusuna (D-06, günlük cron) |
+| Hatırlatma için izin gerekir mi? | Ticari elektronik iletide önceden onay ve İYS kaydı zorunlu; işlem / bilgilendirme niteliğindeki bildirimler ayrı tutuluyor, ancak randevu hatırlatması açıkça sayılmıyor ([Ticaret Bakanlığı](https://ticaret.gov.tr/haberler/ticari-elektronik-ileti-yonetim-sistemine-iliskin-basin-aciklamasi), [Paraşüt](https://www.parasut.com/blog/ileti-yonetim-sistemi-hakkinda-bilmeniz-gerekenler)) | Onay, hatırlatma ve erteleme mesajları **yalnızca randevu bilgisi** içerir; kampanya, indirim, "yeni randevu al" yok. Yenileme hatırlatıcısı e-posta değil, ziyaretçinin kendi takvimine eklediği `.ics` (PRJ-03). Canlıda hukuki teyit (Q-05) |
+| Yerli rakiplerde online takvim var mı? | Kadıköy'de kendi sitesinde gerçek müsaitlik gösteren stüdyo bulunamadı; platformlar (Armut, uygulama tabanlı stüdyolar) ya da form / DM kullanılıyor ([Armut](https://armut.com/atasehir-nail-art), [Ala Beaute](https://apps.apple.com/us/app/ala-beaute/id6449082094)) | §2'deki "boşluk" bulgusu geçerli: gerçek müsaitlik + galeriden randevu fark yaratır |
+| Saat dilimi | Türkiye 2016'dan beri sabit UTC+3 (yaz saati yok) | Yine de hesaplar `Europe/Istanbul` ile yapılır, UTC saklanır (BR-RND-015); kural değişirse kod değişmez |
+
 ## Kaynaklar
 
 - Cansu Cihaner Nail Studio — https://www.cansucihanerbeauty.com/ — 2026-10-16
@@ -114,3 +127,14 @@ Karar mantığı §4: (1) Sürekli büyüyen kişisel veriyi tekrar görme zorun
 - Hijyen Eğitimi Yönetmeliği (2013 metni) — https://www.alomaliye.com/2013/07/05/hijyen-egitimi-yonetmeligi/ — 2026-10-16
 - Google, NailSalon türü — https://developers.google.cn/gmail/markup/reference/types/NailSalon?hl=id — 2026-10-16
 - Meta, WhatsApp Business Platform fiyatlandırma — https://developers.facebook.com/docs/whatsapp/pricing — 2026-10-16
+- UX Movement, mobil tarih / saat seçimi — https://uxmovement.substack.com/p/the-best-mobile-ui-for-picking-date — 2026-10-22
+- Eleken, saat seçici UX — https://www.eleken.co/blog-posts/time-picker-ux — 2026-10-22
+- CALMA salon randevu uygulaması çalışması — https://researchgate.net/profile/Sunil-2/publication/380574218_CALMA_A_Personalized_Android-Based_Salon_Appointment_Booking_System/links/664435c67091b94e932be66c/CALMA-A-Personalized-Android-Based-Salon-Appointment-Booking-System.pdf — 2026-10-22
+- Fluent Booking, salonda gelmemeyi azaltma — https://fluentbooking.com/articles/reduce-no-shows-salon/ — 2026-10-22
+- Goldie, nail salon gelmeme — https://heygoldie.com/blog/deal-with-nail-salon-no-show-appointments — 2026-10-22
+- Zenoti, nail salon randevu — https://www.zenoti.com/salon-management-software/nail-salon-booking — 2026-10-22
+- SumUp Bookings — https://www.sumup.com/en-gb/bookings/?path=%2F — 2026-10-22
+- Ticaret Bakanlığı, İYS basın açıklaması — https://ticaret.gov.tr/haberler/ticari-elektronik-ileti-yonetim-sistemine-iliskin-basin-aciklamasi — 2026-10-22
+- Paraşüt, İYS hakkında — https://www.parasut.com/blog/ileti-yonetim-sistemi-hakkinda-bilmeniz-gerekenler — 2026-10-22
+- Armut, nail art ilanları — https://armut.com/atasehir-nail-art — 2026-10-22
+- Ala Beaute uygulaması — https://apps.apple.com/us/app/ala-beaute/id6449082094 — 2026-10-22

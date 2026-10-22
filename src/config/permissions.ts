@@ -12,6 +12,9 @@ export const PERMISSIONS = [
   "audit.view",
   "gallery.edit",
   "services.edit",
+  "appointments.view",
+  "appointments.manage",
+  "availability.edit",
   // Feature permissions, e.g. "appointments.view", "appointments.confirm"
 ] as const;
 
@@ -28,10 +31,13 @@ const matrix: Record<Role, readonly Permission[]> = {
     "content.edit",
     "gallery.edit",
     "services.edit",
+    "appointments.view",
+    "appointments.manage",
+    "availability.edit",
     "settings.edit",
     "audit.view",
   ],
-  staff: ["leads.view", "leads.edit"],
+  staff: ["leads.view", "leads.edit", "appointments.view", "appointments.manage"],
 };
 
 export function hasPermission(role: string | null | undefined, permission: Permission): boolean {

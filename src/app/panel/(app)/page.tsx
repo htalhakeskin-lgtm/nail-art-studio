@@ -9,6 +9,11 @@ export const metadata: Metadata = { title: "Özet" };
 /** Every module, also on phones where the bottom bar has room for five. */
 const sections = [
   { href: "/panel/talepler", label: "Talepler", hint: "İletişim formundan gelen mesajlar" },
+  {
+    href: "/panel/musaitlik",
+    label: "Müsaitlik",
+    hint: "Çalışma saatleri, izin, randevu kuralları",
+  },
   { href: "/panel/hizmetler", label: "Hizmetler", hint: "Menü, süreler, fiyat gösterimi" },
   { href: "/panel/galeri", label: "Galeri", hint: "Yayımla, ana sayfa seçkisi" },
   { href: "/panel/icerik", label: "İçerik", hint: "Hakkında metni, SSS" },

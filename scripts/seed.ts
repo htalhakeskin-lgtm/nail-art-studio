@@ -11,8 +11,22 @@ loadEnvConfig(process.cwd());
 async function main() {
   const { env } = await import("@/lib/env");
   const { db } = await import("@/server/db/client");
-  const { accounts, contentBlocks, faqs, galleryItems, leads, services, siteSettings, users } =
-    await import("@/server/db/schema");
+  const {
+    accounts,
+    appointments,
+    contentBlocks,
+    faqs,
+    galleryItems,
+    leads,
+    services,
+    siteSettings,
+    staff,
+    timeOff,
+    users,
+  } = await import("@/server/db/schema");
+  const booking = await import("@/features/booking/domain/availability");
+  const bookingTime = await import("@/features/booking/domain/time");
+  const { generateAppointmentCode } = await import("@/features/booking/domain/code");
   const { contentBlockDefaults } = await import("@/content/content-blocks");
   const { seedFaqs } = await import("@/content/faqs");
   const { seedGalleryItems } = await import("@/content/gallery");
@@ -142,6 +156,122 @@ async function main() {
     );
   }
 
+  /** The expert, a few closures and appointments around today (04-veri §11: relative dates). */
+  async function seedBooking() {
+    const [existing] = await db.select({ value: count() }).from(staff);
+    if ((existing?.value ?? 0) > 0) return;
+    const { addDays, addMinutes, istanbulDate, istanbulDateTime } = bookingTime;
+    const [expert] = await db
+      .insert(staff)
+      .values({ name: "Bahadır Karasu", slug: "bahadir-karasu", title: "Nail artist" })
+      .returning({ id: staff.id });
+    if (!expert) return;
+
+    const today = istanbulDate(new Date());
+    const closures = [
+      {
+        startsAt: istanbulDateTime(addDays(today, 8), "14:00"),
+        endsAt: istanbulDateTime(addDays(today, 8), "17:00"),
+        kind: "block" as const,
+        note: "Eğitim: yeni jel tekniği",
+      },
+      {
+        startsAt: istanbulDateTime(addDays(today, 12), "00:00"),
+        endsAt: istanbulDateTime(addDays(today, 13), "00:00"),
+        kind: "leave" as const,
+        note: "Kişisel izin",
+      },
+    ];
+    await db
+      .insert(timeOff)
+      .values(closures.map((closure) => ({ ...closure, staffId: expert.id })));
+
+    const bookable = (await db.select().from(services)).filter(
+      (service) => service.isActive && service.isBookable,
+    );
+    const works = await db.select({ id: galleryItems.id }).from(galleryItems).limit(6);
+    if (bookable.length === 0) return;
+    const customers = [
+      "Ayşe K.",
+      "Elif D.",
+      "Zeynep A.",
+      "Selin Ö.",
+      "Deniz T.",
+      "Ece Y.",
+      "Merve B.",
+      "İpek S.",
+      "Buse Ç.",
+      "Gizem U.",
+    ];
+    const bytes = (size: number) =>
+      Uint8Array.from({ length: size }, () => Math.floor(rand() * 256));
+    const rules = { ...siteDefaults.booking, minLeadHours: 0, horizonDays: 60 };
+    const busy: { start: Date; end: Date }[] = [];
+    const rows: (typeof appointments.$inferInsert)[] = [];
+    const usedCodes = new Set<string>();
+
+    for (let offset = -21; offset <= 14; offset += 1) {
+      const date = addDays(today, offset);
+      const context = {
+        weekly: siteDefaults.openingHours
+          .weekly as unknown as import("@/features/booking/domain/availability").WeeklyHours,
+        rules,
+        now: istanbulDateTime(addDays(today, -30), "00:00"),
+        busy,
+        closures: closures.map(({ startsAt, endsAt }) => ({ start: startsAt, end: endsAt })),
+      };
+      const perDay = 1 + Math.floor(rand() * 3);
+      for (let index = 0; index < perDay; index += 1) {
+        const service = pick(bookable);
+        const slots = booking.slotsForDay(context, date, service.durationMinutes);
+        if (slots.length === 0) continue;
+        const startsAt = pick(slots);
+        const endsAt = addMinutes(startsAt, service.durationMinutes);
+        const blockedUntil = addMinutes(endsAt, rules.bufferMinutes);
+        const past = offset < 0;
+        const roll = rand();
+        const status = past
+          ? roll < 0.7
+            ? "completed"
+            : roll < 0.8
+              ? "no_show"
+              : "cancelled"
+          : roll < 0.45
+            ? "pending"
+            : roll < 0.9
+              ? "confirmed"
+              : "cancelled";
+        if (status !== "cancelled") busy.push({ start: startsAt, end: blockedUntil });
+        let code = generateAppointmentCode(bytes);
+        while (usedCodes.has(code)) code = generateAppointmentCode(bytes);
+        usedCodes.add(code);
+        const createdAt = addMinutes(startsAt, -60 * 24 * (2 + Math.floor(rand() * 10)));
+        rows.push({
+          code,
+          staffId: expert.id,
+          serviceId: service.id,
+          startsAt,
+          endsAt,
+          blockedUntil,
+          status,
+          customerName: pick(customers),
+          customerPhone: `+90532000${String(2000 + rows.length).slice(-4)}`,
+          customerEmail: rand() < 0.4 ? `randevu${String(rows.length + 1)}@example.com` : null,
+          note: rand() < 0.25 ? "Kısa badem form, pastel tonlar düşünüyorum." : null,
+          preferredChannel: "whatsapp",
+          referenceGalleryItemId: works.length > 0 && rand() < 0.3 ? pick(works).id : null,
+          source: rand() < 0.75 ? "online" : "admin",
+          confirmedAt:
+            status === "pending" || status === "cancelled" ? null : addMinutes(createdAt, 90),
+          cancelledAt: status === "cancelled" ? addMinutes(startsAt, -60 * 30) : null,
+          cancelledBy: status === "cancelled" ? (rand() < 0.5 ? "customer" : "admin") : null,
+          createdAt,
+        });
+      }
+    }
+    if (rows.length > 0) await db.insert(appointments).values(rows);
+  }
+
   async function seedLeads() {
     // Fictional people only; phones use the 000 block, e-mails example.com (17 §3).
     const names = [
@@ -184,6 +314,7 @@ async function main() {
   await seedFaqRows();
   await seedGallery();
   await seedServiceRows();
+  await seedBooking();
   await seedDemoAdmin();
   await seedLeads();
   console.log("✓ Seed tamamlandı");

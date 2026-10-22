@@ -1,15 +1,23 @@
 import { connection } from "next/server";
 import { Suspense } from "react";
 
+import { listClosedDays } from "@/features/booking";
 import { describeOpenStatus, openStatus, type SiteSettings } from "@/features/site";
 import { cn } from "@/lib/utils";
+import { logger } from "@/server/logger";
 
 type Hours = SiteSettings["openingHours"];
 
 async function OpenNowStatus({ hours }: { hours: Hours }) {
   // Request time, not build time: the rest of the page stays static (Cache Components).
   await connection();
-  const status = openStatus(hours, new Date());
+  const now = new Date();
+  // Closures entered in the panel close the whole day too; the site still works without them.
+  const closed = await listClosedDays(now).catch((error: unknown) => {
+    logger.error("open_now.closures_failed", { error: String(error) });
+    return [];
+  });
+  const status = openStatus({ ...hours, holidays: [...hours.holidays, ...closed] }, now);
   return (
     <>
       <span

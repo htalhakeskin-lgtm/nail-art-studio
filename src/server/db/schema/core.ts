@@ -33,6 +33,8 @@ export const siteSettings = pgTable(
     seo: jsonb().$type<Record<string, unknown>>().notNull().default({}),
     // P-08 price display (K-05): hidden ("contact") unless the owner turns it on.
     pricing: jsonb().$type<Record<string, unknown>>().notNull().default({ display: "contact" }),
+    // P-01…P-07 booking parameters (src/config/booking.ts); empty = defaults.
+    booking: jsonb().$type<Record<string, unknown>>().notNull().default({}),
     maintenanceMode: boolean().notNull().default(false),
     ...version,
     ...timestamps,

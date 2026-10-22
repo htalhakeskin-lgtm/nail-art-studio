@@ -1,3 +1,5 @@
+import { BOOKING_DEFAULTS } from "./booking";
+
 /**
  * Defaults for the site_settings row (02-mimari §4). The panel edits the database copy;
  * these values seed it and are the fallback during the very first deploy.
@@ -36,6 +38,7 @@ export const siteDefaults = {
     holidays: [] as { date: string; label: string }[],
   },
   pricing: { display: "contact" },
+  booking: BOOKING_DEFAULTS,
   social: { instagram: "bahadirkarasunails", facebook: "", linkedin: "", youtube: "" },
   theme: { preset: "studyo-galeri" },
   features: { appointments: true, blog: false, newsletter: false },

@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { BOOKING_MODES } from "@/config/booking";
 import { PRICE_DISPLAY_MODES } from "@/config/services";
 
 /**
@@ -46,6 +47,15 @@ export const siteSettingsSchema = z.object({
   openingHours: openingHoursSchema,
   social: socialSchema,
   pricing: z.object({ display: z.enum(PRICE_DISPLAY_MODES) }),
+  booking: z.object({
+    bufferMinutes: z.number().int().min(0).max(120),
+    slotStepMinutes: z.number().int().min(5).max(120),
+    minLeadHours: z.number().int().min(0).max(168),
+    horizonDays: z.number().int().min(1).max(365),
+    manageCutoffHours: z.number().int().min(0).max(168),
+    maxFuturePerPhone: z.number().int().min(1).max(10),
+    mode: z.enum(BOOKING_MODES),
+  }),
   theme: z.object({ preset: z.string() }),
   features: z.object({ appointments: z.boolean(), blog: z.boolean(), newsletter: z.boolean() }),
   seo: z.object({
