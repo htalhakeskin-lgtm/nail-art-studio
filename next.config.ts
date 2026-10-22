@@ -38,7 +38,11 @@ const nextConfig: NextConfig = {
   // plan §10: true for public-content-heavy sites (static shell + streamed dynamic parts), false
   // when most screens are behind login. create-next-app turns it on by default.
   cacheComponents: true,
-  partialPrefetching: true,
+  // Off (K-42): with it on, a client navigation to a page whose cache tag was just updated got
+  // the runtime prerender with its metadata holes unfilled → "Connection closed" (React #412)
+  // and the global error page. Reproduced on 16.4.2 by hiding a work in the panel, then
+  // following "Sonraki eser".
+  partialPrefetching: false,
   typedRoutes: true,
   turbopack: {
     rules: {

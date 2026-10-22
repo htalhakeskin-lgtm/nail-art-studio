@@ -45,6 +45,7 @@ export const panelRoutes = [
   "/panel/icerik/hijyen",
   "/panel/yorumlar",
   "/panel/yorumlar/yeni",
+  "/panel/onaylar",
   "/panel/demo-kutusu",
 ] as const;
 

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { siteDefaults } from "@/config/site-defaults";
 
 import type { SiteSettings } from "../schemas";
-import { localBusinessData } from "./local-business";
+import { localBusinessData, personData } from "./local-business";
 
 const settings = siteDefaults as unknown as SiteSettings;
 const data = localBusinessData(settings, {
@@ -39,5 +39,22 @@ describe("localBusinessData (REQ-010)", () => {
     for (const key of ["priceRange", "Offer", "aggregateRating", "review"]) {
       expect(json).not.toContain(key);
     }
+  });
+});
+
+describe("personData (REQ-020)", () => {
+  it("names the owner, links the business and Instagram, and has no sample biography", () => {
+    const person = personData(settings, {
+      url: "https://ornek.test/hakkinda",
+      businessId: "https://ornek.test/#isletme",
+    });
+    expect(person).toEqual({
+      "@type": "Person",
+      name: "Bahadır Karasu",
+      jobTitle: "Nail artist",
+      url: "https://ornek.test/hakkinda",
+      worksFor: { "@id": "https://ornek.test/#isletme" },
+      sameAs: ["https://www.instagram.com/bahadirkarasunails/"],
+    });
   });
 });

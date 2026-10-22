@@ -17,7 +17,7 @@ import { env } from "@/lib/env";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Hizmetler: kalıcı oje, jel, protez, nail art",
+  title: "Hizmetler: kalıcı oje, jel, protez",
   description:
     "Kadıköy Moda'da kalıcı oje, jel güçlendirme, protez tırnak, el boyaması nail art, manikür ve pedikür. Süreler, dayanım ve bakım önerileri.",
   path: "/hizmetler",

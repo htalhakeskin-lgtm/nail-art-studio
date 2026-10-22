@@ -16,6 +16,7 @@ import { notFound } from "next/navigation";
 import { connection } from "next/server";
 
 import { Sparkle } from "@/components/common/pastel-blobs";
+import { TrackEvent } from "@/components/common/site-analytics";
 import { Button } from "@/components/ui/button";
 import {
   addDays,
@@ -135,6 +136,7 @@ export default async function ManageAppointmentPage({
       <div className="mx-auto max-w-xl">
         {isNew && (
           <div className="text-center">
+            <TrackEvent name="booking_completed" />
             <CheckCircle2 aria-hidden="true" className="mx-auto size-12 text-success" />
             <h1 className="mt-4 text-4xl font-medium tracking-tight md:text-5xl">
               {appointment.status === "confirmed" ? "Randevunuz alındı" : "Talebiniz alındı"}

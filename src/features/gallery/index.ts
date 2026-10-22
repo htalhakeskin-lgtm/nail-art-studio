@@ -23,6 +23,7 @@ export {
   neighbours,
   similarItems,
 } from "./domain/neighbours";
+export { workImageData } from "./domain/structured-data";
 export { saveGalleryItem, uploadGalleryImage } from "./editor-actions";
 export {
   GALLERY_TAG,

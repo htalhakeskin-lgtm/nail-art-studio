@@ -14,6 +14,7 @@ async function main() {
   const {
     accounts,
     appointments,
+    consentRecords,
     contentBlocks,
     faqs,
     galleryItems,
@@ -354,6 +355,40 @@ async function main() {
     await db.insert(leads).values(rows).onConflictDoNothing();
   }
 
+  /**
+   * The notice record each demo form submission would have left (REQ-019): one per request
+   * and online appointment, with the legal text versions in force (K-32).
+   */
+  async function seedConsentRecords() {
+    const [existing] = await db.select({ value: count() }).from(consentRecords);
+    if ((existing?.value ?? 0) > 0) return;
+    const { readFile } = await import("node:fs/promises");
+    const path = await import("node:path");
+    const { parseLegalDocument } = await import("@/features/legal/domain/parse");
+    const { legalDocuments } = await import("@/features/legal/documents");
+    const version = async (file: string) =>
+      parseLegalDocument(await readFile(path.join(process.cwd(), "content", "yasal", file), "utf8"))
+        .meta.surum;
+    const textVersion = `kvkk-${await version(legalDocuments.kvkk.file)}+form-${await version("form-metinleri.md")}`;
+    const requestRows = await db.select({ id: leads.id, createdAt: leads.createdAt }).from(leads);
+    const bookingRows = await db
+      .select({ id: appointments.id, createdAt: appointments.createdAt })
+      .from(appointments)
+      .where(eq(appointments.source, "online"));
+    const rows = [
+      ...requestRows.map((row) => ({ ...row, source: "contactForm" })),
+      ...bookingRows.map((row) => ({ ...row, source: "appointmentForm" })),
+    ].map(({ id: subjectRef, createdAt, source }) => ({
+      kind: "information_notice",
+      granted: true,
+      textVersion,
+      source,
+      subjectRef,
+      createdAt,
+    }));
+    if (rows.length > 0) await db.insert(consentRecords).values(rows);
+  }
+
   await seedSettings();
   await seedContentBlocks();
   await seedFaqRows();
@@ -364,6 +399,7 @@ async function main() {
   await seedBooking();
   await seedDemoAdmin();
   await seedLeads();
+  await seedConsentRecords();
   console.log("✓ Seed tamamlandı");
 }
 
