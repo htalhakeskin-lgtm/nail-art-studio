@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   LogOut,
   MessagesSquare,
+  Quote,
   Scissors,
 } from "lucide-react";
 import Link from "next/link";
@@ -28,6 +29,7 @@ const links = [
   { href: "/panel/hizmetler", label: "Hizmetler", icon: Scissors, tab: false },
   { href: "/panel/musaitlik", label: "Müsaitlik", icon: CalendarClock, tab: false },
   { href: "/panel/icerik", label: "İçerik", icon: FileText, tab: false },
+  { href: "/panel/yorumlar", label: "Yorumlar", icon: Quote, tab: false },
   { href: "/panel/demo-kutusu", label: "Demo kutusu", icon: Inbox, tab: false },
 ] as const;
 

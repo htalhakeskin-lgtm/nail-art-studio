@@ -7,3 +7,4 @@ export * from "./faqs";
 export * from "./gallery";
 export * from "./media";
 export * from "./services";
+export * from "./testimonials";

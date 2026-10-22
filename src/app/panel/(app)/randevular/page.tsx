@@ -1,6 +1,7 @@
 import { CalendarPlus, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata, Route } from "next";
 import Link from "next/link";
+import { connection } from "next/server";
 
 import { Button } from "@/components/ui/button";
 import { APPOINTMENT_STATUSES } from "@/config/booking";
@@ -31,6 +32,7 @@ type View = "gun" | "hafta";
  */
 export default async function AppointmentsPage({ searchParams }: PageProps<"/panel/randevular">) {
   const query = await searchParams;
+  await connection(); // "today" is the request day, never a prefetch or build time
   const today = istanbulDate(new Date());
   const date = isDate(one(query.tarih)) ? (one(query.tarih) as string) : today;
   const view: View = one(query.gorunum) === "hafta" ? "hafta" : "gun";

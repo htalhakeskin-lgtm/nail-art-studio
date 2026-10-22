@@ -16,9 +16,50 @@ export const aboutBlockSchema = z.object({
   closing: markdown,
 });
 
+/**
+ * Step lists on the home page (V-16 "Nasıl ilerliyoruz", V-15 hygiene card): a heading, a
+ * short intro, 2–6 steps and an optional note (the hygiene card's training certificate).
+ */
+export const stepsBlockSchema = z.object({
+  heading: z.string().trim().min(3, "Başlık en az 3 karakter olmalı.").max(80),
+  intro: z.string().trim().max(400, "Giriş en fazla 400 karakter olabilir."),
+  steps: z
+    .array(
+      z.object({
+        title: z.string().trim().min(2, "Adım başlığını yazın.").max(60),
+        body: z.string().trim().min(10, "Adımı bir cümleyle anlatın.").max(300),
+      }),
+    )
+    .min(2, "En az iki adım yazın.")
+    .max(6),
+  note: z.string().trim().max(200),
+});
+
+export const STEPS_BLOCK_KEYS = ["process", "hygiene"] as const;
+export type StepsBlockKey = (typeof STEPS_BLOCK_KEYS)[number];
+
 export const contentBlockSchemas = {
   about: aboutBlockSchema,
+  process: stepsBlockSchema,
+  hygiene: stepsBlockSchema,
 } as const;
+
+export type StepsFormValues = z.input<typeof stepsBlockSchema>;
+
+/** Panel form → schema input. Up to six step slots; empty slots are dropped. */
+export function stepsFormValues(formData: FormData): StepsFormValues {
+  const text = (name: string) => {
+    const value = formData.get(name);
+    return typeof value === "string" ? value : "";
+  };
+  const steps = [0, 1, 2, 3, 4, 5]
+    .map((index) => ({
+      title: text(`steps.${String(index)}.title`),
+      body: text(`steps.${String(index)}.body`),
+    }))
+    .filter((step) => step.title.trim() !== "" || step.body.trim() !== "");
+  return { heading: text("heading"), intro: text("intro"), steps, note: text("note") };
+}
 
 export type ContentBlockKey = keyof typeof contentBlockSchemas;
 export type ContentBlock<K extends ContentBlockKey> = z.infer<(typeof contentBlockSchemas)[K]>;

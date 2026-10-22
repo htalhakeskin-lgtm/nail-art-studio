@@ -2,6 +2,7 @@ import "server-only";
 
 import { eq } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
+import type { z } from "zod";
 
 import { contentBlockDefaults } from "@/content/content-blocks";
 import { db } from "@/server/db/client";
@@ -17,10 +18,12 @@ export function parseContentBlock<K extends ContentBlockKey>(
   key: K,
   value: unknown,
 ): ContentBlock<K> {
-  const parsed = contentBlockSchemas[key].safeParse(value);
+  // The schema map is keyed by K, but TypeScript widens the union: narrow the result once here.
+  const schema = contentBlockSchemas[key] as unknown as z.ZodType<ContentBlock<K>>;
+  const parsed = schema.safeParse(value);
   if (parsed.success) return parsed.data;
   logger.warn("content_block.invalid", { key });
-  return contentBlockSchemas[key].parse(contentBlockDefaults[key]);
+  return schema.parse(contentBlockDefaults[key]);
 }
 
 /** Cached for every visitor; falls back to the defaults when the row is missing. */

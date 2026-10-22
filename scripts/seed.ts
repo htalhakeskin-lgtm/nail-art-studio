@@ -21,6 +21,7 @@ async function main() {
     services,
     siteSettings,
     staff,
+    testimonials,
     timeOff,
     users,
   } = await import("@/server/db/schema");
@@ -31,6 +32,7 @@ async function main() {
   const { seedFaqs } = await import("@/content/faqs");
   const { seedGalleryItems } = await import("@/content/gallery");
   const { seedServices } = await import("@/content/services");
+  const { seedTestimonials } = await import("@/content/testimonials");
   const { demoImages } = await import("@/content/demo-images");
   const { and, count, eq } = await import("drizzle-orm");
   const { newId } = await import("@/server/db/columns");
@@ -175,6 +177,27 @@ async function main() {
           sortOrder,
         };
       }),
+    );
+  }
+
+  async function seedTestimonialRows() {
+    // Only into an empty table: panel edits are never overwritten.
+    const [existing] = await db.select({ value: count() }).from(testimonials);
+    if ((existing?.value ?? 0) > 0) return;
+    const serviceIds = new Map(
+      (await db.select({ id: services.id, slug: services.slug }).from(services)).map((row) => [
+        row.slug,
+        row.id,
+      ]),
+    );
+    await db.insert(testimonials).values(
+      seedTestimonials.map(({ serviceSlug, isVisible, ...item }, index) => ({
+        ...item,
+        serviceId: (serviceSlug && serviceIds.get(serviceSlug)) || null,
+        isSample: true,
+        isVisible: isVisible ?? true,
+        sortOrder: (index + 1) * 10,
+      })),
     );
   }
 
@@ -337,6 +360,7 @@ async function main() {
   await refreshUntouchedFaqs();
   await seedGallery();
   await seedServiceRows();
+  await seedTestimonialRows();
   await seedBooking();
   await seedDemoAdmin();
   await seedLeads();
