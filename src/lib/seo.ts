@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import { env } from "@/lib/env";
 import { publicEnv } from "@/lib/public-env";
+import { fitTitle } from "@/lib/text";
 
 /**
  * One helper for every public page's metadata (09-seo §2). Demo mode is enforced here:
@@ -15,6 +16,8 @@ type PageSeo = {
   path: string; // "/hizmetler/dis-beyazlatma"
   image?: string; // absolute or site-relative; defaults to the route's opengraph-image
   noindex?: boolean; // thank-you pages, filtered combinations…
+  /** Site title template: titles built from data (service, work names) are fitted to 60 chars. */
+  titleTemplate?: string;
 };
 
 export function absoluteUrl(path: string): string {
@@ -27,10 +30,13 @@ export function pageMetadata({
   path,
   image,
   noindex = false,
+  titleTemplate,
 }: PageSeo): Metadata {
   const index = !env.DEMO_MODE && !noindex;
+  const fitted = titleTemplate ? fitTitle(title, titleTemplate) : title;
+  const shown = typeof fitted === "string" ? fitted : fitted.absolute;
   return {
-    title,
+    title: fitted,
     description,
     alternates: { canonical: absoluteUrl(path) },
     robots: { index, follow: index },
@@ -38,11 +44,11 @@ export function pageMetadata({
       type: "website",
       locale: "tr_TR",
       url: absoluteUrl(path),
-      title,
+      title: shown,
       description,
       ...(image ? { images: [{ url: image, width: 1200, height: 630 }] } : {}),
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title: shown, description },
   };
 }
 

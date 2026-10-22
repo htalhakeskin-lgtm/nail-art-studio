@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { Sparkle } from "@/components/common/pastel-blobs";
+import { TrackEvent } from "@/components/common/site-analytics";
 import { Button } from "@/components/ui/button";
 import { isLeadCode } from "@/features/leads";
 import { getSiteSettings, whatsappHref } from "@/features/site";
@@ -55,6 +56,7 @@ export default function ContactThanksPage({ searchParams }: PageProps<"/iletisim
   return (
     <section className="container-page section-y">
       <div className="mx-auto max-w-xl text-center">
+        <TrackEvent name="lead_submitted" />
         <CheckCircle2 aria-hidden="true" className="mx-auto size-12 text-success" />
         <h1 className="mt-4 text-4xl font-medium tracking-tight md:text-5xl">
           Mesajınız bize ulaştı

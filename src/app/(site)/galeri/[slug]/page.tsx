@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { Sparkle } from "@/components/common/pastel-blobs";
+import { JsonLd } from "@/components/common/safe-html";
 import { Button } from "@/components/ui/button";
 import {
   BeforeAfter,
@@ -22,11 +23,13 @@ import {
   similarItems,
   Swatch,
   toCardData,
+  workImageData,
 } from "@/features/gallery";
 import { getSiteSettings, whatsappHref } from "@/features/site";
 import { env } from "@/lib/env";
 import { formatDuration } from "@/lib/format";
-import { absoluteUrl, pageMetadata } from "@/lib/seo";
+import { absoluteUrl, jsonLd, pageMetadata } from "@/lib/seo";
+import { truncateWords } from "@/lib/text";
 
 /**
  * Every published work is prerendered from generateStaticParams; one published later renders
@@ -53,15 +56,17 @@ async function findWork(slug: string) {
 
 export async function generateMetadata({ params }: PageProps<"/galeri/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const found = await findWork(slug);
+  const [found, settings] = await Promise.all([findWork(slug), getSiteSettings()]);
   if (!found) return { title: "Eser bulunamadı", robots: { index: false } };
   const { item } = found;
   return pageMetadata({
     title: `${item.title} · ${formatWorkNumber(item.number)}`,
-    description: (
+    titleTemplate: settings.seo.titleTemplate,
+    description: truncateWords(
       item.description ??
-      `${galleryStyleLabels[item.style]} nail art, ${galleryTechniqueLabels[item.technique]}.`
-    ).slice(0, 160),
+        `${galleryStyleLabels[item.style]} nail art, ${galleryTechniqueLabels[item.technique]}.`,
+      160,
+    ),
     path: `/galeri/${item.slug}`,
     image: absoluteUrl(`${item.imagePath}-960.webp`),
   });
@@ -87,6 +92,16 @@ export default async function GalleryWorkPage({ params }: PageProps<"/galeri/[sl
 
   return (
     <article className="container-page section-y">
+      <JsonLd
+        json={jsonLd(
+          workImageData(item, {
+            pageUrl: absoluteUrl(`/galeri/${item.slug}`),
+            imageUrl: absoluteUrl(`${item.imagePath}-1600.webp`),
+            owner: settings.company.owner,
+            businessId: `${absoluteUrl("/")}#isletme`,
+          }),
+        )}
+      />
       <Breadcrumbs
         items={[
           { label: "Galeri", href: "/galeri" },

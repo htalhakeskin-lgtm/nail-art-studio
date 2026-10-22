@@ -10,6 +10,7 @@ import {
   MessagesSquare,
   Quote,
   Scissors,
+  ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -30,6 +31,7 @@ const links = [
   { href: "/panel/musaitlik", label: "Müsaitlik", icon: CalendarClock, tab: false },
   { href: "/panel/icerik", label: "İçerik", icon: FileText, tab: false },
   { href: "/panel/yorumlar", label: "Yorumlar", icon: Quote, tab: false },
+  { href: "/panel/onaylar", label: "Onaylar", icon: ShieldCheck, tab: false },
   { href: "/panel/demo-kutusu", label: "Demo kutusu", icon: Inbox, tab: false },
 ] as const;
 

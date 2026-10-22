@@ -24,6 +24,7 @@ const schema = z
     BLOB_READ_WRITE_TOKEN: z.string().min(1).optional(),
     TURNSTILE_SECRET_KEY: z.string().min(1).optional(),
     SENTRY_DSN: z.url().optional(),
+    VERCEL: z.stringbool().default(false), // set to "1" by Vercel: analytics script exists there only
   })
   .superRefine((value, ctx) => {
     if (value.DEMO_MODE) return;

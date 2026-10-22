@@ -4,12 +4,13 @@ import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { FramedImage } from "@/components/common/framed-image";
 import { MarkdownContent } from "@/components/common/markdown";
+import { JsonLd } from "@/components/common/safe-html";
 import { Button } from "@/components/ui/button";
 import { demoImages } from "@/content/demo-images";
 import { getContentBlock } from "@/features/content";
-import { getSiteSettings, instagramHref, whatsappHref } from "@/features/site";
+import { getSiteSettings, instagramHref, personData, whatsappHref } from "@/features/site";
 import { env } from "@/lib/env";
-import { pageMetadata } from "@/lib/seo";
+import { absoluteUrl, jsonLd, pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { company } = await getSiteSettings();
@@ -28,6 +29,14 @@ export default async function AboutPage() {
 
   return (
     <article className="container-page section-y">
+      <JsonLd
+        json={jsonLd(
+          personData(settings, {
+            url: absoluteUrl("/hakkinda"),
+            businessId: `${absoluteUrl("/")}#isletme`,
+          }),
+        )}
+      />
       <Breadcrumbs items={[{ label: "Hakkında", href: "/hakkinda" }]} />
 
       <header className="mt-8 grid items-end gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">

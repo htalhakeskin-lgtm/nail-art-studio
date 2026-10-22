@@ -2,7 +2,7 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.13 |
+| Belge sürümü | v0.14 |
 | Tarih | 2026-10-22 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4. P0 dilimleri (D-01…D-09) ve D-10 (ana sayfa tamamlama) bitti. Kullanıcı 2026-10-22'de "proje bitene kadar ilerle" dedi: P1 dilimleri onaylı sayıldı (K-17). Sıradaki: D-11 SEO denetimi + ölçüm.
+> **Güncel durum:** Faz 4. P0 dilimleri (D-01…D-09), D-10 ve D-11 bitti. Kullanıcı 2026-10-22'de "proje bitene kadar ilerle" dedi: P1 dilimleri onaylı sayıldı (K-17). Sıradaki: D-12 cila + kalite paketi.
 
 ---
 
@@ -620,6 +620,8 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-38 | 2026-10-22 | Panel randevu: "Bugün" panelin ana ekranı (3 gösterge + günün ajandası + tek dokunuş "Onayla"); ajanda gün / hafta + durum süzgeci URL'de; elle randevu aynı motorla, yalnızca P-03 (en erken randevu) uygulanmaz, onaylı başlar; WhatsApp şablonları (onay, hatırlatma, değişiklik iste) kodda sabit — panelden şablon düzenleme (REQ-005c'nin ikinci yarısı) P2. Yönetim bağlantısı yalnızca karması saklandığı için panelde gösterilemez; "Yönetim bağlantısını gönder" yeni token üretir (eskisi geçersiz) ve WhatsApp'ı bağlantılı onay mesajıyla açar. Telefon alt çubuğu: Bugün · Randevular · Talepler · Galeri · Site; diğer modüller "Bugün" sayfasındaki Bölümler'den | Tek uzman günü telefondan yönetir; şablon düzenleme ekranı S2 zaman kutusunda düşük getiri; düz token saklamak BR-RND-009'u bozardı |
 | K-39 | 2026-10-22 | Yükleme: fotoğraf önce tarayıcıda ≤ 2560 px JPEG'e küçültülür (Vercel istek sınırı ~4,5 MB; `bodySizeLimit` 4 MB), sunucu ilk baytlardan türü belirler, ≥ 600 px ister, `sharp` ile 4:5 kırpar (öncesi / sonrası aynı oranda: BR-GLR-001 tasarımla sağlanır), 480 / 960 / 1600 WebP üretir, EXIF / GPS düşer. Depolama: `BLOB_READ_WRITE_TOKEN` varsa Vercel Blob (`nail-art-studio-media`, fra1, public), yoksa `media_files` tablosu + `/media/[file]` (yerel, CI). Her iki durumda sayfa tek taban yolu saklar, yükleyici "-genişlik.webp" ekler. Her yükleme ayrı istek (P-14). Yeni eser temsilî değildir, izin olmadan yayımlanmaz (BR-GLR-003), galerinin başına eklenir. Demo'da öncesi / sonrası çifti yok: aynı elden gerçek bir çift bulunamadı, farklı ellerden eşleştirme yanıltıcı olurdu; bölüm yalnızca gerçek çiftle görünür | Telefon fotoğrafları 5–12 MB; Vercel'e tek istekte sığmaz. Blob yokken `next start` çalışma sırasında `public/`'e yazılanı sunmaz. Sanatçı sitesinde sahte dönüşüm en büyük güven riski (RSK-01) |
 | K-40 | 2026-10-22 | Ana sayfa D-10: "En yakın boş saatler" menüdeki ilk online randevuya açık hizmetin (kalıcı oje) süresiyle hesaplanır, istek başına Suspense içinde akar (sayfanın geri kalanı statik kabuk); her saat `/randevu?hizmet&tarih&saat#adim-bilgi` açar. Süreç ve hijyen adımları `content_blocks` (`process`, `hygiene`; 2–6 adım + not) ve panelden düzenlenir. Yorumlar `testimonials` tablosunda; `is_sample` olanlar kartta "Örnek yorum" etiketi taşır, ilk 6 görünür yorum yatay elle kaydırmalı satırda, yapılandırılmış veri hiçbir zaman basılmaz. Gerçek yorum için izin şartı panelde metinle hatırlatılır (ayrı onay kaydı P2). Öncesi / sonrası bölümü yalnızca yayımlı gerçek çift varsa görünür (K-39) | Tek hizmetin saatleri ziyaretçiye "bu hafta yer var mı" sorusunu tek bakışta cevaplar; her hizmet için ayrı liste ana sayfayı kalabalıklaştırır. Yorumlar demo; RSK-03 |
+| K-41 | 2026-10-22 | D-11 SEO + ölçüm. Şemalar: eser sayfasında `ImageObject` (temsilî stok fotoğraf fotoğrafçısına ve Pexels lisansına atfedilir, işletmeye asla; stüdyo işi işletmeciye), Hakkında'da `Person` (yalnızca ad, unvan, işletme, Instagram: örnek biyografi şemaya girmez), hizmette `Service` (D-03). Veriden kurulan başlıklar şablonla 60 karakteri aşarsa önce marka eki düşer, sonra kelimeden kısalır; açıklamalar düz metin, kelimeden kesilir. Canlı `robots.txt` `/randevu/yonet/`'i de dışlar. Ölçüm: Vercel Web Analytics projede açıldı (2026-10-22, API); betik yalnızca Vercel'de (`VERCEL=1`) ve herkese açık sayfalarda, kendi alan adından yüklenir; sayfa adresleri sorgusuz ve yönetim anahtarı `[token]` ile gönderilir. Dönüşüm olayları tek tıklama dinleyicisiyle bağlantının hedefinden sınıflanır (WhatsApp, ara, yol tarifi, tasarım seçildi, randevu başladı), sayfa olayları onay ekranlarında (randevu tamamlandı, talep gönderildi). Vercel belgelerine göre özel olaylar Pro planda kaydedilir; Hobby'de yalnızca sayfa görüntüleme görünür, çağrılar zararsız kalır. Onay kayıtları ekranı `/panel/onaylar` (`audit.view`: sahip ve yönetici), sayfalı kart listesi + CSV (`;`, UTF-8 BOM, formül etkisizleştirme) | Kurgusal içerik şemada gerçek bilgi gibi sunulmaz (VR-09). Çerezsiz ve birinci taraf betik K-13 / K-19'u korur: çerez bandı gerekmez. Paket planda vardı (§10) |
+| K-42 | 2026-10-22 | `partialPrefetching` kapatıldı (`cacheComponents` açık kalır). Açıkken, önbellek etiketi az önce güncellenmiş bir sayfaya istemci gezintisi, çalışma anında yeniden üretilen PPR yanıtını meta veri delikleri doldurulmadan alıyordu: React #412 "Connection closed" → genel hata sayfası. Belirleyici yeniden üretim: panelde bir eseri gizle / yayımla, ardından eser sayfasında "Sonraki eser". Kapalıyken 5 / 5 ve tam paket temiz | Ziyaretçiye hata sayfası göstermek, daha ince taneli ön yüklemenin kazancından ağır basar; Next 16.4.2'deki deneysel özellik yeni sürümde yeniden denenir (P2) |
 
 **Değişiklik kaydı:**
 
@@ -638,3 +640,4 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | 2026-10-22 | v0.11 | D-07: K-38 (panel randevu, bağlantı yenileme, şablonlar); randevu sistemi tamam |
 | 2026-10-22 | v0.12 | D-09: K-39 (yükleme, depolama, öncesi / sonrası); `media_assets`, `media_files` |
 | 2026-10-22 | v0.13 | D-10: K-40 (ana sayfa tamamlama); `testimonials`, `content_blocks.process / hygiene` |
+| 2026-10-22 | v0.14 | D-11: K-41 (şemalar, başlık sığdırma, Web Analytics + olaylar, onay kayıtları ekranı), K-42 (`partialPrefetching` kapalı) |

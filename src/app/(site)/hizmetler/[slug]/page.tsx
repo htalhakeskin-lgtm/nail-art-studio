@@ -29,6 +29,7 @@ import { env } from "@/lib/env";
 import { formatDuration } from "@/lib/format";
 import { markdownToPlainText } from "@/lib/markdown";
 import { absoluteUrl, jsonLd, pageMetadata } from "@/lib/seo";
+import { truncateWords } from "@/lib/text";
 
 /**
  * Every active service is prerendered; one added later renders on its first visit. Params are
@@ -53,12 +54,13 @@ export async function generateMetadata({
   params,
 }: PageProps<"/hizmetler/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const found = await findService(slug);
+  const [found, settings] = await Promise.all([findService(slug), getSiteSettings()]);
   if (!found) return { title: "Hizmet bulunamadı", robots: { index: false } };
   const { service } = found;
   return pageMetadata({
     title: `${service.name} Kadıköy`,
-    description: service.summary.slice(0, 160),
+    titleTemplate: settings.seo.titleTemplate,
+    description: truncateWords(markdownToPlainText(service.summary), 160),
     path: `/hizmetler/${service.slug}`,
     ...(service.coverImagePath ? { image: absoluteUrl(`${service.coverImagePath}-960.webp`) } : {}),
   });

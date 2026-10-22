@@ -51,3 +51,22 @@ export function localBusinessData(
     ...(handle ? { sameAs: [`https://www.instagram.com/${handle}/`] } : {}),
   };
 }
+
+/**
+ * `Person` for the about page (G-07, REQ-020): only real, visible facts (K-04: name, Instagram).
+ * The biography is sample text, so it never becomes a description here (RSK-03).
+ */
+export function personData(
+  settings: SiteSettings,
+  options: { url: string; businessId: string },
+): Record<string, unknown> {
+  const handle = settings.social.instagram.replace(/^@/, "").trim();
+  return {
+    "@type": "Person",
+    name: settings.company.owner,
+    jobTitle: "Nail artist",
+    url: options.url,
+    worksFor: { "@id": options.businessId },
+    ...(handle ? { sameAs: [`https://www.instagram.com/${handle}/`] } : {}),
+  };
+}
