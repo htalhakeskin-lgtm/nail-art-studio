@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-import type { GalleryColor } from "../schemas";
+import type { GalleryColor } from "../labels";
 
 /** Static class names so Tailwind sees them (tokens: --swatch-* in globals.css). */
 const swatchClasses: Record<GalleryColor, string> = {

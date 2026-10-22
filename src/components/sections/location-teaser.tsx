@@ -13,7 +13,7 @@ import { env } from "@/lib/env";
 export function LocationTeaser({ settings }: { settings: SiteSettings }) {
   const { company } = settings;
   return (
-    <section aria-labelledby="konum-ozet" className="container-page pb-(--section-y)">
+    <section aria-labelledby="konum-ozet" className="reveal container-page pb-(--section-y)">
       <div className="mx-auto grid max-w-5xl gap-6 rounded-[2rem] bg-linear-to-br from-nane via-surface-muted to-lila p-6 md:grid-cols-[1fr_auto] md:items-center md:p-10">
         <div>
           <h2 id="konum-ozet" className="text-3xl font-medium md:text-4xl">

@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { z } from "zod";
 
 import { Breadcrumbs } from "@/components/common/panel-breadcrumbs";
-import { GalleryItemForm, getGalleryItemForPanel } from "@/features/gallery";
+import { getGalleryItemForPanel } from "@/features/gallery";
+import { GalleryItemForm } from "@/features/gallery/forms";
 
 export const metadata: Metadata = { title: "İşi düzenle" };
 

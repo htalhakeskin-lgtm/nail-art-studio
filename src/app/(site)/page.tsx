@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { JsonLd } from "@/components/common/safe-html";
+import { SectionBoundary } from "@/components/common/section-boundary";
 import { AboutTeaser } from "@/components/sections/about-teaser";
 import { FaqTeaser } from "@/components/sections/faq-teaser";
 import { HomeBeforeAfter } from "@/components/sections/home-before-after";
@@ -49,9 +50,11 @@ export default async function HomePage() {
   return (
     <>
       <HomeHero settings={settings} />
-      <Suspense fallback={<NearestSlotsSkeleton service={slotService} />}>
-        <NearestSlots service={slotService} settings={settings} />
-      </Suspense>
+      <SectionBoundary title="En yakın boş saatler">
+        <Suspense fallback={<NearestSlotsSkeleton service={slotService} />}>
+          <NearestSlots service={slotService} settings={settings} />
+        </Suspense>
+      </SectionBoundary>
       <HomeGallery items={works} />
       <HomeBeforeAfter items={works} />
       <HomeServices items={services} settings={settings} />

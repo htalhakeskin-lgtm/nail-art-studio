@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import { Breadcrumbs } from "@/components/common/panel-breadcrumbs";
-import { AboutForm, getContentBlock } from "@/features/content";
+import { getContentBlock } from "@/features/content";
+import { AboutForm } from "@/features/content/forms";
 
 export const metadata: Metadata = { title: "Hakkında metni" };
 

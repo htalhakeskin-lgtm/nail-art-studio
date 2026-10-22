@@ -9,7 +9,7 @@ import { JsonLd } from "@/components/common/safe-html";
 import { StudioMap } from "@/components/common/studio-map";
 import { Button } from "@/components/ui/button";
 import { entranceNote, transitSteps } from "@/content/location";
-import { ContactForm } from "@/features/leads";
+import { ContactForm } from "@/features/leads/forms";
 import {
   directionLinks,
   getSiteSettings,

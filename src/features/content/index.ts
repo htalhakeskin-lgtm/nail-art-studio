@@ -6,8 +6,6 @@ export {
   submitAboutForm,
   submitStepsForm,
 } from "./actions";
-export { AboutForm } from "./components/about-form";
-export { StepsForm } from "./components/steps-form";
 export { contentBlockTag, getContentBlock, parseContentBlock } from "./queries";
 export {
   aboutBlockSchema,

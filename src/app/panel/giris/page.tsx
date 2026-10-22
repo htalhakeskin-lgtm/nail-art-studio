@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { SignInForm } from "@/features/panel";
+import { SignInForm } from "@/features/panel/forms";
 
 export const metadata: Metadata = { title: "Giriş" };
 

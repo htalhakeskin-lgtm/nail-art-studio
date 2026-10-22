@@ -46,6 +46,9 @@ test.describe("panel appointments", () => {
   });
 
   test.describe("writes", () => {
+    // afterAll cleans shared rows: run this block in one worker so it never deletes data a test in
+    // another worker is still using (fullyParallel).
+    test.describe.configure({ mode: "serial" });
     test.skip(({ isMobile }) => isMobile, "changes shared data: the desktop project runs it");
 
     test.afterAll(async () => {

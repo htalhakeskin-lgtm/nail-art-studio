@@ -107,6 +107,7 @@ test.describe("structured data by page type (REQ-020)", () => {
 });
 
 test("REQ-021, K-13: no third-party request without consent, maps excepted", async ({ page }) => {
+  test.setTimeout(90_000); // five pages, each until the network is idle (map tiles included)
   const foreign = new Set<string>();
   page.on("request", (request) => {
     const url = new URL(request.url());

@@ -10,7 +10,7 @@ export function FaqTeaser({ groups }: { groups: FaqGroup[] }) {
   const teaser: FaqGroup[] = [{ category: "randevu", items: first }];
 
   return (
-    <section aria-labelledby="sss-ozet" className="container-page section-y">
+    <section aria-labelledby="sss-ozet" className="reveal container-page section-y">
       <div className="mx-auto max-w-3xl">
         <h2 id="sss-ozet" className="text-3xl font-medium md:text-4xl">
           Sık sorulan sorular

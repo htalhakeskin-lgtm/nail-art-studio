@@ -7,7 +7,6 @@ export {
   updateLeadStatus,
   updateLeadStatusForm,
 } from "./actions";
-export { ContactForm } from "./components/contact-form";
 export { LeadPanelList } from "./components/lead-panel-list";
 export { formatLeadCode, isLeadCode, nextLeadCode } from "./domain/lead-code";
 export {

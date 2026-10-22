@@ -4,6 +4,7 @@ import Link from "next/link";
 import { type SubmitEvent, useActionState, useState } from "react";
 
 import { FormField } from "@/components/common/form-field";
+import { UnsavedChangesGuard } from "@/components/common/unsaved-changes-guard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -37,6 +38,7 @@ export function AboutForm({ initial }: { initial: AboutFormValues }) {
 
   return (
     <form action={action} onSubmit={onSubmit} noValidate className="max-w-2xl space-y-6">
+      <UnsavedChangesGuard />
       {state.error && state.error.code !== "validation" && (
         <p role="alert" className="rounded-lg bg-danger-muted px-4 py-3 font-semibold text-danger">
           {state.error.message}

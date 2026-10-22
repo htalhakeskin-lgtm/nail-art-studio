@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { z } from "zod";
 
 import { Breadcrumbs } from "@/components/common/panel-breadcrumbs";
-import { FaqForm, getFaqForPanel } from "@/features/faq";
+import { getFaqForPanel } from "@/features/faq";
+import { FaqForm } from "@/features/faq/forms";
 
 export const metadata: Metadata = { title: "Soruyu düzenle" };
 

@@ -5,7 +5,7 @@ import type { ContentBlock } from "@/features/content";
 /** Home §6 (plan §6, REQ-015, V-16): the visit in four steps, text from the panel. */
 export function HomeProcess({ block }: { block: ContentBlock<"process"> }) {
   return (
-    <section aria-labelledby="surec-baslik" className="container-page section-y">
+    <section aria-labelledby="surec-baslik" className="reveal container-page section-y">
       <h2 id="surec-baslik" className="text-3xl font-medium md:text-5xl">
         {block.heading}
       </h2>
@@ -35,7 +35,7 @@ export function HomeProcess({ block }: { block: ContentBlock<"process"> }) {
 export function HomeHygiene({ block }: { block: ContentBlock<"hygiene"> }) {
   return (
     <section aria-labelledby="hijyen-baslik" className="bg-nane/60 section-y">
-      <div className="container-page grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+      <div className="reveal container-page grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
         <div>
           <ShieldCheck aria-hidden="true" className="size-10 text-brand" />
           <h2 id="hijyen-baslik" className="mt-4 text-3xl font-medium md:text-5xl">

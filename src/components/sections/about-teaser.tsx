@@ -20,7 +20,7 @@ export function AboutTeaser({
       aria-labelledby="studyo-baslik"
       className="bg-linear-to-br from-accent via-surface-muted to-seftali section-y"
     >
-      <div className="container-page grid items-center gap-10 md:grid-cols-2 md:gap-16">
+      <div className="reveal container-page grid items-center gap-10 md:grid-cols-2 md:gap-16">
         <FramedImage
           image={demoImages.aboutPalette}
           sizes="(min-width: 768px) 40vw, 100vw"

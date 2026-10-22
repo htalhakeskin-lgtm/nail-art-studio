@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { z } from "zod";
 
 import { Breadcrumbs } from "@/components/common/panel-breadcrumbs";
-import { getServiceForPanel, ServiceForm, toServiceFormValues } from "@/features/services";
+import { getServiceForPanel, toServiceFormValues } from "@/features/services";
+import { ServiceForm } from "@/features/services/forms";
 
 export const metadata: Metadata = { title: "Hizmeti düzenle" };
 

@@ -30,3 +30,6 @@ export const GALLERY_COLORS = [
 export const GALLERY_LENGTHS = ["kisa", "orta", "uzun"] as const;
 
 export const GALLERY_TECHNIQUES = ["kalici-oje", "jel", "protez"] as const;
+
+/** Works on the first gallery screen; the rest one tap at a time (NFR-07: ≤ 300 KB of images). */
+export const GALLERY_PAGE_SIZE = 12;

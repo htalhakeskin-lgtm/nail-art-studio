@@ -33,7 +33,7 @@ export function HomeServices({ items, settings }: { items: Service[]; settings: 
   if (groups.length === 0) return null;
 
   return (
-    <section aria-labelledby="hizmetler-ozet" className="container-page section-y">
+    <section aria-labelledby="hizmetler-ozet" className="reveal container-page section-y">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <h2 id="hizmetler-ozet" className="text-3xl font-medium md:text-5xl">
           Hizmetler

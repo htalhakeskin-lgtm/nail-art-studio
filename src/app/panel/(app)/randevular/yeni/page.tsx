@@ -12,10 +12,10 @@ import {
   istanbulClock,
   istanbulDate,
   istanbulDateTime,
-  ManualAppointmentForm,
   slotsForDay,
   TimeGrid,
 } from "@/features/booking";
+import { ManualAppointmentForm } from "@/features/booking/forms";
 import {
   listServicesForPanel,
   serviceCategories,

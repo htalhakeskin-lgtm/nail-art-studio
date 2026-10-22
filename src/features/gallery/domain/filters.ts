@@ -1,6 +1,6 @@
 import { GALLERY_COLORS, GALLERY_LENGTHS, GALLERY_STYLES } from "@/config/gallery";
 
-import type { GalleryColor, GalleryLength, GalleryStyle } from "../schemas";
+import type { GalleryColor, GalleryLength, GalleryStyle } from "../labels";
 
 /**
  * Gallery filters (REQ-006, K-29): one value per facet, kept in the URL so a filtered view can

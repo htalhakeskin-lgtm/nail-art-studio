@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { Breadcrumbs } from "@/components/common/panel-breadcrumbs";
 import { listServicesForPanel } from "@/features/services";
-import { TestimonialForm } from "@/features/testimonials";
+import { TestimonialForm } from "@/features/testimonials/forms";
 
 export const metadata: Metadata = { title: "Yeni yorum" };
 

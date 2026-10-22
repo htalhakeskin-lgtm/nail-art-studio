@@ -42,7 +42,7 @@ export function HomeGallery({ items }: { items: GalleryItem[] }) {
   });
 
   return (
-    <section aria-labelledby="secki-baslik" className="container-page section-y">
+    <section aria-labelledby="secki-baslik" className="reveal container-page section-y">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="inline-flex items-center gap-2 text-sm font-semibold text-brand">

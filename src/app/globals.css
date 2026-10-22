@@ -230,3 +230,58 @@
 @utility section-y {
   padding-block: var(--section-y);
 }
+
+/*
+ * Motion (plan §11 "Hareket", K-43): CSS only, `translate` / `opacity` only, nothing at all under
+ * prefers-reduced-motion. `rise-in` plays once on load (hero collage, staggered by --rise-step);
+ * `reveal` follows the scroll where scroll-driven animations exist and is a no-op elsewhere.
+ */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    translate: 0 0.75rem;
+  }
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    translate: -50% -50%;
+  }
+  30% {
+    translate: calc(-50% - 0.5rem) -50%;
+  }
+  65% {
+    translate: calc(-50% + 0.5rem) -50%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise-in {
+    animation: rise-in var(--duration-slow) var(--ease-out) both;
+    animation-delay: calc(var(--rise-step, 0) * 90ms);
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
+  }
+
+  [data-nudge="on"] .nudge {
+    animation: nudge 0.9s var(--ease-in-out) 0.3s 1;
+  }
+}
+
+/* Loading skeletons appear only after 300 ms (06-arayuz): quick screens never flash. */
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+}
+
+.delayed-skeleton {
+  animation: appear 1ms linear 300ms both;
+}

@@ -1,5 +1,6 @@
 import { CalendarHeart, Camera, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import { FramedImage } from "@/components/common/framed-image";
 import { PastelBlobs, Sparkle } from "@/components/common/pastel-blobs";
@@ -69,19 +70,24 @@ export function HomeHero({ settings }: { settings: SiteSettings }) {
               lcp
               className="-rotate-2"
             />
-            <FramedImage
-              image={demoImages.heroBloom}
-              sizes={collageSizes}
-              shape="arch"
-              eager
-              className="translate-y-6 rotate-2"
-            />
-            <FramedImage
-              image={demoImages.heroBlossom}
-              sizes={collageSizes}
-              shape="arch"
-              className="hidden translate-y-12 -rotate-1 sm:block"
-            />
+            {/* The other tiles rise in one after another; the LCP tile never waits (K-43). */}
+            <div className="rise-in" style={{ "--rise-step": 1 } as CSSProperties}>
+              <FramedImage
+                image={demoImages.heroBloom}
+                sizes={collageSizes}
+                shape="arch"
+                eager
+                className="translate-y-6 rotate-2"
+              />
+            </div>
+            <div className="rise-in hidden sm:block" style={{ "--rise-step": 2 } as CSSProperties}>
+              <FramedImage
+                image={demoImages.heroBlossom}
+                sizes={collageSizes}
+                shape="arch"
+                className="translate-y-12 -rotate-1"
+              />
+            </div>
           </div>
           {env.DEMO_MODE && (
             <p className="text-right text-xs text-muted-foreground">Görseller temsilîdir.</p>

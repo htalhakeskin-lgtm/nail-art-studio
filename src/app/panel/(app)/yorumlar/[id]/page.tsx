@@ -4,7 +4,8 @@ import { z } from "zod";
 
 import { Breadcrumbs } from "@/components/common/panel-breadcrumbs";
 import { listServicesForPanel } from "@/features/services";
-import { getTestimonialForPanel, TestimonialForm } from "@/features/testimonials";
+import { getTestimonialForPanel } from "@/features/testimonials";
+import { TestimonialForm } from "@/features/testimonials/forms";
 
 export const metadata: Metadata = { title: "Yorumu düzenle" };
 

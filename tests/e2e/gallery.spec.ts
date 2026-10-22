@@ -38,8 +38,17 @@ test.describe("gallery filters", () => {
   test("filters by style through the URL and toggles back to all works", async ({ page }) => {
     await page.goto("/galeri");
     await expect(page.getByRole("heading", { level: 1, name: "Galeri" })).toBeVisible();
-    const total = await cards(page).getByRole("listitem").count();
+    // NFR-07: twelve works up front, the rest one tap at a time; focus moves to the 13th.
+    await expect(cards(page).getByRole("listitem")).toHaveCount(12);
+    const counter = await page.getByText(/eser gösteriliyor/).innerText();
+    const total = Number(/\/ (\d+) eser/.exec(counter)?.[1]);
     expect(total).toBeGreaterThan(20);
+    await page.getByRole("button", { name: /Daha fazla iş göster/ }).click();
+    await expect(cards(page).getByRole("listitem").nth(12).getByRole("link")).toBeFocused();
+    while (await page.getByRole("button", { name: /Daha fazla iş göster/ }).isVisible()) {
+      await page.getByRole("button", { name: /Daha fazla iş göster/ }).click();
+    }
+    await expect(cards(page).getByRole("listitem")).toHaveCount(total);
 
     const french = styleGroup(page).getByRole("button", { name: "French" });
     await french.click();
@@ -51,7 +60,8 @@ test.describe("gallery filters", () => {
 
     await french.click();
     await expect(page).toHaveURL(/\/galeri$/);
-    await expect(cards(page).getByRole("listitem")).toHaveCount(total);
+    // A new filter starts from the first page again.
+    await expect(page.getByText(`12 / ${String(total)} eser gösteriliyor`)).toBeVisible();
   });
 
   test("combines style and colour, shows an empty state and clears it", async ({
@@ -144,6 +154,9 @@ test("home page selection links into the gallery by style", async ({ page }) => 
 });
 
 test.describe("panel gallery", () => {
+  // afterAll cleans shared rows: run this block in one worker so it never deletes data a test in
+  // another worker is still using (fullyParallel).
+  test.describe.configure({ mode: "serial" });
   test.use({ storageState: ADMIN_STATE });
   // Changes shared data: one project runs it, so parallel runs never collide.
   test.skip(({ isMobile }) => isMobile, "changes shared data: the desktop project runs it");
@@ -159,13 +172,14 @@ test.describe("panel gallery", () => {
     await page.getByRole("button", { name: "Gizle: Mandalina" }).click();
     await expect(page.getByRole("button", { name: "Yayımla: Mandalina" })).toBeVisible();
 
-    await page.goto("/galeri");
+    // The "Sade" filter keeps Mandalina on the first page of twelve.
+    await page.goto("/galeri?stil=sade");
     await expect(page.getByRole("link", { name: /Mandalina/ })).toHaveCount(0);
 
     await page.goto("/panel/galeri");
     await page.getByRole("button", { name: "Yayımla: Mandalina" }).click();
     await expect(page.getByRole("button", { name: "Gizle: Mandalina" })).toBeVisible();
-    await page.goto("/galeri");
+    await page.goto("/galeri?stil=sade");
     await expect(page.getByRole("link", { name: /Mandalina/ })).toBeVisible();
   });
 });

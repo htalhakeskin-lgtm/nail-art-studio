@@ -7,7 +7,6 @@ export {
   toggleTestimonialVisibility,
   toggleTestimonialVisibilityForm,
 } from "./actions";
-export { TestimonialForm } from "./components/testimonial-form";
 export { TestimonialPanelList } from "./components/testimonial-panel-list";
 export {
   getTestimonialForPanel,

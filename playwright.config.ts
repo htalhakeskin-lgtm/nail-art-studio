@@ -8,7 +8,13 @@ loadEnvConfig(process.cwd());
 const CI = Boolean(process.env.CI);
 const baseURL = process.env.E2E_BASE_URL ?? "http://localhost:3000";
 
-const shared = { locale: "tr-TR", timezoneId: "Europe/Istanbul" } as const;
+// Reduced motion by default: scroll-driven reveals (K-43) would leave half-faded sections under
+// axe and screenshots. tests/e2e/motion.spec.ts turns motion back on to test it.
+const shared = {
+  locale: "tr-TR",
+  timezoneId: "Europe/Istanbul",
+  reducedMotion: "reduce",
+} as const;
 
 export default defineConfig({
   testDir: "./tests/e2e",
