@@ -1,6 +1,7 @@
 import { CalendarPlus } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { connection } from "next/server";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -39,6 +40,7 @@ const sections = [
  * owner opens between appointments.
  */
 export default async function PanelTodayPage() {
+  await connection(); // "now" is the request time, never the build time
   const now = new Date();
   const today = istanbulDate(now);
   const [kpis, agenda, pending, overview] = await Promise.all([
