@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** Faz 6 (yayın listesi)
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** Faz 7 (portfolyo)
 
 ## Şu an
 
-- **Etkin dilim:** Faz 5 ✅ (PR açık)
-- **Son yapılan:** Kalite kapısı raporu (aşağıda); denetimde çıkan eksikler kapatıldı: P0 Ayarlar ekranı (SCR-110, K-44), paylaşım görseli (`og:image` her sayfada), admin kılavuzu (`docs/admin-kilavuzu.md`), `ilerleme.md` Dersler bölümündeki çoğalma
-- **Sıradaki adım:** Faz 6: demo yayın listesi (16-ortamlar §8); Faz 7 portfolyo; Faz 8 dersler
+- **Etkin dilim:** Faz 6 ✅ (demo yayında)
+- **Son yapılan:** Faz 5 raporu + eksiklerin kapatılması (Ayarlar, paylaşım görseli, admin kılavuzu); Faz 6: canlı demo duman testi, Lighthouse canlı ölçümü, projeye özel canlıya geçiş listesi
+- **Sıradaki adım:** Faz 7 portfolyo (ekran görüntüleri, mockup, metinler); Faz 8 dersler
 
 ## Gözetimsiz çalışma notları
 
@@ -148,6 +148,57 @@
 - Testler: `color.test.ts` (23 token çifti), `image-loader.test.ts`, `content/schemas.test.ts` (gerçek kişi adına iddia yok), `tests/e2e/site.spec.ts` (menü, aria-current, Hakkında + breadcrumb JSON-LD, görsel kaynağı); `/hakkinda` taşma + axe rotalarına eklendi.
 - Elle: 360 / 1024 / 1280 px ekran görüntüsü incelendi; kolaj notu çerçeveye değiyordu ve e-posta kelime ortasından bölünüyordu, ikisi de düzeltildi.
 
+## Yayın kaydı (Faz 6, demo)
+
+**Adres:** https://nail-art-studio-sigma.vercel.app · **Barındırma:** Vercel Hobby (demo, ticari olmayan kullanım) · **Veritabanı:** Neon (eu-central-1) · **Görseller:** Vercel Blob `nail-art-studio-media` (fra1) · **Bölge:** `fra1` (`vercel.json`; yanıt başlığı `x-vercel-id: fra1::fra1`).
+
+| Kontrol (2026-10-23) | Sonuç |
+|---|---|
+| `main` → üretim yayını, derlemede `db:migrate` (0000…0009) | ✅ |
+| Demo verisi canlıda (galeri, hizmetler, randevular, yorumlar, onay kayıtları) | ✅ |
+| Duman testi: `/api/health` `{"status":"ok"}`; `/`, `/galeri`, `/randevu`, `/iletisim`, `/hakkinda`, `/panel/giris` 200; `/bu-sayfa-yok` 404 | ✅ |
+| `DEMO_MODE=true`: demo şeridi, her sayfada `noindex`, robots `Disallow: /`, dış kanallar demo kutusuna | ✅ |
+| Ortam değişkenleri tam (açılışta Zod doğrulaması geçti) | ✅ |
+| Web Analytics açık, çerezsiz, birinci taraf | ✅ |
+| Önizleme koruması (Vercel Authentication) önizlemelerde açık; üretim adresi herkese açık | ✅ |
+| Lighthouse mobil, canlı CDN: `/` 89 · `/galeri` 86 · `/hakkinda` 87; erişilebilirlik 100, en iyi uygulama 100, CLS 0; SEO 69 yalnızca demo `noindex` | ⚠️ hedef 90'a yakın |
+| İlk ziyaret: TTFB 0,2–0,6 sn; uzun süre boşta kalınca ilk istekte akışla gelen bölümler (açık / kapalı, boş saatler) Neon'un uyanmasını bekliyor (bir ölçümde 52 sn) | ⚠️ canlıda çözülür (aşağıda) |
+
+### Demodan canlıya geçiş (16-ortamlar §8 + bu proje)
+
+Kod değişmez; yapılandırma, içerik ve yasal adımlar. Gerçek müşteri yayını kullanıcı onayıyla başlar.
+
+**Altyapı**
+- [ ] Barındırma: Vercel **Pro** (müşteri hesabı ya da ekip); Hobby ticari kullanıma kapalı
+- [ ] Canlı Neon projesi (Frankfurt), **otomatik uyku kapalı** ya da en düşük ücretli plan (ilk istek gecikmesi); migration'lar; yalnızca temel seed (`site_settings`, uzman, ilk yönetici); demo verisi yok
+- [ ] Yeni gizli anahtarlar (`BETTER_AUTH_SECRET`, `IP_HASH_SALT`, `CRON_SECRET`); `DEMO_MODE=false`; `DEMO_ADMIN_*` silinir
+- [ ] Alan adı + HTTPS + `www` yönlendirmesi; `NEXT_PUBLIC_SITE_URL`, `BETTER_AUTH_URL`
+- [ ] Resend: `bildirim.{alan}` SPF / DKIM / DMARC, `RESEND_API_KEY`, `EMAIL_FROM`; test gönderimi
+- [ ] Vercel Blob canlı depo; uptime izleme (`/api/health`, 5 dk)
+
+**İçerik**
+- [ ] Panel → **Ayarlar**: gerçek adres, e-posta; Moda haritası için gerçek konum (`company.geo`, şimdilik tohumda)
+- [ ] Temsilî (Pexels) galeri işleri izinli gerçek işlerle değişir; gerçek öncesi / sonrası çiftleri
+- [ ] Örnek yorumlar silinir ya da müşteri izniyle gerçekleri girilir ("örnek" işareti kalkar)
+- [ ] Hakkında, süreç ve hijyen metinleri (gerçek belge no) işletmecinin anlatımıyla
+- [ ] Hizmet listesi, süreler ve fiyat gösterimi kararı (P-08)
+- [ ] Demo şeridi ve "örnek" notlarının kalktığı elle kontrol
+
+**Yasal**
+- [ ] KVKK aydınlatma, gizlilik, çerez, randevu koşulları firma bilgileriyle; hukuk danışmanı onayı (Q-05)
+- [ ] Veri işleyenler (Vercel, Neon, Resend) ve yurt dışı aktarım bildirimi
+- [ ] Saklama süreleri (randevu 3 yıl, talep 2 yıl) için zamanlanmış imha işi (P2'den canlıya)
+
+**SEO ve ölçüm**
+- [ ] `noindex` kalktı (DEMO_MODE), robots açık: canlıda başlık testi
+- [ ] Search Console + Bing, site haritası; Google İşletme Profili NAP'ı Ayarlar ile aynı
+- [ ] Özel olaylar için Vercel Pro (Hobby'de yalnızca sayfa görüntüleme)
+
+**Teslim**
+- [ ] Kalite kapıları C canlıda yeniden; gerçek iPhone + Android denemesi
+- [ ] İşletmeci yönetici hesabı (davetle); demo yöneticisi yok
+- [ ] `docs/admin-kilavuzu.md` teslim + kısa eğitim; bakım ve destek kapsamı (plan §20)
+
 ## Kalite kapısı raporu
 
 **Tarih:** 2026-10-22 · **Kapsam:** C (sürüm / yayın öncesi), demo ortamı · **Kanıt:** yerel üretim derlemesi (`next start`) + CI (PR #17–#20) + Vercel canlı demo.
@@ -168,7 +219,7 @@
 | 4 | axe ciddi / kritik yok | ✅ | `responsive.spec.ts` tüm rotalar; Lighthouse erişilebilirlik 100 |
 | 4 | Klavye turu | ✅ / ⏳ | Otomatik: menü odak tuzağı + Esc, kaydırıcı ok tuşları, formlarda ilk hatalı alana odak, galeri "daha fazla"da odak. Panelin tam elle turu kullanıcıda |
 | 4 | Token kontrastı AA | ✅ | `color.test.ts` (23 çift) |
-| 5 | Lighthouse mobil | ⚠️ | A11y 100, BP 96–100, CLS ≤ 0,1; **performans 74–88** (CI 74–85, yerel 78–88), hedef 90. Fark: çerçeve JS'si + benzetimde geç ilk boyama (K-43). CI'da uyarı |
+| 5 | Lighthouse mobil | ⚠️ | A11y 100, BP 96–100, CLS ≤ 0,1; **performans 74–89** (CI 74–85, yerel 78–88, canlı CDN 86–89), hedef 90. Fark: çerçeve JS'si + benzetimde geç ilk boyama (K-43). CI'da uyarı |
 | 5 | İlk yük JS bütçesi (≤ 170 KB) | ✅ / ⚠️ | İçerik sayfaları 162–169 KB gz ✅; form sayfaları (iletişim 193, randevu 204) Zod'lu istemci doğrulaması nedeniyle üstünde (K-43). Panel ≤ 300 ✅ |
 | 6 | Güvenlik başlıkları | ✅ | HSTS, CSP (panelde nonce + strict-dynamic), XFO, Referrer, Permissions, COOP; panel `X-Robots-Tag` |
 | 6 | Hız sınırı + honeypot | ✅ | Entegrasyon testleri (P-10, P-14, P-15) |
