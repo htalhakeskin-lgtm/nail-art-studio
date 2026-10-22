@@ -5,8 +5,11 @@ export {
   saveBookingRules,
   saveWeeklyHours,
 } from "./availability-actions";
+export { appointmentEvent, refillEvent } from "./calendar";
 export { AppointmentForm } from "./components/appointment-form";
 export { BookingRulesForm, TimeOffForm, WeeklyHoursForm } from "./components/availability-forms";
+export { CancelForm, RescheduleForm } from "./components/manage-forms";
+export { DayStrip, TimeGrid } from "./components/slot-picker";
 export {
   type AvailabilityContext,
   bookingWindow,
@@ -18,6 +21,13 @@ export {
   type WeeklyHours,
 } from "./domain/availability";
 export { generateAppointmentCode, isAppointmentCode } from "./domain/code";
+export {
+  buildIcs,
+  type CalendarEvent,
+  canSelfManage,
+  googleCalendarUrl,
+  refillDate,
+} from "./domain/manage";
 export {
   appointmentShareMessage,
   describeAppointmentTime,
@@ -38,6 +48,13 @@ export {
   istanbulDate,
   istanbulDateTime,
 } from "./domain/time";
+export {
+  cancelByToken,
+  type ManageFormState,
+  rescheduleByToken,
+  submitCancel,
+  submitReschedule,
+} from "./manage-actions";
 export {
   getAppointmentByTokenHash,
   getAvailabilityContext,

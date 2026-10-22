@@ -51,6 +51,18 @@ const templates = {
         `Randevunuzu görmek, ertelemek ya da iptal etmek için: ${d.manageUrl}`,
       ].join("\n"),
   },
+  appointmentChangedBusiness: {
+    subject: (d: { code: string; change: string; when: string; serviceName: string }) =>
+      `Randevu ${d.change}: ${d.code}`,
+    text: (d: { code: string; change: string; when: string; serviceName: string }) =>
+      [
+        `Müşteri randevusunu yönetim bağlantısından değiştirdi (${d.change}).`,
+        `Kod: ${d.code}`,
+        `Hizmet: ${d.serviceName}`,
+        `Tarih: ${d.when}`,
+        "Ayrıntılar için panelde Randevular bölümünü açın.",
+      ].join("\n"),
+  },
   appointmentReminder: {
     subject: (d: { startsAt: string; companyName: string }) =>
       `Randevu hatırlatması: ${formatDateTime(d.startsAt)}`,

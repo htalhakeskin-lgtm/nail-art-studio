@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-06
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-07
 
 ## Şu an
 
-- **Etkin dilim:** D-05 ✅ (PR açık) → sıradaki D-06
-- **Son yapılan:** D-05: `/randevu` (hizmet → gün şeridi → boş saat → bilgiler), sunucu eylemi (BR-RND-001…006, 011, 014; `23P01` → BR-RND-003 + en yakın iki saat), onay / yönetim sayfası (gizli bağlantı), demo kutusu bildirimleri, "Bu tasarımı istiyorum" ve hizmet sayfasından randevu, alt çubukta ve başlıkta "Randevu al"; canlı veritabanına uzman + örnek randevular yüklendi
-- **Sıradaki adım:** D-06: yönetim bağlantısında erteleme / iptal (P-05), `.ics` + Google Takvim, yenileme hatırlatıcısı
+- **Etkin dilim:** D-06 ✅ (PR açık) → sıradaki D-07
+- **Son yapılan:** D-06: yönetim bağlantısında erteleme (gün şeridi + saat, kendi saati boş sayılır) ve iptal (P-05 sınırı), `.ics` + Google Takvim, yenileme hatırlatıcısı `.ics` + "aynı hizmetten tekrar randevu"; gün şeridi ve saat ızgarası ortak bileşen
+- **Sıradaki adım:** D-07: panel "Bugün" (3 KPI), ajanda, randevu detayı, durum geçişleri (onayla / tamamlandı / gelmedi / iptal), elle randevu, WhatsApp şablonları
 
 ## Gözetimsiz çalışma notları
 
@@ -41,7 +41,7 @@
 | D-03 | Hizmetler | `services` + seed (16; 1 randevuya kapalı, uzun ad, yenilemesiz), `/hizmetler` (kategori atlama bağlantıları), `/hizmetler/[slug]` (süre, dayanım, yenileme, kime uygun, uygulama, bakım, SSS, `Service` JSON-LD, WhatsApp ile randevu / fiyat), ana sayfa kategori kartları, panel `/panel/hizmetler` (ekle / düzenle / sırala / gizle) + P-08 anahtarı; menüye "Hizmetler" (REQ-004; BR-HZM-001, 002, K-33) | M | P0 | ✅ | ✅ 360 / 1280 | 166 Vitest (38 entegrasyon) + e2e |
 | D-04 | Müsaitlik motoru + randevu veri modeli | `staff`, `time_off`, `appointments` + `ex_appointments_staff_overlap` (`0006`, `0007`), `site_settings.booking`; `domain/{time,availability,status,code}.ts`; panel `/panel/musaitlik` (saatler, izin / tatil / blok, P-01…P-07, önizleme); "şu an açık" panel kapalı zamanlarını okur; seed (REQ-001a, REQ-002a, REQ-003a; BR-RND-001…005, 008, 010, 015; K-34, K-35) | M | P0 | ✅ | ✅ 360 | 25 birim + 9 entegrasyon + e2e |
 | D-05 | Ziyaretçi randevu akışı | `/randevu` URL ile ilerleyen adımlar (K-36): hizmet, gün şeridi (dolu gün kesikli), sabah / öğleden sonra / akşam saat düğmeleri, bilgiler + özet; `requestAppointment` (honeypot, IP + telefon sınırı, BR-RND-014, 006, 001…005, dışlama kısıtı, onay kaydı, bildirimler), saat dolarsa girilenler korunarak en yakın iki saat; onay ekranı = `/randevu/yonet/[token]` (kod, durum, referans tasarım, "WhatsApp'tan ilet"); galeri ve hizmet sayfasından randevu, alt çubuk / başlık / giriş "Randevu al"; SSS cevabı güncellendi (REQ-001b, REQ-005b, REQ-011, REQ-018; BR-RND-003, 006, 009, 010, 011, 014) | M | P0 | ✅ | ✅ 390 / 1280 | 3 birim + 9 entegrasyon + 6 e2e |
-| D-06 | Randevu yönetim bağlantısı | `/randevu/yonet/[token]`: erteleme / iptal, `.ics`, Google Takvim, yenileme hatırlatıcısı + "aynı hizmetten tekrar" (REQ-002b, REQ-012; BR-RND-007, 009, 012, 013) | M | P0 (+P1 REQ-012) | ⏳ | — | — |
+| D-06 | Randevu yönetim bağlantısı | `/randevu/yonet/[token]`: erteleme (BR-RND-012) ve iptal (BR-RND-007, 008), `takvim.ics` + Google Takvim (E-08, E-09), `yenileme.ics` + "aynı hizmetten tekrar randevu" (REQ-012, BR-RND-013), 24 saatten az kalınca WhatsApp / telefon; işletmeye bildirim; `DayStrip` / `TimeGrid` ortak (REQ-002b; K-37) | M | P0 (+P1 REQ-012) | ✅ | ✅ 360 | 8 birim + 7 entegrasyon + 1 e2e |
 | D-07 | Panel randevu | "Bugün" ekranı (3 KPI), ajanda, detay, durum geçişleri, elle randevu, WhatsApp şablonları + ayarlarda şablon düzenleme (REQ-003b, REQ-005c; BR-RND-008) | M | P0 | ⏳ | — | — |
 | D-08 | Galeri (ziyaretçi) — öne alındı (K-30) | `gallery_items` + seed (27, 1 taslak), `/galeri` stil / renk / uzunluk filtresi (K-29), eser etiketi kartı, `/galeri/[slug]` (önceki / sonraki, benzer işler), "Bu tasarımı istiyorum" (WhatsApp + eser no), ana sayfa seçkisi + stil kartları, panel `/panel/galeri` yayımla / seçkiye ekle; menüye "Galeri"; sitemap (REQ-006, 011; BR-GLR-003, 004). Öncesi / sonrası D-09'a (K-30) | M | P0 (+P1 REQ-011) | ✅ | ✅ 360 / 1280 | 130 Vitest (20 entegrasyon) + 184 e2e |
 | D-09 | Galeri yönetimi + güvenli yükleme + öncesi / sonrası | `media_assets`, Vercel Blob, `sharp` varyantları, öncesi / sonrası eşleştirme, izin işareti, sıralama, fotoğraf yayın izni şablonu (REQ-008; BR-GLR-001…003) | M | P0 | ⏳ | — | — |
@@ -52,6 +52,13 @@
 **P1 onaylanmazsa:** D-10 yalnızca P0 parçalarıyla (seçki + öncesi / sonrası bölümü) D-08'e katılır; REQ-011…022 P2'ye iner.
 
 ## Etkin dilim planı
+
+**D-06 — Randevu yönetim bağlantısı** (✅ 2026-10-22)
+- Kabul kriterleri: yalnızca doğru token'la açılır (BR-RND-009); başlangıca P-05 saatten az kala değişiklik yok, WhatsApp / telefon yönlendirmesi (BR-RND-007); erteleme yeni saati BR-RND-001…005'ten geçirir, kendi eski saati boş sayılır, kod korunur, onay beklemeli modda yeniden `pending` (BR-RND-012), çakışmada `23P01` → BR-RND-003; iptal saati serbest bırakır, ikinci iptal ve bitmiş randevu reddedilir (BR-RND-008); her değişiklik işlem geçmişinde ve işletmeye demo kutusunda; `.ics` UTC, kaçışlı, 75 bayt satır katlamalı; yenileme tarihi İstanbul günü + aralık, aralık yoksa gösterilmez (BR-RND-013).
+- Tablolar / migration: yok.
+- Dosyalar: `src/features/booking/{manage-actions,calendar}.ts`, `src/features/booking/domain/manage.ts`, `src/features/booking/components/{manage-forms,slot-picker}.tsx`, `src/app/(site)/randevu/yonet/[token]/{page.tsx,takvim.ics/route.ts,yenileme.ics/route.ts}`, `src/server/channels/templates.ts`.
+- Testler: `manage.test.ts` (BR-RND-007 `it.each`, BR-RND-013, `.ics` biçimi, Google bağlantısı), `tests/integration/booking-manage.test.ts` (iptal + saat serbest, BR-RND-007, 008, 009, erteleme + pending + kod, kendi saatine yakın taşıma, BR-RND-003 / 001), `tests/e2e/booking.spec.ts` UC-03 (randevu al → `.ics` → ertele → iptal).
+- Elle: yönetim sayfası 360 (24 saatten az kalan durum) incelendi.
 
 **D-05 — Ziyaretçi randevu akışı** (✅ 2026-10-22)
 - Kabul kriterleri: yalnızca boş saatler listelenir, dolu / kapalı gün seçilemez; sunucu saati yeniden denetler (BR-RND-001, 002, 005) ve eşzamanlı iki talepten biri kalır (BR-RND-003); saat dolduysa girilen bilgiler korunur ve en yakın iki saat sunulur; P-07 `request` → `pending`, `instant` → `confirmed` (BR-RND-011); randevuya kapalı / gizli hizmet reddedilir (BR-RND-014); telefon başına 2 gelecek randevu (BR-RND-006) ve günde 3 talep (P-10); yönetim bağlantısı 32 bayt, yalnızca karması saklanır, süresi dolunca ya da yanlış token'da "bulunamadı" (BR-RND-009); onay kaydı ve demo kutusu bildirimleri; mesajlarda tutar yok.
@@ -172,4 +179,6 @@ Faz 5'te doldurulur.
 - **"use server" dosyasındaki her dışa açık fonksiyon bir uç noktadır** → Yardımcı okuma fonksiyonu (`suggestSlots`) dışa açılsaydı sarmalayıcısız, hız sınırsız bir genel eylem olurdu; dışa açılmadı. Belge: 05-sunucu-ve-api §3. **Sisteme taşı.**
 - **Turbopack geliştirmede yeni yapılandırma anahtarını görmeyebilir** → `config/limits.ts`'e eklenen anahtar çalışma anında `undefined` geldi; sunucu yeniden başlatılınca düzeldi. Not.
 - **Kapalı günü saydamlıkla soluklaştırmak kontrastı düşürür** → `opacity-60` axe'de 21 kontrast hatası verdi; kesikli çerçeve + üstü çizili yazı ile ayırt edildi. Belge: 08-erisilebilirlik. Not.
+- **Paralel e2e işçisinde `afterAll` başka testin verisini silebilir** → Aynı `describe` iki işçide çalışınca her işçi kendi `afterAll`'ını çalıştırıyor; ad tabanlı temizlik diğer işçinin az önce oluşturduğu kaydı sildi. Çözüm: yazan testleri `test.describe.configure({ mode: "serial" })` ya da test başına benzersiz ad. Belge: 14-test. **Sisteme taşı.**
+- **Node betiğiyle dosya düzenlerken `\\n` kaçışı** → Şablon dizesi içindeki `\\n` gerçek satır sonuna dönüşüp TypeScript'i bozdu (iki kez). Çok satırlı kod değişikliğinde Edit aracı ya da ayrı betik dosyası. Not.
 - **pnpm audit: yaması olmayan dolaylı açık** → `braces` (eslint-config-next zinciri, yalnızca geliştirme). Standart muafiyete izin veriyor ama biçim tanımlı değil; `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` + gerekçe + gözden geçirme tarihi örneği eklenmeli. Belge: 15-git-ve-ci §6. **Sisteme taşı.**

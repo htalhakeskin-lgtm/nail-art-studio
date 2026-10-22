@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, eq, gt, inArray, lt } from "drizzle-orm";
+import { and, asc, eq, gt, inArray, lt, ne } from "drizzle-orm";
 
 import { SLOT_HOLDING_STATUSES } from "@/config/booking";
 import { getSiteSettings } from "@/features/site";
@@ -30,12 +30,16 @@ export async function getBookableStaff(): Promise<Staff | null> {
   return row ?? null;
 }
 
-/** Hours, rules, taken time and closures for [from, to) — the engine's whole input. */
+/**
+ * Hours, rules, taken time and closures for [from, to) — the engine's whole input. When
+ * rescheduling, the appointment being moved does not count as taken.
+ */
 export async function getAvailabilityContext(
   staffId: string,
   from: Date,
   to: Date,
   now: Date,
+  excludeAppointmentId?: string,
 ): Promise<AvailabilityContext> {
   const [settings, busy, closures] = await Promise.all([
     getSiteSettings(),
@@ -48,6 +52,7 @@ export async function getAvailabilityContext(
           inArray(appointments.status, [...SLOT_HOLDING_STATUSES]),
           lt(appointments.startsAt, to),
           gt(appointments.blockedUntil, from),
+          excludeAppointmentId ? ne(appointments.id, excludeAppointmentId) : undefined,
         ),
       ),
     db
