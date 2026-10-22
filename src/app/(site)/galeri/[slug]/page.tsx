@@ -8,6 +8,7 @@ import { Breadcrumbs } from "@/components/common/breadcrumbs";
 import { Sparkle } from "@/components/common/pastel-blobs";
 import { Button } from "@/components/ui/button";
 import {
+  BeforeAfter,
   designRequestMessage,
   formatWorkNumber,
   galleryColorLabels,
@@ -202,6 +203,22 @@ export default async function GalleryWorkPage({ params }: PageProps<"/galeri/[sl
           )}
         </div>
       </div>
+
+      {item.beforeImagePath && item.beforeImageAlt && (
+        <section aria-labelledby="oncesi-sonrasi" className="mt-14 max-w-md">
+          <h2 id="oncesi-sonrasi" className="text-3xl font-medium">
+            Öncesi / sonrası
+          </h2>
+          <div className="mt-5">
+            <BeforeAfter
+              before={{ src: item.beforeImagePath, alt: item.beforeImageAlt }}
+              after={{ src: item.imagePath, alt: item.imageAlt }}
+              title={item.title}
+              sizes="(min-width: 480px) 28rem, 100vw"
+            />
+          </div>
+        </section>
+      )}
 
       {around && (
         <nav aria-label="Diğer eserler" className="mt-14 grid grid-cols-2 gap-3 border-t pt-6">

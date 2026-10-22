@@ -1,4 +1,4 @@
-import { Eye, EyeOff, Star, StarOff } from "lucide-react";
+import { Eye, EyeOff, Pencil, Star, StarOff } from "lucide-react";
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,17 +12,15 @@ import { galleryLengthLabels, galleryStyleLabels, galleryTechniqueLabels } from 
 
 /**
  * Panel gallery (SCR-106): cards on every width (13-yonetim-paneli §5). Publish and feature
- * toggles are plain forms bound to server actions, so they work before hydration. Upload,
- * editing and ordering join with D-09.
+ * toggles are plain forms bound to server actions, so they work before hydration; "Düzenle"
+ * opens the work form (photos, labels, consent).
  */
 export function GalleryPanelList({ items }: { items: GalleryRow[] }) {
   if (items.length === 0) {
     return (
       <div className="rounded-xl border border-dashed bg-surface p-8 text-center">
         <p className="font-semibold">Galeride henüz eser yok</p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Fotoğraf yükleme bir sonraki sürümde panele eklenecek.
-        </p>
+        <p className="mt-1 text-sm text-muted-foreground">“Yeni iş” ile ilk çalışmanızı ekleyin.</p>
       </div>
     );
   }
@@ -91,6 +89,15 @@ export function GalleryPanelList({ items }: { items: GalleryRow[] }) {
                   {item.isFeatured ? "Seçkiden çıkar" : "Seçkiye ekle"}
                 </Button>
               </form>
+              <Button asChild variant="outline" size="sm">
+                <Link
+                  href={`/panel/galeri/${item.id}` as Route}
+                  aria-label={`Düzenle: ${item.title}`}
+                >
+                  <Pencil aria-hidden="true" />
+                  Düzenle
+                </Link>
+              </Button>
               {item.isPublished && (
                 <Button asChild variant="link" size="sm">
                   <Link

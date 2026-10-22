@@ -13,7 +13,15 @@ describe("imageLoader", () => {
     expect(imageLoader({ src: "/demo/hero-yaprak", width })).toBe(expected);
   });
 
+  it("extends uploads in the database and in Vercel Blob the same way (K-39)", () => {
+    expect(imageLoader({ src: "/media/abc", width: 600 })).toBe("/media/abc-960.webp");
+    const blob = "https://abc123.public.blob.vercel-storage.com/gallery/0190";
+    expect(imageLoader({ src: blob, width: 300 })).toBe(`${blob}-480.webp`);
+  });
+
   it("leaves other sources untouched", () => {
     expect(imageLoader({ src: "/icons/icon-192.png", width: 192 })).toBe("/icons/icon-192.png");
+    const other = "https://example.com/gallery/a.png";
+    expect(imageLoader({ src: other, width: 300 })).toBe(other);
   });
 });

@@ -5,4 +5,5 @@ export * from "./content";
 export * from "./core";
 export * from "./faqs";
 export * from "./gallery";
+export * from "./media";
 export * from "./services";

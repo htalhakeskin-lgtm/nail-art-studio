@@ -54,6 +54,11 @@ const nextConfig: NextConfig = {
     deviceSizes: [480, 960, 1600],
     imageSizes: [320],
   },
+  // Gallery uploads (K-39): the browser shrinks photos to ≤ 2560 px JPEG before sending; Vercel
+  // functions accept ~4.5 MB per request, so actions stay just under it.
+  experimental: {
+    serverActions: { bodySizeLimit: "4mb" },
+  },
   poweredByHeader: false,
   headers() {
     return Promise.resolve([

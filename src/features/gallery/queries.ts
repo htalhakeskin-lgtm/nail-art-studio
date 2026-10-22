@@ -28,6 +28,8 @@ const publicColumns = {
   imageWidth: galleryItems.imageWidth,
   imageHeight: galleryItems.imageHeight,
   imageAlt: galleryItems.imageAlt,
+  beforeImagePath: galleryItems.beforeImagePath,
+  beforeImageAlt: galleryItems.beforeImageAlt,
   creditName: galleryItems.creditName,
   creditUrl: galleryItems.creditUrl,
   instagramUrl: galleryItems.instagramUrl,
@@ -63,4 +65,9 @@ export async function listGalleryItemsForPanel(): Promise<GalleryRow[]> {
     .select()
     .from(galleryItems)
     .orderBy(asc(galleryItems.sortOrder), asc(galleryItems.number));
+}
+
+export async function getGalleryItemForPanel(id: string): Promise<GalleryRow | null> {
+  const [row] = await db.select().from(galleryItems).where(eq(galleryItems.id, id)).limit(1);
+  return row ?? null;
 }
