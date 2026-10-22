@@ -33,6 +33,7 @@ const sections = [
   { href: "/panel/icerik", label: "İçerik", hint: "Hakkında, süreç, hijyen, SSS" },
   { href: "/panel/yorumlar", label: "Yorumlar", hint: "Ana sayfadaki yorumlar, sıra" },
   { href: "/panel/onaylar", label: "Onay kayıtları", hint: "Formlardaki aydınlatma kanıtı, CSV" },
+  { href: "/panel/ayarlar", label: "Ayarlar", hint: "İşletme, iletişim, Instagram, arama" },
   { href: "/panel/demo-kutusu", label: "Demo kutusu", hint: "Gönderilecek bildirimler" },
 ] as const;
 

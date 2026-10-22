@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** Faz 5 (kalite kapıları)
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** Faz 6 (yayın listesi)
 
 ## Şu an
 
-- **Etkin dilim:** D-12 ✅ (PR açık) → Faz 4 tamam
-- **Son yapılan:** D-12: CSS hareket (azaltılmış harekette yok), yazı tipi 507 → 118 KB, istemci formları `forms` girişine (ziyaretçi sayfalarında Zod yok), galeri 12'şerli, Lighthouse CI + boyut bütçeleri, panel hata / yükleniyor ekranları, randevu iskeleti, bölüm hata sınırı, kaydedilmemiş değişiklik uyarısı
-- **Sıradaki adım:** Faz 5: `docs/kalite-kapilari.md` raporu; ardından Faz 6 yayın listesi, Faz 7 portfolyo, Faz 8 dersler
+- **Etkin dilim:** Faz 5 ✅ (PR açık)
+- **Son yapılan:** Kalite kapısı raporu (aşağıda); denetimde çıkan eksikler kapatıldı: P0 Ayarlar ekranı (SCR-110, K-44), paylaşım görseli (`og:image` her sayfada), admin kılavuzu (`docs/admin-kilavuzu.md`), `ilerleme.md` Dersler bölümündeki çoğalma
+- **Sıradaki adım:** Faz 6: demo yayın listesi (16-ortamlar §8); Faz 7 portfolyo; Faz 8 dersler
 
 ## Gözetimsiz çalışma notları
 
@@ -150,15 +150,48 @@
 
 ## Kalite kapısı raporu
 
-Faz 5'te doldurulur.
+**Tarih:** 2026-10-22 · **Kapsam:** C (sürüm / yayın öncesi), demo ortamı · **Kanıt:** yerel üretim derlemesi (`next start`) + CI (PR #17–#20) + Vercel canlı demo.
 
-| Grup | Sonuç | Not |
-|---|---|---|
-| — | — | — |
+| # | Grup | Sonuç | Kanıt / not |
+|---|---|---|---|
+| 1 | Mobil: 360–1536 px taşma yok, ≥ 44 px hedef | ✅ | `responsive.spec.ts`: tüm herkese açık ve panel rotaları × 6 genişlik |
+| 1 | Mobil: gerçek iPhone + Android | ⏳ Elle | Kullanıcıda: ana akış (galeri → "Bu tasarımı istiyorum" → randevu → WhatsApp) iki cihazda |
+| 1 | Mobil: panel alt sekme çubuğu | ✅ | 360 px inceleme; panel rotaları taşma / axe testinde |
+| 2 | Yasal metinler yayında | ✅ | KVKK, gizlilik, çerez, randevu koşulları; site haritasında, 200 |
+| 2 | Onaysız analitik / piksel yok | ✅ | `seo.spec.ts`: harita karoları dışında üçüncü taraf istek yok, çerez yok; analitik birinci taraf ve çerezsiz (K-41) |
+| 2 | Form aydınlatma + onay kaydı | ✅ | Entegrasyon (`lead-actions`, `booking-request`, `consents`); `/panel/onaylar` + CSV |
+| 2 | Hukuki inceleme | n/a (demo) | Canlıya geçişte müşteri |
+| 3 | sitemap, robots, canonical, title / description, OG görseli | ✅ | `seo.spec.ts` (13 sayfa meta + `og:image`, site haritasındaki tüm başlıklar ≤ 60); OG görseli Faz 5'te eklendi |
+| 3 | JSON-LD, kurgusal yorum için `Review` yok | ✅ | NailSalon, Service, ImageObject, Person, FAQPage, BreadcrumbList; e2e'de `Review` / `AggregateRating` yok. Rich Results Test canlıda (noindex demo) ⏳ |
+| 3 | Kırık bağlantı yok, 404 doğru kod | ✅ | Tarama: 61 sayfa / 64 adres, 0 hata; `/bu-sayfa-yok` → 404 |
+| 3 | Demo'da `noindex` | ✅ | Her sayfa `noindex`, robots `Disallow: /` |
+| 4 | axe ciddi / kritik yok | ✅ | `responsive.spec.ts` tüm rotalar; Lighthouse erişilebilirlik 100 |
+| 4 | Klavye turu | ✅ / ⏳ | Otomatik: menü odak tuzağı + Esc, kaydırıcı ok tuşları, formlarda ilk hatalı alana odak, galeri "daha fazla"da odak. Panelin tam elle turu kullanıcıda |
+| 4 | Token kontrastı AA | ✅ | `color.test.ts` (23 çift) |
+| 5 | Lighthouse mobil | ⚠️ | A11y 100, BP 96–100, CLS ≤ 0,1; **performans 74–88** (CI 74–85, yerel 78–88), hedef 90. Fark: çerçeve JS'si + benzetimde geç ilk boyama (K-43). CI'da uyarı |
+| 5 | İlk yük JS bütçesi (≤ 170 KB) | ✅ / ⚠️ | İçerik sayfaları 162–169 KB gz ✅; form sayfaları (iletişim 193, randevu 204) Zod'lu istemci doğrulaması nedeniyle üstünde (K-43). Panel ≤ 300 ✅ |
+| 6 | Güvenlik başlıkları | ✅ | HSTS, CSP (panelde nonce + strict-dynamic), XFO, Referrer, Permissions, COOP; panel `X-Robots-Tag` |
+| 6 | Hız sınırı + honeypot | ✅ | Entegrasyon testleri (P-10, P-14, P-15) |
+| 6 | Yetki ve sahiplik testleri | ✅ | Yönetici eylemlerinin entegrasyon testlerinde `unauthorized` / `forbidden`; yönetim bağlantısı anahtarı yalnızca hash |
+| 6 | Depoda gizli bilgi yok | ✅ | gitleaks tüm geçmiş: sızıntı yok |
+| 6 | Yüksek / kritik açık yok | ✅ | `pnpm audit --prod`: 1 orta (esbuild, yalnızca geliştirme sunucusu) |
+| 7 | Formlar uçtan uca | ✅ | İletişim → talep → panel → demo kutusu; randevu → onay → yönetim bağlantısı → erteleme / iptal (e2e) |
+| 7 | Panel CRUD ve uç durumlar | ✅ | Galeri, hizmet, SSS, yorum, içerik, müsaitlik, ayarlar; uzun ad, boş liste, sahte dosya |
+| 8 | CI yeşil, demo senaryosu e2e | ✅ | 365 e2e + 280 birim / entegrasyon; PR #20 CI yeşil |
+| 9 | Yer tutucu yok, görsel kaynakları | ✅ | lorem / TODO yok; `docs/gorsel-kaynaklari.md` |
+| 9 | Demo notları | ✅ | Şerit, alt bilgi, "örnek" künye, "örnek yorum", temsilî görsel notu |
+| 10 | README, .env.example, admin kılavuzu, plan, ilerleme | ✅ | Admin kılavuzu Faz 5'te yazıldı |
+| 11 | Ortam değişkenleri doğrulanıyor | ✅ | `src/lib/env.ts` açılışta Zod ile |
+| 11 | Alan adı, e-posta doğrulama, izleme, Search Console | n/a (demo) | Canlıya geçiş listesinde (Faz 6) |
+| 12 | Portfolyo çıktıları | ⏳ | Faz 7 |
+
+**Kırmızı madde yok.** Uyarılar: Lighthouse performans (hedefin altında, izleniyor), form sayfalarının JS'si. Elle yapılacaklar kullanıcıya bırakıldı: gerçek cihaz testi, panelin elle klavye turu.
 
 ## Bilinen sorunlar
 
-- **Yerelde `content.spec` panel testleri kararsız** (2026-10-22): yerel `next start` ile kayıttan sonra `/hakkinda` ve `/sss` bazen eski içeriği gösteriyor; CI'da geçiyor. İncelenecek.
+- ~~Yerelde `content.spec` panel testleri kararsız~~ → Çözüldü (D-12): paralel işçide `afterAll` temizliği ve yerelde 6 işçi; describe'lar seri, yerelde `--workers=2` (Dersler).
+- **Lighthouse performans puanı 78–88** (hedef 90, mobil benzetim): kalan fark çerçeve JS'si ve benzetimde geç ilk boyama; CI'da uyarı. Ayrıntı K-43.
+- **`pnpm audit`: 1 orta düzey** — `esbuild` ≤ 0.24.2 (`better-auth` → `drizzle-kit` zinciri, yalnızca geliştirme sunucusunu etkiler); yüksek / kritik yok. Üst sürüm bekleniyor.
 
 ## Dersler
 
@@ -167,73 +200,14 @@ Faz 5'te doldurulur.
 - **Değişken yazı tipinin ekseni ve italiği pahalı** → Fraunces `opsz` + `SOFT` + italik × latin / latin-ext = 507 KB, LCP'yi benzetimde ~2,5 sn geciktiriyordu. Kullanılan eksen dışındakileri ve italiği çıkarmak 118 KB. Önerilen: 06-arayuz yazı tipi bölümüne "eksen / stil başına maliyet, bütçe ≤ 175 KB" ve Lighthouse CI'da `resource-summary:font:size`. **Sisteme taşı.**
 - **Statik kabuktaki Suspense yedeği de görsel yükler** → Galeride istemci tarafı sayfalama yetmedi; `useSearchParams` yedeği tüm ızgarayı basıyordu. Yedek ile ilk istemci durumu aynı olmalı. **Sisteme taşı.**
 - **Kaydırmaya bağlı CSS animasyonu ve testler** → `animation-timeline: view()` süre kullanmadığı için genel "reduce" sıfırlaması onu durdurmaz: kural `prefers-reduced-motion: no-preference` içinde olmalı. Yarı saydam bölümler axe kontrastını bozduğundan Playwright varsayılanı `reducedMotion: "reduce"`, hareket ayrı testte. Belge: 08-erisilebilirlik, 14-test. **Sisteme taşı.**
-
+- **`opengraph-image` dosyası, sayfanın `openGraph` nesnesiyle eziliyor** → Kök `app/opengraph-image.jpg` hiçbir sayfada çıkmadı: ortak `pageMetadata` her sayfaya `openGraph` veriyor ve meta veri alanları sığ birleşiyor. Çözüm: varsayılan görsel `public/`'te, yardımcının varsayılanı. Denetim: e2e'de `og:image` sayısı. Belge: 09-seo §2, iskelet `lib/seo.ts`. **Sisteme taşı.**
+- **JS ile belge düzenlerken `$'` tuzağı** → `String.replace`'in değiştirme metnindeki `$'` "eşleşmeden sonrası" demek; Dersler bölümü kopyalandı. Değiştirme metni sabitse `split(a).join(b)` ya da işlev biçimi. Not.
 - **Vercel CLI `api` ve Git Bash** → Ne oldu: `vercel api /web/insights/toggle` "Use an API path starting with /" dedi: MSYS yolu `C:/Program Files/Git/web/...`'e çeviriyor. `MSYS_NO_PATHCONV=1` ile çalıştı; `projectId` gövdede değil sorguda. Web Analytics'i panelsiz açmanın yolu: `POST /web/insights/toggle?projectId=…` gövde `{"value":true}`. Belge: 16-ortamlar §6. **Sisteme taşı.**
-- **Write aracı `\uFEFF` kaçışını gerçek karaktere çevirebiliyor** → Ne oldu: CSV BOM'u için yazılan `"\uFEFF"` dosyaya görünmez karakter olarak düştü (kod çalıştı ama okunamaz). Önerilen: görünmez karakterleri kod içinde `String.fromCharCode` ya da kaçışla yazıp `grep - **Yatay kaydırmalı liste ve klavye** → Bağlam: yorum kartları. Ne oldu: axe `scrollable-region-focusable` kaydırılan öğenin odaklanabilir olmasını ister, `jsx-a11y/no-noninteractive-tabindex` ise `<ul tabIndex={0}>`'ı reddeder. Çözüm: `aria-label`'lı listeye `tabIndex={0}` + gerekçeli tek satırlık eslint istisnası (JSX özniteliğinin üstünde `//` yorumu; `{/* */}` yorumu sonraki satırı kapsamaz). Belge: 08-erisilebilirlik (karusel / yatay liste). **Sisteme taşı.**
+- **Write aracı `\uFEFF` kaçışını gerçek karaktere çevirebiliyor** → Ne oldu: CSV BOM'u için yazılan `"\uFEFF"` dosyaya görünmez karakter olarak düştü (kod çalıştı ama okunamaz). Önerilen: görünmez karakterleri kod içinde `String.fromCharCode` ya da kaçışla yazıp `grep` ile UTF-8 BOM baytlarını (EF BB BF) arayarak denetle. **Sisteme taşı.**
+- **SEO denetimi testle** → Başlık uzunluğu elle gözden kaçtı (`/hizmetler` 63); site haritasındaki her sayfayı gezen tek e2e testi uzun hizmet / eser adlarını da kapsıyor. Belge: 09-seo §2, 14-test. **Sisteme taşı.**
+- **Yatay kaydırmalı liste ve klavye** → Bağlam: yorum kartları. Ne oldu: axe `scrollable-region-focusable` kaydırılan öğenin odaklanabilir olmasını ister, `jsx-a11y/no-noninteractive-tabindex` ise `<ul tabIndex={0}>`'ı reddeder. Çözüm: `aria-label`'lı listeye `tabIndex={0}` + gerekçeli tek satırlık eslint istisnası (JSX özniteliğinin üstünde `//` yorumu; `{/* */}` yorumu sonraki satırı kapsamaz). Belge: 08-erisilebilirlik (karusel / yatay liste). **Sisteme taşı.**
 - **Next 16 deneysel `partialPrefetching` + etiket güncellemesi = yarım gezinti yanıtı** → Ne oldu: galeri testi tam pakette ara sıra genel hata sayfasına düşüyordu (CI'da "flaky"). İz: gezinti yanıtında `x-nextjs-postponed: 1`, gövdede `Next.Metadata` / `MetadataOutlet` parçalarına başvuru var ama tanımları yok → React #412. Tetikleyici paralel testin `updateTag("gallery")`'si; panelde gizle / yayımla + "Sonraki eser" ile ilk denemede yeniden üretildi. `partialPrefetching: false` ile çözüldü (K-42). Yöntem: yanıt gövdesini `page.on("response")` ile yakalayıp tanımlı / başvurulan Flight satırlarını karşılaştırmak. Önerilen: iskelette `partialPrefetching` varsayılan kapalı; açılacaksa "etiket güncelle → istemci gezintisi" e2e'si şart. Belge: `iskelet/next.config.ts`, 12-performans. **Sisteme taşı.**
 - **Yerel e2e'de paralel yük** → Ne oldu: 12 çekirdekte varsayılan 6 işçiyle panel eylemleri 5 sn içinde yenilenmedi, testler rastgele düştü; CI ile aynı `--workers=2` kullanılmalı. Ayrıca tam pakette bir kez SSS'ye eklenen soru `/sss`'de hemen görünmedi (aynı anda başka işçinin sayfayı yeniden üretmesiyle önbellek yarışı; tek başına 76 / 76 geçti; gerçek kullanımda tek yönetici). Önerilen: yerelde `workers` CI ile aynı olsun. Belge: 14-test §7. **Sisteme taşı.**
-
-- **Efor bütçesi kapsamı belirsiz** → Bağlam: S2 planı. Ne oldu: çekirdek [Z] maddeleri tek başına ~43 puan; S1 (≤ 10) ve S2 (≤ 30) bütçeleri çekirdeği kapsayamıyor. Önerilen kural: "Efor bütçesi çekirdek ve iskeletle gelen maddeleri kapsamaz" cümlesi açıkça yazılsın. Belge: `standartlar/00-karar-mantigi.md` §3.3 / §7.4. **Sisteme taşı.**
-- **Varsayım öneki çakışması** → Bağlam: plan şablonu §4. Ne oldu: varsayımlar `V-01` ile numaralanıyor, katalog ziyaretçi özellikleri de `V-` (V-30). Önerilen kural: varsayımlar `VR-` öneki alsın, 18-dokumantasyon §3 tablosuna eklensin. Belge: `sablonlar/proje-plani.md`, `standartlar/18-dokumantasyon.md`. **Sisteme taşı.**
-- **Brifte açık istenen özellik ve P0 tanımı** → Bağlam: galeri / öncesi-sonrası. Ne oldu: P0 tanımı ([Z] + Y=1 + ana dönüşüm) müşterinin açıkça istediği ama dönüşüm akışı olmayan özelliği P1'e itiyor; bütçe kuralı da en düşük oranlı P1'i (galeri) P2'ye indiriyordu. Önerilen kural: "Brifte açıkça istenen ve sektör karar anının ön koşulu olan özellik P0 sayılabilir; K- kararıyla gerekçelendirilir." Belge: `standartlar/00-karar-mantigi.md` §7.4. **Sisteme taşı.**
-- **API'siz WhatsApp köprüsü, "Bu tasarımı istiyorum", yenileme hatırlatıcısı** → katalogda yok; randevu sektörlerinin (güzellik, sağlık) hepsinde işe yarar. Önerilen: `02-ziyaretci` ve `X-GZL` modülüne eklensin. **Sisteme taşı.**
-- **create-next-app kilit dosyası bekleme süresine takılıyor** → Ne oldu: create-next-app kilit dosyasını `pnpm-workspace.yaml` kopyalanmadan önce yazıyor; 3 günden yeni 3 alt bağımlılık `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION` verdi. Önerilen: iskelet README adım 3'ten sonra `rm pnpm-lock.yaml && pnpm install`. Belge: `iskelet/README.md` §2. **Sisteme taşı.**
-- **pnpm 12'de ayar adı değişti** → `ignoredBuiltDependencies` yok sayılıyor ve kurulum `ERR_PNPM_IGNORED_BUILDS` ile duruyor; yeni ad `allowBuilds: { paket: false }`. Belge: `iskelet/pnpm-workspace.yaml`, `standartlar/15-git-ve-ci.md` §6. **Sisteme taşı.**
-- **`typecheck` CI'da `.next/types` olmadan kırılır** → `LayoutProps` / `PageProps` rota tipleri `next typegen` ile üretilir; temiz checkout'ta yok, yerelde de eskiyebiliyor. Önerilen: `"typecheck": "next typegen && tsc --noEmit"`. Belge: iskelet README §2 adım 5. **Sisteme taşı.**
-- **`sablonlar/readme.md` proje README şablonu değil** → Dosya şablonlar klasörünün dizini; SKILL.md `kur` modu onu README.md'ye kopyalamayı söylüyor. Önerilen: dizini `sablonlar/README.md` yap, ayrı bir proje README şablonu ekle. **Sisteme taşı.**
-- **`sr-only` içeriğe geç bağlantısı dokunma hedefi testini düşürüyor ve odakta küçük kalıyor** → Tailwind `not-sr-only` dolguyu sıfırladığı için odaktaki bağlantı 25,6 px kaldı. Çözüm: ekran dışına kaydırılan, her zaman tam boyutlu bağlantı + "odakta ≥ 44 px" e2e testi; `checks.ts` görsel olarak gizli (≤ 1 px) öğeleri atlar. Belge: `iskelet/tests/e2e/responsive.spec.ts`, 08-erisilebilirlik. **Sisteme taşı.**
-- **CSS `uppercase` + `lang="tr"` İngilizce kelimeyi bozar** → "Nail Art Studios" → "NAİL ART STUDİOS". Önerilen kural: İngilizce marka / kelime CSS ile büyütülecekse öğeye `lang="en"`. Belge: KURALLAR C (Türkçe), 06-arayuz §11. **Sisteme taşı.**
-- **Next.js 16.4'te `error.tsx` `retry` alır** (`reset` değil) ve panel nonce CSP'si için sayfanın istek başına render edilmesi gerekir (`instant = false`); iskelette panel sayfası örneği yoktu. Önerilen: iskelete `/panel/giris` + oturum kapısı örneği. Belge: iskelet. **Sisteme taşı.**
-- **Çift `role="alert"`** → Next.js rota duyurucusu da `role="alert"` taşıyor; e2e'de `getByRole("alert")` forma daraltılmalı. Belge: 14-test. Not.
-- **Docker port çakışması** → Aynı makinede birden çok proje 5432 kullanıyor; `docker-compose.yml`'a `name:` ve proje başına port. Belge: 16-ortamlar §4. Not.
-- **Commit kancası üretilmiş dosyada düşüyor** → `auth.ts` ESLint'te yok sayılıyor; commit'e girince "File ignored" uyarısı `--max-warnings=0` ile hata oluyor. Çözüm: `lefthook.yml` ESLint komutuna `--no-warn-ignored`. Belge: `iskelet/lefthook.yml`. **Sisteme taşı.**
-- **gitleaks yanlış pozitif** → `.claude/rules/sunucu.md`'deki `05-sunucu-ve-api.md` dosya adı `generic-api-key` kuralını tetikliyor; her projede tekrarlar. Çözüm: dar kapsamlı `.gitleaks.toml` izin listesi (standart dosya adı deseni). Belge: iskelet. **Sisteme taşı.**
-- **CI'da lint de rota tiplerine muhtaç** → `static` işinde lint, typecheck'ten önce koşuyor; tipli kurallar `PageProps`'u çözemiyor. Çözüm: `"lint": "next typegen && eslint . --max-warnings=0"`. Belge: iskelet README §2 adım 5. **Sisteme taşı.**
-- **`prepare: lefthook install` Vercel CLI yüklemesinde kurulumu durduruyor** → `.git` yok. Çözüm: `"prepare": "lefthook install || exit 0"`. Ayrıca `pnpm install` "Already up to date" iken `prepare` çalışmıyor; ilk kurulumda `pnpm exec lefthook install` elle. Belge: iskelet. **Sisteme taşı.**
-- **Vercel CLI yan etkileri** → `vercel link` `.gitignore`'un sonuna `.env*` ekliyor (`!.env.example` istisnasını eziyor; geri alındı); `integration add neon` projeye istenmeyen ajan talimat dosyaları (`.agents/`, `.claude/skills/`) ekliyor (silindi) ve `--no-env-pull` olmadan `.env.local`'daki yerel `DATABASE_URL`'i değiştirirdi; `vercel curl` Windows'ta "Malformed input" veriyor. Belge: 16-ortamlar §6. **Sisteme taşı.**
-- **CLI yüklemesinde sır sızıntısı riski** → `vercel deploy` yerel klasörü yükler; `.vercelignore` olmadan `.env.local` da gidebilir. Çözüm: iskelete `.vercelignore`. **Sisteme taşı.**
-- **Satır sonları** → Windows'ta `core.autocrlf` açıkken bash kancaları CR ile bozulabilir; iskelete `.gitattributes` (`* text=auto eol=lf`). **Sisteme taşı.**
-- **CI e2e işi testler bittikten sonra 15 dk asılı kaldı** → Playwright `webServer: "pnpm start"`; pnpm 12 betiği Playwright'ın süreç grubu dışında çalıştırıyor, kapanışta `next-server` öldürülemiyor ("Timed out waiting 900s for the teardown"). Çözüm: CI'da `./node_modules/.bin/next start`. Ayrıca gizli depolarda runner 2 vCPU: `workers: 2`, iz yalnızca ilk tekrar denemede, `globalTimeout` (iptal yerine hata + rapor). Belge: `iskelet/playwright.config.ts`. **Sisteme taşı.**
-- **shadcn `init` proje token'larının üzerine yazıyor** → `globals.css`'i nötr renklerle değiştiriyor, Geist yazı tipini ekliyor, düğmeler 32 px, odak halkası %50 saydam (krem zeminde < 3:1). Önerilen: iskelete hazır uyarlanmış `button` / `sheet` + token eşlemesi (`--card` → `--surface` …) ya da `init` sonrası kontrol listesi. Belge: 06-arayuz, iskelet. **Sisteme taşı.**
-- **Stok görsel tuzağı: rawpixel büyük boyutları filigranlı** → Openverse'ün 1024 px önizlemesi temiz, `image_1300` filigranlı. Unsplash / StockSnap tam boyuta otomatik erişimi engelliyor. Önerilen: 17-icerik §5'e "indirilen görsel tam çözünürlükte filigran için incelenir" maddesi ve Openverse `license=cc0,pdm` yöntemi. **Sisteme taşı.**
-- **Next.js 16: `priority` kullanımdan kalktı** → `.claude/rules/mobil-arayuz.md` "LCP görseline `priority`" diyor; doğrusu `loading="eager"` + `fetchPriority="high"` (ya da `preload`). Belge: `sablonlar/claude-rules/mobil-arayuz.md`, 12-performans. **Sisteme taşı.**
-- **Görsel dönüştürme kotası için özel yükleyici** → `images.loaderFile` + sabit genişlikli WebP varyantları `next/image` API'sini korurken kotayı sıfırlar; ayrı `<picture>` bileşeni gerekmez. Önerilen: iskelete `image-loader.ts` + üretim betiği. Belge: 12-performans, U-21. **Sisteme taşı.**
-- **CSS `uppercase` düzenlenebilir metinde de bozar** → Panelden gelen üst başlıklarda İngilizce kelime olabilir ("Nail artist" → "NAİL ARTİST"); içerik kaynaklı metinde `uppercase` kullanılmaz. Belge: 06-arayuz §11. **Sisteme taşı.**
-- **Flex içindeki breadcrumb bağlantısı "satır içi" istisnasından düşer** → `li` flex olunca bağlantı blok sayılır, 44 px testi takılır; bağlantıya mobilde `min-h-11`. Not.
-- **Playwright `webServer` komutu işletim sisteminden bağımsız olmalı** → `./node_modules/.bin/next start` Windows `cmd`'de çalışmıyor; `node node_modules/next/dist/bin/next start` her ikisinde de çalışır ve pnpm sarmalayıcısı yok. Belge: `iskelet/playwright.config.ts`. **Sisteme taşı.**
-- **CI security işinde pnpm önbelleği** → İş bağımlılık kurmuyor; kilit dosyası değişince önbellek ıskalıyor ve `setup-node`'un son adımı var olmayan pnpm deposu yüzünden düşüyor ("Path(s) specified … do(es) not exist"). Çözüm: bu işte `cache: pnpm` yok. Belge: `iskelet/.github/workflows/ci.yml`. **Sisteme taşı.**
-- **Vercel Hobby: CLI yayını commit yazarına göre engellenir** → GitHub squash birleştirmesi commit'i GitHub "noreply" adresiyle yazar; bu adres Vercel hesabına bağlı değilse CLI dağıtımı "Blocked". Geçici çözüm: `git archive HEAD` ile `.git`'siz dışa aktarımdan yayın. Kalıcı: Vercel hesabına GitHub giriş bağlantısı + Git entegrasyonu (Faz 3'te kurulmalı). Belge: 16-ortamlar §6, iskelet README adım 10. **Sisteme taşı.**
-- **Entegrasyon testi altyapısı iskelette yok** → S2 her eylem için yetki testi istiyor ama hazır düzen yoktu. Bu projede: Vitest `projects` (unit / integration), `.env.test` (NODE_ENV=test, `.env.local` yüklenmez), `globalSetup` ile migration ve `*_test` ad denetimi, `vi.mock` ile oturum / IP / `next/cache`. Belge: iskelet, 14-test. **Sisteme taşı.**
-- **`getByLabel` alt dize eşleşmesi** → "Soru" etiketi "Sık sorulan **soru**lar" bölümüyle eşleşti (gezinme bitmeden). Kısa etiketlerde `{ exact: true }` ve tıklamadan sonra URL beklemesi. Belge: 14-test. Not.
-- **Etiketli onay kutusu ve 44 px testi** → Kutu 20 px, etiketi 44 px; WCAG 2.5.8 etiketi hedef sayar. `checks.ts` etiket içindeki onay kutusunu etiketin boyutuyla ölçer. Belge: `iskelet/tests/e2e/responsive.spec.ts`. **Sisteme taşı.**
-- **Görünmeyen `span` ile erişilebilir ad** → "Gizle" + `sr-only` ": soru" adı tutarsız hesaplandı; liste eylemlerinde görünen sözcükle başlayan `aria-label`. Belge: 08-erisilebilirlik. Not.
-- **Stok görsel: Pexels otomasyonu** → Unsplash başsız tarayıcıya 403 veriyor; Pexels yalnızca görünür (headed) tarayıcıda açılıyor, CDN adresi (`images.pexels.com/photos/<no>/pexels-photo-<no>.jpeg?w=2000`) curl ile iniyor. Fotoğrafçı adı sayfa başlığından değil `ImageObject` JSON-LD `creator.name`'den okunmalı. Belge: 17-icerik §5. **Sisteme taşı.**
-- **Pastel tema ve kontrast** → Pastel ana renk düğme zemini olarak iyi, metin rengi olarak AA'yı geçmiyor. Çözüm: ayrı vurgu metni token'ı (`--brand`) ve `text-primary` yerine `text-brand`. Önerilen: iskelet token'larında "zemin ana rengi" ile "metin vurgu rengi" baştan ayrı. Belge: 06-arayuz §3. **Sisteme taşı.**
-- **Kullanıcı "Pinterest'ten al" diyebilir** → Lisanssız ve başkasının işi; sanatçı sitesinde en büyük risk başkasının tasarımını onun işi gibi göstermek. Önerilen: 17-icerik §5'e açık yasak + müşteriye anlatılacak kısa gerekçe. **Sisteme taşı.**
-- **Cache Components: dinamik segmentte `notFound()`** → Sayfa akışa başladıktan sonra `notFound()` 404 değil 200 + `noindex` döner (Next.js belgesi). `params` Suspense dışında okunursa geliştirmede "instant shell" uyarısı; tüm sayfa parametreye bağlıysa `export const instant = false`. E2E'de durum kodu yerine "bulunamadı" başlığı ve `noindex` denetlenir. Belge: 14-test, 09-seo. **Sisteme taşı.**
-- **İstemci filtresi için History API** → `router.replace` statik sayfada her filtrede sunucuya RSC isteği atıyor, geliştirmede yük altında testleri geciktiriyordu; `window.history.replaceState` `useSearchParams` ile senkron ve gidiş-dönüş yok. Belge: 06-arayuz (filtreler). **Sisteme taşı.**
-- **Mobil eylem çubuğu kenarlığı** → Çubuğun 1 px üst kenarlığı ayrılan boşluğa katılmamıştı; sayfa yüksekliği değişince alt bilginin 1 px'i altta kalıyordu. Ayrılan boşluk `--action-bar-h + 1px`. Belge: iskelet `site-shell`. Not.
-- **Turbopack geliştirme CSS önbelleği** → `@theme`'e yeni renk eklenince sınıflar üretilmedi; `.next/dev` silinip sunucu yeniden başlatılınca düzeldi. Not.
-- **İskeletteki `SpamGuard` Cache Components ile bozuk** → `useState(() => Date.now())` statik kabukta derleme zamanında donuyor (Next.js "unstable value `Date.now()` in a Client Component" hatası) ve "çok hızlı gönderim" denetimi hiç tetiklenmiyor. Çözüm: zaman `useEffect` ile gizli alana yazılır; boşsa sunucu süre denetimini atlar. Belge: `iskelet/src/components/common/spam-guard.tsx`. **Sisteme taşı.**
-- **MapLibre 6 + Turbopack: worker yüklenmiyor** → Worker adresi `import.meta.url`'den türetiliyor; paketlenince çözülmüyor. Çözüm: worker'ı `public/vendor/`'a sürümlü adla kopyalayan betik + `setWorkerUrl` (K-31). Belge: 01-teknoloji-yigini (harita), iskelet. **Sisteme taşı.**
-- **Mobil boyut testi onay kutusu / radyo düğmesini yazı alanı sayıyordu** → iOS yakınlaştırması yalnızca yazı alanlarında; `findSmallInputs` checkbox ve radio'yu artık saymaz. Belge: `iskelet/tests/e2e/checks.ts`. **Sisteme taşı.**
-- **Vercel'de gizli ortam değişkenleri boş iner** → `vercel env pull` "sensitive" değişkenleri boş yazıyor; `env.ts` doğrulaması seed'i durduruyor. Canlı seed için yalnızca `DATABASE_URL` isteyen bir yol gerekir. Belge: 16-ortamlar §6. **Sisteme taşı.**
-- **Müsaitlik motorunu seed'de kullanmak** → Örnek randevu saatlerini motorun kendisi seçince 66 kayıt dışlama kısıtına hiç takılmadan yüklendi; motor ile veritabanı kuralının uyumu seed'de de sınanmış oldu. Önerilen: randevu sektörlerinde seed'in saatleri motordan üretmesi. Belge: 04-veri §11. **Sisteme taşı.**
-- **Drizzle özel migration** → `drizzle-kit generate --custom --name …` boş dosya üretir; `EXCLUDE` kısıtı oraya yazılır, şema anlık görüntüsü bilmediği için sonraki üretimler ona dokunmaz. Belge: 04-veri §9. Not.
-- **Next.js 16 önceki sayfayı gizli tutar** → Yönlendirmeden sonra eski sayfa (Activity) DOM'da gizli kalıyor; `getByText` iki öğe bulup katı mod hatası veriyor. E2E'de metin aramalarına `.filter({ visible: true })` ya da rol tabanlı arama. Belge: 14-test. **Sisteme taşı.**
-- **"use server" dosyasındaki her dışa açık fonksiyon bir uç noktadır** → Yardımcı okuma fonksiyonu (`suggestSlots`) dışa açılsaydı sarmalayıcısız, hız sınırsız bir genel eylem olurdu; dışa açılmadı. Belge: 05-sunucu-ve-api §3. **Sisteme taşı.**
-- **Turbopack geliştirmede yeni yapılandırma anahtarını görmeyebilir** → `config/limits.ts`'e eklenen anahtar çalışma anında `undefined` geldi; sunucu yeniden başlatılınca düzeldi. Not.
-- **Kapalı günü saydamlıkla soluklaştırmak kontrastı düşürür** → `opacity-60` axe'de 21 kontrast hatası verdi; kesikli çerçeve + üstü çizili yazı ile ayırt edildi. Belge: 08-erisilebilirlik. Not.
-- **Paralel e2e işçisinde `afterAll` başka testin verisini silebilir** → Aynı `describe` iki işçide çalışınca her işçi kendi `afterAll`'ını çalıştırıyor; ad tabanlı temizlik diğer işçinin az önce oluşturduğu kaydı sildi. Çözüm: yazan testleri `test.describe.configure({ mode: "serial" })` ya da test başına benzersiz ad. Belge: 14-test. **Sisteme taşı.**
-- **Node betiğiyle dosya düzenlerken `\\n` kaçışı** → Şablon dizesi içindeki `\\n` gerçek satır sonuna dönüşüp TypeScript'i bozdu (iki kez). Çok satırlı kod değişikliğinde Edit aracı ya da ayrı betik dosyası. Not.
-- **`vercel blob create-store` `.env.local`'ı değiştirir** → Komut geliştirme ortam değişkenlerini çekip `.env.local`'a yazdı: yerel `DATABASE_URL` ve `DATABASE_URL_UNPOOLED` canlı Neon'a döndü (drizzle önce UNPOOLED'ı okuyor: `db:migrate` canlıya giderdi), `.gitignore`'a `.env*` eklendi. Fark edilip hemen geri alındı. Önerilen: Vercel CLI'nın env yazan her komutundan önce `.env.local` yedeği ve sonra fark denetimi. Belge: 16-ortamlar §6. **Sisteme taşı.**
-- **Vercel'de sunucu eylemiyle dosya yükleme** → İstek gövdesi ~4,5 MB ile sınırlı, Next varsayılanı 1 MB. Tarayıcıda küçültme + `serverActions.bodySizeLimit` + sunucuda yeniden kodlama. Belge: 11-guvenlik (yükleme), 12-performans. **Sisteme taşı.**
-- **pnpm audit: yaması olmayan dolaylı açık** → `braces` (eslint-config-next zinciri, yalnızca geliştirme). Standart muafiyete izin veriyor ama biçim tanımlı değil; `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` + gerekçe + gözden geçirme tarihi örneği eklenmeli. Belge: 15-git-ve-ci §6. **Sisteme taşı.**
-\xEF\xBB\xBF'` ile denetle. **Sisteme taşı.**
-- **SEO denetimi testle** → Başlık uzunluğu elle gözden kaçtı (`/hizmetler` 63); site haritasındaki her sayfayı gezen tek e2e testi uzun hizmet / eser adlarını da kapsıyor. Belge: 09-seo §2, 14-test. **Sisteme taşı.**
-
-- **Yatay kaydırmalı liste ve klavye** → Bağlam: yorum kartları. Ne oldu: axe `scrollable-region-focusable` kaydırılan öğenin odaklanabilir olmasını ister, `jsx-a11y/no-noninteractive-tabindex` ise `<ul tabIndex={0}>`'ı reddeder. Çözüm: `aria-label`'lı listeye `tabIndex={0}` + gerekçeli tek satırlık eslint istisnası (JSX özniteliğinin üstünde `//` yorumu; `{/* */}` yorumu sonraki satırı kapsamaz). Belge: 08-erisilebilirlik (karusel / yatay liste). **Sisteme taşı.**
-- **Yerel e2e'de paralel yük** → Ne oldu: 12 çekirdekte varsayılan 6 işçiyle panel eylemleri 5 sn içinde yenilenmedi, testler rastgele düştü; CI ile aynı `--workers=2` ile 336 / 337 geçti. Ayrıca Next 16.4 istemci gezintisinde ara sıra `Connection closed` (React #412) → genel hata sayfası; sunucu günlüğü temiz, galeri testi 10'da 1 düştü. İzleniyor; D-12'de `global-error` yerine bölüm hata sınırı ve "yeniden dene" ile yumuşatılacak. Önerilen: yerelde `workers` CI ile aynı olsun. Belge: 14-test §7. **Sisteme taşı.**
 
 - **Efor bütçesi kapsamı belirsiz** → Bağlam: S2 planı. Ne oldu: çekirdek [Z] maddeleri tek başına ~43 puan; S1 (≤ 10) ve S2 (≤ 30) bütçeleri çekirdeği kapsayamıyor. Önerilen kural: "Efor bütçesi çekirdek ve iskeletle gelen maddeleri kapsamaz" cümlesi açıkça yazılsın. Belge: `standartlar/00-karar-mantigi.md` §3.3 / §7.4. **Sisteme taşı.**
 - **Varsayım öneki çakışması** → Bağlam: plan şablonu §4. Ne oldu: varsayımlar `V-01` ile numaralanıyor, katalog ziyaretçi özellikleri de `V-` (V-30). Önerilen kural: varsayımlar `VR-` öneki alsın, 18-dokumantasyon §3 tablosuna eklensin. Belge: `sablonlar/proje-plani.md`, `standartlar/18-dokumantasyon.md`. **Sisteme taşı.**

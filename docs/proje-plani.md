@@ -2,7 +2,7 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.15 |
+| Belge sürümü | v0.16 |
 | Tarih | 2026-10-22 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4 tamam: P0 (D-01…D-09) ve P1 (D-10…D-12) dilimleri bitti. Kullanıcı 2026-10-22'de "proje bitene kadar ilerle" dedi (K-17). Sıradaki: Faz 5 kalite kapıları raporu, Faz 6 yayın listesi, Faz 7 portfolyo, Faz 8 dersler.
+> **Güncel durum:** Faz 5 (kalite kapıları) tamam; rapor `docs/ilerleme.md`. Elle yapılacak maddeler kullanıcıda. Sıradaki: Faz 6 yayın listesi, Faz 7 portfolyo, Faz 8 dersler.
 
 ---
 
@@ -623,6 +623,7 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-41 | 2026-10-22 | D-11 SEO + ölçüm. Şemalar: eser sayfasında `ImageObject` (temsilî stok fotoğraf fotoğrafçısına ve Pexels lisansına atfedilir, işletmeye asla; stüdyo işi işletmeciye), Hakkında'da `Person` (yalnızca ad, unvan, işletme, Instagram: örnek biyografi şemaya girmez), hizmette `Service` (D-03). Veriden kurulan başlıklar şablonla 60 karakteri aşarsa önce marka eki düşer, sonra kelimeden kısalır; açıklamalar düz metin, kelimeden kesilir. Canlı `robots.txt` `/randevu/yonet/`'i de dışlar. Ölçüm: Vercel Web Analytics projede açıldı (2026-10-22, API); betik yalnızca Vercel'de (`VERCEL=1`) ve herkese açık sayfalarda, kendi alan adından yüklenir; sayfa adresleri sorgusuz ve yönetim anahtarı `[token]` ile gönderilir. Dönüşüm olayları tek tıklama dinleyicisiyle bağlantının hedefinden sınıflanır (WhatsApp, ara, yol tarifi, tasarım seçildi, randevu başladı), sayfa olayları onay ekranlarında (randevu tamamlandı, talep gönderildi). Vercel belgelerine göre özel olaylar Pro planda kaydedilir; Hobby'de yalnızca sayfa görüntüleme görünür, çağrılar zararsız kalır. Onay kayıtları ekranı `/panel/onaylar` (`audit.view`: sahip ve yönetici), sayfalı kart listesi + CSV (`;`, UTF-8 BOM, formül etkisizleştirme) | Kurgusal içerik şemada gerçek bilgi gibi sunulmaz (VR-09). Çerezsiz ve birinci taraf betik K-13 / K-19'u korur: çerez bandı gerekmez. Paket planda vardı (§10) |
 | K-42 | 2026-10-22 | `partialPrefetching` kapatıldı (`cacheComponents` açık kalır). Açıkken, önbellek etiketi az önce güncellenmiş bir sayfaya istemci gezintisi, çalışma anında yeniden üretilen PPR yanıtını meta veri delikleri doldurulmadan alıyordu: React #412 "Connection closed" → genel hata sayfası. Belirleyici yeniden üretim: panelde bir eseri gizle / yayımla, ardından eser sayfasında "Sonraki eser". Kapalıyken 5 / 5 ve tam paket temiz | Ziyaretçiye hata sayfası göstermek, daha ince taneli ön yüklemenin kazancından ağır basar; Next 16.4.2'deki deneysel özellik yeni sürümde yeniden denenir (P2) |
 | K-43 | 2026-10-22 | D-12 cila + kalite. **Hareket CSS ile** (Motion paketi eklenmedi): giriş kolajı sırayla belirir (LCP karesi beklemez), ana sayfa bölümleri kaydırmayla belirir (`animation-timeline: view()`, desteklenmeyen tarayıcıda sabit), öncesi / sonrası tutamacı ilk görünüşte bir kez kayar; yalnızca `translate` / `opacity`, azaltılmış harekette hiçbiri. **Yazı tipi**: Fraunces italik ve `opsz` ekseni çıkarıldı (`SOFT` kalır; vurgu italiği tarayıcı eğiltmesi): 507 KB → 118 KB. **Paket bölme**: özellik barrel'larındaki istemci formları `@/features/<x>/forms`'a, Zod'suz ziyaretçi bileşenleri `…/client`'a taşındı; galeri etiketleri Zod'suz `labels.ts`'te. Ziyaretçi sayfalarında Zod yok. **Galeri** ilk ekranda 12 eser + "Daha fazla iş göster" (NFR-07: görsel 394 → 205 KB). **Lighthouse CI** e2e işinde 5 sayfa: erişilebilirlik ≥ 0,95, en iyi uygulama ≥ 0,95, CLS ≤ 0,1, betik ≤ 215 KB (iletişim 250), yazı tipi ≤ 175 KB, görsel ≤ 300 KB, üçüncü taraf 0 hata; performans ≥ 0,9 uyarı. Ölçüm (yerel üretim, mobil benzetim): ana sayfa 69 → 86, galeri 62 → 80–83; hedef 90'a kalan fark çerçeve JS'si (~200 KB gz) ve benzetimdeki geç ilk boyama. Panelde `error.tsx` / `loading.tsx` (iskelet 300 ms sonra), randevu akışında iskelet, ana sayfada "En yakın boş saatler" için bölüm hata sınırı (`catchError`), panel formlarında kaydedilmemiş değişiklik uyarısı | Motion kitaplığı ~30 KB gz ekler; istenen etkiler CSS ile sıfır JS. Puanı en çok düşüren yazı tipi baytları ve formların her sayfaya taşınmasıydı |
+| K-44 | 2026-10-22 | Faz 5 denetiminde eksik çıkan P0 **Ayarlar** ekranı (SCR-110, `/panel/ayarlar`, `settings.edit`) eklendi: işletme adı, işletmeci, tanıtım, adres, telefon / WhatsApp (E.164'e çevrilir), e-posta, WhatsApp karşılama mesajı, Instagram (@ olmadan), ana sayfa arama başlığı ve açıklaması. Çalışma saatleri ve randevu kuralları **Müsaitlik**'te, fiyat gösterimi **Hizmetler**'de kalır (her ayar tek yerde); ekran bunlara bağlantı verir. Randevu WhatsApp şablonları kodda sabit kalır, düzenleme P2: fiyat ve kampanya içermeme kuralı (BR-HZM-001, İYS) serbest metinle korunamaz. Paylaşım görseli: `public/og-varsayilan.jpg`, `pageMetadata`'nın varsayılan `og:image` / `twitter:image`'ı (sayfalar kendi `openGraph` nesnesini verdiği için `opengraph-image` dosya kuralı eziliyordu); sitenin yazı tipleriyle `scripts/generate-og-image.mjs` üretir; kendi görseli olan sayfalar (eser, hizmet) onu kullanır | Plan §8 / §12 P0 ekranı hiçbir dilime yazılmamıştı (dilim listesi yalnızca SCR-104'ü içeriyordu). OG görseli yoktu: paylaşımlarda boş kart |
 
 **Değişiklik kaydı:**
 
@@ -643,3 +644,4 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | 2026-10-22 | v0.13 | D-10: K-40 (ana sayfa tamamlama); `testimonials`, `content_blocks.process / hygiene` |
 | 2026-10-22 | v0.14 | D-11: K-41 (şemalar, başlık sığdırma, Web Analytics + olaylar, onay kayıtları ekranı), K-42 (`partialPrefetching` kapalı) |
 | 2026-10-22 | v0.15 | D-12: K-43 (CSS hareket, yazı tipi, paket bölme, galeri sayfalama, Lighthouse CI, hata / yükleniyor durumları, kaydedilmemiş değişiklik uyarısı) |
+| 2026-10-22 | v0.16 | Faz 5: K-44 (Ayarlar ekranı, paylaşım görseli); kalite kapısı raporu |
