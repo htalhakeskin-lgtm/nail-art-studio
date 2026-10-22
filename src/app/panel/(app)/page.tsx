@@ -30,7 +30,8 @@ const sections = [
   { href: "/panel/talepler", label: "Talepler", hint: "İletişim formundan gelen mesajlar" },
   { href: "/panel/hizmetler", label: "Hizmetler", hint: "Menü, süreler, fiyat gösterimi" },
   { href: "/panel/galeri", label: "Galeri", hint: "Yayımla, ana sayfa seçkisi" },
-  { href: "/panel/icerik", label: "İçerik", hint: "Hakkında metni, SSS" },
+  { href: "/panel/icerik", label: "İçerik", hint: "Hakkında, süreç, hijyen, SSS" },
+  { href: "/panel/yorumlar", label: "Yorumlar", hint: "Ana sayfadaki yorumlar, sıra" },
   { href: "/panel/demo-kutusu", label: "Demo kutusu", hint: "Gönderilecek bildirimler" },
 ] as const;
 

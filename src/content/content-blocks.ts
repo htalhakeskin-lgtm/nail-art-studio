@@ -26,4 +26,50 @@ export const contentBlockDefaults = {
     closing:
       "Son işlere Instagram'dan göz atabilir, aklınızdaki tasarımın fotoğrafını WhatsApp'tan gönderebilirsiniz.",
   },
+  process: {
+    heading: "Nasıl ilerliyoruz",
+    intro: "İlk mesajdan bakım önerisine kadar dört adım.",
+    steps: [
+      {
+        title: "Randevu",
+        body: "Online randevu sayfasından boş saati seçin ya da WhatsApp'tan yazın; onayladığımızda haber veririz.",
+      },
+      {
+        title: "Tasarım konuşması",
+        body: "Beğendiğiniz işin fotoğrafından, renginizden ya da kıyafetinizden yola çıkıp tasarımı birlikte netleştiririz.",
+      },
+      {
+        title: "Uygulama",
+        body: "Tırnağınızı hazırlar, seçtiğimiz tekniği ve tasarımı acele etmeden uygularız; süre hizmete göre değişir.",
+      },
+      {
+        title: "Bakım",
+        body: "Dayanımı uzatmak için kısa bakım önerileri veririz; yenileme zamanını takviminize ekleyebilirsiniz.",
+      },
+    ],
+    note: "",
+  },
+  hygiene: {
+    heading: "Hijyen ve güven",
+    intro: "Her randevudan önce aynı adımları uygularız; sorularınızı uygulamadan önce yanıtlarız.",
+    steps: [
+      {
+        title: "Sterilize aletler",
+        body: "Metal aletler her müşteriden sonra temizlenir ve sterilizasyon cihazından geçirilir.",
+      },
+      {
+        title: "Kişiye özel malzeme",
+        body: "Törpü, tampon ve pamuk gibi tek kullanımlık malzemeler her müşteri için yeniden açılır.",
+      },
+      {
+        title: "Temiz masa",
+        body: "Masa ve kullanılan yüzeyler her randevudan önce dezenfekte edilir.",
+      },
+      {
+        title: "Önce konuşma",
+        body: "Alerji ya da hassasiyetinizi uygulamadan önce yüz yüze konuşur, gerekirse uygulamayı erteleriz.",
+      },
+    ],
+    note: "Hijyen eğitimi belgesi: HE-0000 (örnek numara)",
+  },
 };

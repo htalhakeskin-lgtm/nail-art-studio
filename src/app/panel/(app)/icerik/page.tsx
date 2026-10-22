@@ -10,7 +10,27 @@ export const metadata: Metadata = { title: "İçerik" };
 const savedMessages: Record<string, string> = {
   sss: "Soru kaydedildi. Sitedeki SSS sayfası güncellendi.",
   hakkinda: "Hakkında metni kaydedildi. Site güncellendi.",
+  surec: "Süreç adımları kaydedildi. Ana sayfa güncellendi.",
+  hijyen: "Hijyen kartı kaydedildi. Ana sayfa güncellendi.",
 };
+
+const pageBlocks = [
+  {
+    title: "Hakkında",
+    description: "Giriş metni, “Nasıl çalışıyoruz” bölümleri ve kapanış",
+    href: "/panel/icerik/hakkinda",
+  },
+  {
+    title: "Süreç adımları",
+    description: "Ana sayfadaki “Nasıl ilerliyoruz” adımları",
+    href: "/panel/icerik/surec",
+  },
+  {
+    title: "Hijyen kartı",
+    description: "Ana sayfadaki hijyen ve güven maddeleri, belge notu",
+    href: "/panel/icerik/hijyen",
+  },
+] as const;
 
 /** SCR-108: page copy and FAQs. Opened from the panel menu ("İçerik"). */
 export default async function ContentPage({ searchParams }: PageProps<"/panel/icerik">) {
@@ -33,20 +53,25 @@ export default async function ContentPage({ searchParams }: PageProps<"/panel/ic
         <h2 id="sayfa-metinleri" className="text-xl font-medium">
           Sayfa metinleri
         </h2>
-        <div className="mt-3 flex flex-col gap-3 rounded-xl border bg-surface p-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="font-semibold">Hakkında</p>
-            <p className="text-sm text-muted-foreground">
-              Giriş metni, “Nasıl çalışıyoruz” bölümleri ve kapanış
-            </p>
-          </div>
-          <Button asChild variant="outline" size="sm">
-            <Link href="/panel/icerik/hakkinda">
-              <Pencil aria-hidden="true" />
-              Düzenle
-            </Link>
-          </Button>
-        </div>
+        <ul className="mt-3 space-y-3">
+          {pageBlocks.map((block) => (
+            <li
+              key={block.href}
+              className="flex flex-col gap-3 rounded-xl border bg-surface p-4 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <p className="font-semibold">{block.title}</p>
+                <p className="text-sm text-muted-foreground">{block.description}</p>
+              </div>
+              <Button asChild variant="outline" size="sm">
+                <Link href={block.href} aria-label={`${block.title}: düzenle`}>
+                  <Pencil aria-hidden="true" />
+                  Düzenle
+                </Link>
+              </Button>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section aria-labelledby="sss-baslik" className="mt-10">

@@ -2,7 +2,7 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.12 |
+| Belge sürümü | v0.13 |
 | Tarih | 2026-10-22 |
 | Durum | Onaylandı · Geliştiriliyor |
 | Kapsam seviyesi | S2 Kurumsal+ ([§2](#2-kapsam-seviyesi)) |
@@ -13,7 +13,7 @@
 | Kaynak kod | [github.com/htalhakeskin-lgtm/nail-art-studio](https://github.com/htalhakeskin-lgtm/nail-art-studio) (gizli) |
 | Sistem sürümü | web-proje 1.0.0 |
 
-> **Güncel durum:** Faz 4. P0 dilimlerinin tamamı bitti (D-01…D-09; randevu sistemi dahil). Kullanıcı 2026-10-22'de "proje bitene kadar ilerle" dedi: P1 dilimleri (D-10…D-12) onaylı sayıldı (K-17 hatırlatması karşılandı). Sıradaki: D-10 ana sayfa tamamlama.
+> **Güncel durum:** Faz 4. P0 dilimleri (D-01…D-09) ve D-10 (ana sayfa tamamlama) bitti. Kullanıcı 2026-10-22'de "proje bitene kadar ilerle" dedi: P1 dilimleri onaylı sayıldı (K-17). Sıradaki: D-11 SEO denetimi + ölçüm.
 
 ---
 
@@ -619,6 +619,7 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | K-37 | 2026-10-22 | Yönetim bağlantısı: erteleme aynı gün şeridi / saat ızgarasıyla, randevunun kendi saati boş sayılarak; iptal isteğe bağlı nedenle; ikisi de `WHERE status IN (pending, confirmed)` ile ve işletmeye demo kutusu bildirimiyle. `.ics` ve yenileme `.ics`'i aynı gizli bağlantı altında route handler (dosya indirme istisnası, 05-sunucu); Google Takvim bağlantısı. Yenileme hatırlatıcısı e-posta değil ziyaretçinin kendi takvimi (K-35, İYS) | Hesapsız müşteri (Model B) kendi randevusunu tek bağlantıyla yönetir; sunucudan zamanlanmış hatırlatma Hobby cron sınırı ve ticari ileti riski taşır |
 | K-38 | 2026-10-22 | Panel randevu: "Bugün" panelin ana ekranı (3 gösterge + günün ajandası + tek dokunuş "Onayla"); ajanda gün / hafta + durum süzgeci URL'de; elle randevu aynı motorla, yalnızca P-03 (en erken randevu) uygulanmaz, onaylı başlar; WhatsApp şablonları (onay, hatırlatma, değişiklik iste) kodda sabit — panelden şablon düzenleme (REQ-005c'nin ikinci yarısı) P2. Yönetim bağlantısı yalnızca karması saklandığı için panelde gösterilemez; "Yönetim bağlantısını gönder" yeni token üretir (eskisi geçersiz) ve WhatsApp'ı bağlantılı onay mesajıyla açar. Telefon alt çubuğu: Bugün · Randevular · Talepler · Galeri · Site; diğer modüller "Bugün" sayfasındaki Bölümler'den | Tek uzman günü telefondan yönetir; şablon düzenleme ekranı S2 zaman kutusunda düşük getiri; düz token saklamak BR-RND-009'u bozardı |
 | K-39 | 2026-10-22 | Yükleme: fotoğraf önce tarayıcıda ≤ 2560 px JPEG'e küçültülür (Vercel istek sınırı ~4,5 MB; `bodySizeLimit` 4 MB), sunucu ilk baytlardan türü belirler, ≥ 600 px ister, `sharp` ile 4:5 kırpar (öncesi / sonrası aynı oranda: BR-GLR-001 tasarımla sağlanır), 480 / 960 / 1600 WebP üretir, EXIF / GPS düşer. Depolama: `BLOB_READ_WRITE_TOKEN` varsa Vercel Blob (`nail-art-studio-media`, fra1, public), yoksa `media_files` tablosu + `/media/[file]` (yerel, CI). Her iki durumda sayfa tek taban yolu saklar, yükleyici "-genişlik.webp" ekler. Her yükleme ayrı istek (P-14). Yeni eser temsilî değildir, izin olmadan yayımlanmaz (BR-GLR-003), galerinin başına eklenir. Demo'da öncesi / sonrası çifti yok: aynı elden gerçek bir çift bulunamadı, farklı ellerden eşleştirme yanıltıcı olurdu; bölüm yalnızca gerçek çiftle görünür | Telefon fotoğrafları 5–12 MB; Vercel'e tek istekte sığmaz. Blob yokken `next start` çalışma sırasında `public/`'e yazılanı sunmaz. Sanatçı sitesinde sahte dönüşüm en büyük güven riski (RSK-01) |
+| K-40 | 2026-10-22 | Ana sayfa D-10: "En yakın boş saatler" menüdeki ilk online randevuya açık hizmetin (kalıcı oje) süresiyle hesaplanır, istek başına Suspense içinde akar (sayfanın geri kalanı statik kabuk); her saat `/randevu?hizmet&tarih&saat#adim-bilgi` açar. Süreç ve hijyen adımları `content_blocks` (`process`, `hygiene`; 2–6 adım + not) ve panelden düzenlenir. Yorumlar `testimonials` tablosunda; `is_sample` olanlar kartta "Örnek yorum" etiketi taşır, ilk 6 görünür yorum yatay elle kaydırmalı satırda, yapılandırılmış veri hiçbir zaman basılmaz. Gerçek yorum için izin şartı panelde metinle hatırlatılır (ayrı onay kaydı P2). Öncesi / sonrası bölümü yalnızca yayımlı gerçek çift varsa görünür (K-39) | Tek hizmetin saatleri ziyaretçiye "bu hafta yer var mı" sorusunu tek bakışta cevaplar; her hizmet için ayrı liste ana sayfayı kalabalıklaştırır. Yorumlar demo; RSK-03 |
 
 **Değişiklik kaydı:**
 
@@ -636,3 +637,4 @@ Kapılar: [kalite-kapilari.md](kalite-kapilari.md) (kurulumda S2'ye göre işare
 | 2026-10-22 | v0.10 | D-06: K-37 (erteleme / iptal, takvim dosyaları, yenileme) |
 | 2026-10-22 | v0.11 | D-07: K-38 (panel randevu, bağlantı yenileme, şablonlar); randevu sistemi tamam |
 | 2026-10-22 | v0.12 | D-09: K-39 (yükleme, depolama, öncesi / sonrası); `media_assets`, `media_files` |
+| 2026-10-22 | v0.13 | D-10: K-40 (ana sayfa tamamlama); `testimonials`, `content_blocks.process / hygiene` |

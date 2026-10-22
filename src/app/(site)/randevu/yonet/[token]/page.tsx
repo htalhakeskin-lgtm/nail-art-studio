@@ -13,6 +13,7 @@ import type { Metadata, Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 
 import { Sparkle } from "@/components/common/pastel-blobs";
 import { Button } from "@/components/ui/button";
@@ -75,6 +76,7 @@ export default async function ManageAppointmentPage({
   searchParams,
 }: PageProps<"/randevu/yonet/[token]">) {
   const [{ token }, query] = await Promise.all([params, searchParams]);
+  await connection(); // "now" is the request time, never a prefetch or build time
   const now = new Date();
   const appointment = isManageToken(token)
     ? await getAppointmentByTokenHash(hashManageToken(token), now)

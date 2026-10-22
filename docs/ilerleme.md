@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-10
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-11
 
 ## Şu an
 
-- **Etkin dilim:** D-09 ✅ (PR açık) → P0 tamam; sıradaki D-10 (P1, kullanıcı onaylı)
-- **Son yapılan:** D-09: panelden fotoğraf yükleme (tarayıcıda küçültme, ilk bayt denetimi, 4:5 WebP varyantları, EXIF silme), Vercel Blob deposu (`nail-art-studio-media`) + veritabanı yedek sürücüsü, eser ekle / düzenle formu (renkler, izin, yayımla, seçki), öncesi / sonrası kaydırıcısı
-- **Sıradaki adım:** D-10: en yakın boş saatler, süreç adımları, hijyen kartı, örnek yorumlar + panel yorumlar, ana sayfa sırası
+- **Etkin dilim:** D-10 ✅ (PR açık); sıradaki D-11
+- **Son yapılan:** D-10: ana sayfa plan sırasıyla tamam: en yakın 3 boş saat (canlı, saat seçili randevuya), öncesi / sonrası (gerçek çift varsa), süreç adımları, hijyen kartı, örnek yorumlar (yatay kaydırma, etiketli, şemasız); panelde Yorumlar modülü (ekle / düzenle / gizle / sırala) ve İçerik altında süreç / hijyen düzenleyicileri
+- **Sıradaki adım:** D-11: `Service` / `ImageObject` / `Person` şemaları, sitemap / robots / meta denetimi, Vercel Web Analytics (çerezsiz) + dönüşüm olayları, onay kayıtları ekranı, onaysız üçüncü taraf isteği yok e2e
 
 ## Gözetimsiz çalışma notları
 
@@ -46,13 +46,20 @@
 | D-07 | Panel randevu | "Bugün" ekranı (bugün / onay bekleyen / bu hafta, günün ajandası, tek dokunuş Onayla), `/panel/randevular` gün / hafta + durum, `/panel/randevular/[id]` (BR-RND-008 koşullu geçişler, iptal nedeni, müşteriye onay e-postası → demo kutusu, WhatsApp onay / hatırlatma / değişiklik şablonları, yönetim bağlantısını yenileyip gönderme, geçmiş), `/panel/randevular/yeni` elle randevu (UC-05, onaylı, P-03 hariç aynı kurallar); alt çubuk Bugün · Randevular · Talepler · Galeri · Site (REQ-003b, REQ-005c; BR-RND-008, 011; K-38) | M | P0 | ✅ | ✅ 360 | 3 birim + 9 entegrasyon + 3 e2e |
 | D-08 | Galeri (ziyaretçi) — öne alındı (K-30) | `gallery_items` + seed (27, 1 taslak), `/galeri` stil / renk / uzunluk filtresi (K-29), eser etiketi kartı, `/galeri/[slug]` (önceki / sonraki, benzer işler), "Bu tasarımı istiyorum" (WhatsApp + eser no), ana sayfa seçkisi + stil kartları, panel `/panel/galeri` yayımla / seçkiye ekle; menüye "Galeri"; sitemap (REQ-006, 011; BR-GLR-003, 004). Öncesi / sonrası D-09'a (K-30) | M | P0 (+P1 REQ-011) | ✅ | ✅ 360 / 1280 | 130 Vitest (20 entegrasyon) + 184 e2e |
 | D-09 | Galeri yönetimi + güvenli yükleme + öncesi / sonrası | `media_assets`, `media_files`, `gallery_items` öncesi sütunları (`0008`); `src/server/media/{image,storage}.ts`, `/media/[file]`; panel "Yeni iş" / düzenle (yükleme alanı, renkler, izin, yayımla, seçki); eser sayfasında öncesi / sonrası kaydırıcısı (V-07); Vercel Blob deposu (REQ-007, REQ-008; BR-GLR-001…004; K-39) | M | P0 | ✅ | ✅ 1280 | 7 birim + 8 entegrasyon + 2 e2e |
-| D-10 | Ana sayfa tamamlama | En yakın boş saatler, seçki, öncesi / sonrası bölümü, süreç adımları (REQ-015), hijyen kartı (REQ-013), örnek yorumlar + panel yorumlar (REQ-014), "Şu an açık" (REQ-016), ulaşım (REQ-017) | M | P1 | ⏳ | — | — |
+| D-10 | Ana sayfa tamamlama | En yakın boş saatler (Suspense, istek başına), öncesi / sonrası bölümü, süreç adımları (REQ-015), hijyen kartı (REQ-013), örnek yorumlar + panel Yorumlar (REQ-014, SCR-107), `testimonials` (`0009`); "Şu an açık" (REQ-016) ve ulaşım (REQ-017) D-02'de konum bölümüyle gelmişti (K-40) | M | P1 | ✅ | ✅ 360 / 1280 | 7 entegrasyon + 4 e2e |
 | D-11 | SEO katmanı denetimi + ölçüm | `Service`, `ImageObject`, `Person` şemaları (REQ-020), sitemap / robots / meta denetimi, Vercel Web Analytics + dönüşüm olayları (REQ-021), onay kayıtları ekranı (REQ-019), onaysız üçüncü taraf istek yok e2e | S | P0 (denetim) + P1 | ⏳ | — | — |
 | D-12 | Cila + kalite paketi | Hareket, boş / hata durumları, mikro metinler, bölüm hata sınırları, kaydedilmemiş değişiklik uyarısı, Lighthouse CI, paket boyutu (REQ-022) | M | P1 | ⏳ | — | — |
 
 **P1 onaylanmazsa:** D-10 yalnızca P0 parçalarıyla (seçki + öncesi / sonrası bölümü) D-08'e katılır; REQ-011…022 P2'ye iner.
 
 ## Etkin dilim planı
+
+**D-10 — Ana sayfa tamamlama** (✅ 2026-10-22)
+- Kabul kriterleri: 360 px'te ana sayfa en az bir boş saat gösterir ve saat randevuyu "4. Bilgileriniz" adımında açar (plan §16 kabul 1); bölümler plan §6 sırasında; örnek yorumlar etiketli, gizli yorum yok, `Review` / `AggregateRating` yok; yorum ve adım metinleri panelden değişir ve ana sayfaya yansır; yorum yetkisi `content.edit`.
+- Tablolar / migration: `testimonials` (`0009_testimonials.sql`); `content_blocks` anahtarları `process`, `hygiene` (migration gerekmez).
+- Dosyalar: `src/components/sections/{nearest-slots,home-before-after,home-steps,home-testimonials}.tsx`, `src/app/(site)/page.tsx`, `src/features/testimonials/**`, `src/features/content/{schemas,actions,queries}.ts`, `src/features/content/components/steps-form.tsx`, `src/content/{content-blocks,testimonials}.ts`, `src/app/panel/(app)/{yorumlar/**,icerik/surec,icerik/hijyen,icerik/page.tsx}`, `scripts/seed.ts`.
+- Testler: `tests/integration/home-content.test.ts` (yetki, sıra, doğrulama, düzenle / gizle / taşı, notFound, adım bloğu varsayılanı + kayıt + en az iki adım), `tests/e2e/home.spec.ts` (boş saat → randevu, bölüm sırası + etiket + şema yok, panel yorum ekle → ana sayfa → gizle, hijyen notu). Yeni panel rotaları erişilebilirlik / taşma listesinde.
+- Elle: 360 ve 1280 px ana sayfa incelendi.
 
 **D-09 — Galeri yönetimi + güvenli yükleme + öncesi / sonrası** (✅ 2026-10-22)
 - Kabul kriterleri: tür ilk baytlardan (uzantı ve tarayıcı bildirimi yok sayılır), ≤ P-11, ≥ 600 px; yeniden kodlama, 4:5 kırpma, 3 WebP varyantı, EXIF / GPS yok; yükleme yetkisi `gallery.edit` + P-14 hız sınırı; temsilî olmayan eser izin olmadan yayımlanmaz (eylem + `check`); öncesi fotoğrafı açıklamasıyla birlikte (`check`); kaydırıcı dokunma, fare ve ok tuşlarıyla, `role=slider` + konuşulan değer.
@@ -142,6 +149,9 @@ Faz 5'te doldurulur.
 - **Yerelde `content.spec` panel testleri kararsız** (2026-10-22): yerel `next start` ile kayıttan sonra `/hakkinda` ve `/sss` bazen eski içeriği gösteriyor; CI'da geçiyor. İncelenecek.
 
 ## Dersler
+
+- **Yatay kaydırmalı liste ve klavye** → Bağlam: yorum kartları. Ne oldu: axe `scrollable-region-focusable` kaydırılan öğenin odaklanabilir olmasını ister, `jsx-a11y/no-noninteractive-tabindex` ise `<ul tabIndex={0}>`'ı reddeder. Çözüm: `aria-label`'lı listeye `tabIndex={0}` + gerekçeli tek satırlık eslint istisnası (JSX özniteliğinin üstünde `//` yorumu; `{/* */}` yorumu sonraki satırı kapsamaz). Belge: 08-erisilebilirlik (karusel / yatay liste). **Sisteme taşı.**
+- **Yerel e2e'de paralel yük** → Ne oldu: 12 çekirdekte varsayılan 6 işçiyle panel eylemleri 5 sn içinde yenilenmedi, testler rastgele düştü; CI ile aynı `--workers=2` ile 336 / 337 geçti. Ayrıca Next 16.4 istemci gezintisinde ara sıra `Connection closed` (React #412) → genel hata sayfası; sunucu günlüğü temiz, galeri testi 10'da 1 düştü. İzleniyor; D-12'de `global-error` yerine bölüm hata sınırı ve "yeniden dene" ile yumuşatılacak. Önerilen: yerelde `workers` CI ile aynı olsun. Belge: 14-test §7. **Sisteme taşı.**
 
 - **Efor bütçesi kapsamı belirsiz** → Bağlam: S2 planı. Ne oldu: çekirdek [Z] maddeleri tek başına ~43 puan; S1 (≤ 10) ve S2 (≤ 30) bütçeleri çekirdeği kapsayamıyor. Önerilen kural: "Efor bütçesi çekirdek ve iskeletle gelen maddeleri kapsamaz" cümlesi açıkça yazılsın. Belge: `standartlar/00-karar-mantigi.md` §3.3 / §7.4. **Sisteme taşı.**
 - **Varsayım öneki çakışması** → Bağlam: plan şablonu §4. Ne oldu: varsayımlar `V-01` ile numaralanıyor, katalog ziyaretçi özellikleri de `V-` (V-30). Önerilen kural: varsayımlar `VR-` öneki alsın, 18-dokumantasyon §3 tablosuna eklensin. Belge: `sablonlar/proje-plani.md`, `standartlar/18-dokumantasyon.md`. **Sisteme taşı.**

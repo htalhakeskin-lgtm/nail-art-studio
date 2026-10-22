@@ -1,5 +1,13 @@
-export { type AboutFormState, saveAboutBlock, submitAboutForm } from "./actions";
+export {
+  type AboutFormState,
+  saveAboutBlock,
+  saveStepsBlock,
+  type StepsFormState,
+  submitAboutForm,
+  submitStepsForm,
+} from "./actions";
 export { AboutForm } from "./components/about-form";
+export { StepsForm } from "./components/steps-form";
 export { contentBlockTag, getContentBlock, parseContentBlock } from "./queries";
 export {
   aboutBlockSchema,
@@ -8,4 +16,8 @@ export {
   type ContentBlock,
   type ContentBlockKey,
   contentBlockSchemas,
+  STEPS_BLOCK_KEYS,
+  type StepsBlockKey,
+  stepsBlockSchema,
+  type StepsFormValues,
 } from "./schemas";
