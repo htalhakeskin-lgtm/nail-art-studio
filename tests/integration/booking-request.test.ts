@@ -203,11 +203,14 @@ describe("requestAppointment (UC-01, REQ-001)", () => {
   });
 
   it("BR-RND-006: at most two upcoming appointments per phone (P-06)", async () => {
-    const slots = await freeSlots(12);
+    // 12 steps (3 h) apart: never inside the previous booking plus its cleaning buffer.
+    const slots = await freeSlots(25);
     expect((await requestAppointment(visitor(slots[0] ?? ""))).ok).toBe(true);
     mocks.ip = "203.0.113.9";
-    expect((await requestAppointment(visitor(slots[4] ?? ""))).ok).toBe(true);
-    expect(await requestAppointment(visitor(slots[8] ?? ""))).toMatchObject({ code: "BR-RND-006" });
+    expect((await requestAppointment(visitor(slots[12] ?? ""))).ok).toBe(true);
+    expect(await requestAppointment(visitor(slots[24] ?? ""))).toMatchObject({
+      code: "BR-RND-006",
+    });
   });
 
   it("drops a bot that fills the honeypot", async () => {
