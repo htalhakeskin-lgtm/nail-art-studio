@@ -9,6 +9,8 @@ export { appointmentEvent, refillEvent } from "./calendar";
 export { AppointmentForm } from "./components/appointment-form";
 export { BookingRulesForm, TimeOffForm, WeeklyHoursForm } from "./components/availability-forms";
 export { CancelForm, RescheduleForm } from "./components/manage-forms";
+export { ManualAppointmentForm } from "./components/manual-appointment-form";
+export { appointmentStatusTone, PanelAppointmentList } from "./components/panel-appointment-list";
 export { DayStrip, TimeGrid } from "./components/slot-picker";
 export {
   type AvailabilityContext,
@@ -40,6 +42,7 @@ export {
   canTransition,
   nextStatuses,
 } from "./domain/status";
+export { type TemplateKey, templateLabels, whatsappTemplate } from "./domain/templates";
 export {
   addDays,
   addMinutes,
@@ -55,6 +58,21 @@ export {
   submitCancel,
   submitReschedule,
 } from "./manage-actions";
+export {
+  createManualAppointment,
+  type ManualFormState,
+  setAppointmentStatus,
+  setAppointmentStatusForm,
+  shareManageLink,
+  shareManageLinkForm,
+} from "./panel-actions";
+export {
+  getAppointmentForPanel,
+  getTodayKpis,
+  listAppointmentsForPanel,
+  listPendingForPanel,
+  type PanelAppointment,
+} from "./panel-queries";
 export {
   getAppointmentByTokenHash,
   getAvailabilityContext,

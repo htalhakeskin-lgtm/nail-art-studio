@@ -1,5 +1,6 @@
 import {
   CalendarClock,
+  CalendarDays,
   ExternalLink,
   FileText,
   Images,
@@ -16,16 +17,17 @@ import { signOut } from "../actions";
 
 /**
  * Panel chrome (13-yonetim-paneli §3). Desktop: top bar with links. Phone: bottom tab bar
- * (plan §12: Bugün · Randevular · Galeri · Talepler · Menü — modules join as they ship).
+ * (plan §12): Bugün · Randevular · Talepler · Galeri · Site; the rest from the "Bugün" page.
  */
 const links = [
-  { href: "/panel", label: "Özet", icon: LayoutDashboard },
+  { href: "/panel", label: "Bugün", icon: LayoutDashboard },
+  { href: "/panel/randevular", label: "Randevular", icon: CalendarDays },
   { href: "/panel/talepler", label: "Talepler", icon: MessagesSquare },
   { href: "/panel/galeri", label: "Galeri", icon: Images },
   // The phone tab bar has five slots; the rest are linked from the overview page.
   { href: "/panel/hizmetler", label: "Hizmetler", icon: Scissors, tab: false },
   { href: "/panel/musaitlik", label: "Müsaitlik", icon: CalendarClock, tab: false },
-  { href: "/panel/icerik", label: "İçerik", icon: FileText },
+  { href: "/panel/icerik", label: "İçerik", icon: FileText, tab: false },
   { href: "/panel/demo-kutusu", label: "Demo kutusu", icon: Inbox, tab: false },
 ] as const;
 

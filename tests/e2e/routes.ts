@@ -30,6 +30,9 @@ export const publicRoutes = [
 /** Visited with the demo admin session (tests/e2e/panel.spec.ts signs in first). */
 export const panelRoutes = [
   "/panel",
+  "/panel/randevular",
+  "/panel/randevular?gorunum=hafta",
+  "/panel/randevular/yeni",
   "/panel/talepler",
   "/panel/hizmetler",
   "/panel/musaitlik",
