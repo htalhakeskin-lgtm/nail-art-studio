@@ -8,6 +8,7 @@ import {
   text,
   timestamp,
   uniqueIndex,
+  uuid,
 } from "drizzle-orm/pg-core";
 
 import {
@@ -18,6 +19,7 @@ import {
 } from "@/config/gallery";
 
 import { id, timestamps } from "../columns";
+import { mediaAssets } from "./media";
 
 const list = (values: readonly string[]) => sql.raw(values.map((value) => `'${value}'`).join(", "));
 
@@ -46,6 +48,11 @@ export const galleryItems = pgTable(
     imageWidth: integer().notNull(),
     imageHeight: integer().notNull(),
     imageAlt: text().notNull(),
+    mediaId: uuid().references(() => mediaAssets.id, { onDelete: "set null" }),
+    /** Optional "before" photo of the same hand (V-07); same 4:5 crop as the work (BR-GLR-001). */
+    beforeImagePath: text(),
+    beforeImageAlt: text(),
+    beforeMediaId: uuid().references(() => mediaAssets.id, { onDelete: "set null" }),
     /** Stock photo credit (demo); empty for the studio's own work. */
     creditName: text(),
     creditUrl: text(),
@@ -73,6 +80,11 @@ export const galleryItems = pgTable(
     check(
       "ck_gallery_items_consent",
       sql`not ${table.isPublished} or ${table.isRepresentative} or ${table.consentObtainedAt} is not null`,
+    ),
+    // BR-GLR-001: a before photo always comes with its alt text.
+    check(
+      "ck_gallery_items_before",
+      sql`(${table.beforeImagePath} is null) = (${table.beforeImageAlt} is null)`,
     ),
     check("ck_gallery_items_slug", sql`${table.slug} ~ '^[a-z0-9]+(-[a-z0-9]+)*$'`),
   ],

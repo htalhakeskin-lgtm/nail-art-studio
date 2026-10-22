@@ -1,16 +1,17 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-09
+> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** D-10
 
 ## Şu an
 
-- **Etkin dilim:** D-07 ✅ (PR açık) → randevu sistemi tamam; sıradaki D-09
-- **Son yapılan:** D-07: panel "Bugün" (3 gösterge, günün ajandası, onay bekleyenler + Onayla), `/panel/randevular` (gün / hafta, durum), randevu detayı (durum geçişleri, iptal nedeni, referans tasarım, WhatsApp şablonları, bağlantı yenileme, geçmiş), elle randevu; telefon alt çubuğu yenilendi
-- **Sıradaki adım:** D-09: galeri yönetimi + güvenli yükleme (Vercel Blob, sharp varyantları), öncesi / sonrası eşleştirme, izin işareti
+- **Etkin dilim:** D-09 ✅ (PR açık) → P0 tamam; sıradaki D-10 (P1, kullanıcı onaylı)
+- **Son yapılan:** D-09: panelden fotoğraf yükleme (tarayıcıda küçültme, ilk bayt denetimi, 4:5 WebP varyantları, EXIF silme), Vercel Blob deposu (`nail-art-studio-media`) + veritabanı yedek sürücüsü, eser ekle / düzenle formu (renkler, izin, yayımla, seçki), öncesi / sonrası kaydırıcısı
+- **Sıradaki adım:** D-10: en yakın boş saatler, süreç adımları, hijyen kartı, örnek yorumlar + panel yorumlar, ana sayfa sırası
 
 ## Gözetimsiz çalışma notları
 
 - 2026-10-16 — Kullanıcı "tam yetkin var başla" dedi; Faz 0'da soru sorulmadı. Marka adı "Nail Art Studios" (VR-01), tek uzman (VR-02), kurgusal Kadıköy / Moda adresi (VR-03), onay beklemeli randevu (VR-10) varsayıldı. Sistem kuralı gereği plan onayında duruldu.
+- 2026-10-22 — Kullanıcı "devam et, tam yetkin var, proje bitene kadar ilerleyebilirsin" dedi: P1 dilimleri (D-10…D-12) ve sonraki fazlar onaylı sayıldı (K-17).
 - 2026-10-22 — Kullanıcı görselleri ve renkleri beğenmedi; "pinterestten olabilir" dedi, galeride işlere göre kategori / filtre önerdi, "tam yetkin var". Pinterest lisans ve başkasının işi sorunu nedeniyle kullanılmadı (K-28); kategoriler planda zaten olan galeri dilimine (D-08) taşındı ve dilim öne alındı.
 - 2026-10-16 — `kur` komutu plan onayı sayıldı (K-17). P1 bütçe aşımı ayrıca teyit edilmedi; "tam yetki" beyanıyla dahil sayıldı, D-10'dan önce hatırlatılacak. Açık sorular Q-01…Q-06 cevapsız; varsayımlar geçerli.
 
@@ -44,7 +45,7 @@
 | D-06 | Randevu yönetim bağlantısı | `/randevu/yonet/[token]`: erteleme (BR-RND-012) ve iptal (BR-RND-007, 008), `takvim.ics` + Google Takvim (E-08, E-09), `yenileme.ics` + "aynı hizmetten tekrar randevu" (REQ-012, BR-RND-013), 24 saatten az kalınca WhatsApp / telefon; işletmeye bildirim; `DayStrip` / `TimeGrid` ortak (REQ-002b; K-37) | M | P0 (+P1 REQ-012) | ✅ | ✅ 360 | 8 birim + 7 entegrasyon + 1 e2e |
 | D-07 | Panel randevu | "Bugün" ekranı (bugün / onay bekleyen / bu hafta, günün ajandası, tek dokunuş Onayla), `/panel/randevular` gün / hafta + durum, `/panel/randevular/[id]` (BR-RND-008 koşullu geçişler, iptal nedeni, müşteriye onay e-postası → demo kutusu, WhatsApp onay / hatırlatma / değişiklik şablonları, yönetim bağlantısını yenileyip gönderme, geçmiş), `/panel/randevular/yeni` elle randevu (UC-05, onaylı, P-03 hariç aynı kurallar); alt çubuk Bugün · Randevular · Talepler · Galeri · Site (REQ-003b, REQ-005c; BR-RND-008, 011; K-38) | M | P0 | ✅ | ✅ 360 | 3 birim + 9 entegrasyon + 3 e2e |
 | D-08 | Galeri (ziyaretçi) — öne alındı (K-30) | `gallery_items` + seed (27, 1 taslak), `/galeri` stil / renk / uzunluk filtresi (K-29), eser etiketi kartı, `/galeri/[slug]` (önceki / sonraki, benzer işler), "Bu tasarımı istiyorum" (WhatsApp + eser no), ana sayfa seçkisi + stil kartları, panel `/panel/galeri` yayımla / seçkiye ekle; menüye "Galeri"; sitemap (REQ-006, 011; BR-GLR-003, 004). Öncesi / sonrası D-09'a (K-30) | M | P0 (+P1 REQ-011) | ✅ | ✅ 360 / 1280 | 130 Vitest (20 entegrasyon) + 184 e2e |
-| D-09 | Galeri yönetimi + güvenli yükleme + öncesi / sonrası | `media_assets`, Vercel Blob, `sharp` varyantları, öncesi / sonrası eşleştirme, izin işareti, sıralama, fotoğraf yayın izni şablonu (REQ-008; BR-GLR-001…003) | M | P0 | ⏳ | — | — |
+| D-09 | Galeri yönetimi + güvenli yükleme + öncesi / sonrası | `media_assets`, `media_files`, `gallery_items` öncesi sütunları (`0008`); `src/server/media/{image,storage}.ts`, `/media/[file]`; panel "Yeni iş" / düzenle (yükleme alanı, renkler, izin, yayımla, seçki); eser sayfasında öncesi / sonrası kaydırıcısı (V-07); Vercel Blob deposu (REQ-007, REQ-008; BR-GLR-001…004; K-39) | M | P0 | ✅ | ✅ 1280 | 7 birim + 8 entegrasyon + 2 e2e |
 | D-10 | Ana sayfa tamamlama | En yakın boş saatler, seçki, öncesi / sonrası bölümü, süreç adımları (REQ-015), hijyen kartı (REQ-013), örnek yorumlar + panel yorumlar (REQ-014), "Şu an açık" (REQ-016), ulaşım (REQ-017) | M | P1 | ⏳ | — | — |
 | D-11 | SEO katmanı denetimi + ölçüm | `Service`, `ImageObject`, `Person` şemaları (REQ-020), sitemap / robots / meta denetimi, Vercel Web Analytics + dönüşüm olayları (REQ-021), onay kayıtları ekranı (REQ-019), onaysız üçüncü taraf istek yok e2e | S | P0 (denetim) + P1 | ⏳ | — | — |
 | D-12 | Cila + kalite paketi | Hareket, boş / hata durumları, mikro metinler, bölüm hata sınırları, kaydedilmemiş değişiklik uyarısı, Lighthouse CI, paket boyutu (REQ-022) | M | P1 | ⏳ | — | — |
@@ -52,6 +53,13 @@
 **P1 onaylanmazsa:** D-10 yalnızca P0 parçalarıyla (seçki + öncesi / sonrası bölümü) D-08'e katılır; REQ-011…022 P2'ye iner.
 
 ## Etkin dilim planı
+
+**D-09 — Galeri yönetimi + güvenli yükleme + öncesi / sonrası** (✅ 2026-10-22)
+- Kabul kriterleri: tür ilk baytlardan (uzantı ve tarayıcı bildirimi yok sayılır), ≤ P-11, ≥ 600 px; yeniden kodlama, 4:5 kırpma, 3 WebP varyantı, EXIF / GPS yok; yükleme yetkisi `gallery.edit` + P-14 hız sınırı; temsilî olmayan eser izin olmadan yayımlanmaz (eylem + `check`); öncesi fotoğrafı açıklamasıyla birlikte (`check`); kaydırıcı dokunma, fare ve ok tuşlarıyla, `role=slider` + konuşulan değer.
+- Tablolar / migration: `media_assets`, `media_files`, `gallery_items.{media_id,before_image_path,before_image_alt,before_media_id}` (`0008_media_and_before_after.sql`).
+- Dosyalar: `src/server/media/*`, `src/server/db/schema/media.ts`, `src/app/media/[file]/route.ts`, `src/lib/image-loader.ts`, `src/features/gallery/{editor-actions.ts,schemas.ts,queries.ts}`, `src/features/gallery/components/{image-upload-field,gallery-item-form,before-after}.tsx`, `src/app/panel/(app)/galeri/**`, `src/app/(site)/galeri/[slug]/page.tsx`, `next.config.ts`.
+- Testler: `image.test.ts` (tür tanıma, sahte dosya, 4:5 + varyantlar, EXIF silme, küçük görsel), `image-loader.test.ts` (yükleme yolları), `tests/integration/gallery-editor.test.ts` (yetki, varyantlar, sahte dosya, küçük görsel, BR-GLR-003, öncesi ile oluşturma + sıra, eksik alanlar, düzenle + öncesi kaldır), `tests/e2e/gallery-editor.spec.ts` (yükle → izin → yayımla → kaydırıcı klavyeyle; sahte dosya).
+- Elle: panel formu 1280 incelendi; Pexels'ta aynı elden öncesi / sonrası serisi arandı, uygun çift yok (K-39).
 
 **D-07 — Panel randevu** (✅ 2026-10-22)
 - Kabul kriterleri: geçişler yalnızca BR-RND-008'e göre ve görülen duruma koşullu (çift dokunuş tek değişiklik); onayda e-posta varsa müşteriye bildirim (demo kutusu, tutar yok); iptal saati serbest bırakır ve neden saklanır; elle randevu aynı saat / kapalı zaman / çakışma kurallarıyla, onaylı ve kaynak `admin`; WhatsApp şablonları müşterinin numarasıyla, tutar ve kampanya içermez; bağlantı gönderimi yeni token üretir, eskisi çalışmaz; anonim kullanıcı reddedilir; her değişiklik geçmişte.
@@ -188,4 +196,6 @@ Faz 5'te doldurulur.
 - **Kapalı günü saydamlıkla soluklaştırmak kontrastı düşürür** → `opacity-60` axe'de 21 kontrast hatası verdi; kesikli çerçeve + üstü çizili yazı ile ayırt edildi. Belge: 08-erisilebilirlik. Not.
 - **Paralel e2e işçisinde `afterAll` başka testin verisini silebilir** → Aynı `describe` iki işçide çalışınca her işçi kendi `afterAll`'ını çalıştırıyor; ad tabanlı temizlik diğer işçinin az önce oluşturduğu kaydı sildi. Çözüm: yazan testleri `test.describe.configure({ mode: "serial" })` ya da test başına benzersiz ad. Belge: 14-test. **Sisteme taşı.**
 - **Node betiğiyle dosya düzenlerken `\\n` kaçışı** → Şablon dizesi içindeki `\\n` gerçek satır sonuna dönüşüp TypeScript'i bozdu (iki kez). Çok satırlı kod değişikliğinde Edit aracı ya da ayrı betik dosyası. Not.
+- **`vercel blob create-store` `.env.local`'ı değiştirir** → Komut geliştirme ortam değişkenlerini çekip `.env.local`'a yazdı: yerel `DATABASE_URL` ve `DATABASE_URL_UNPOOLED` canlı Neon'a döndü (drizzle önce UNPOOLED'ı okuyor: `db:migrate` canlıya giderdi), `.gitignore`'a `.env*` eklendi. Fark edilip hemen geri alındı. Önerilen: Vercel CLI'nın env yazan her komutundan önce `.env.local` yedeği ve sonra fark denetimi. Belge: 16-ortamlar §6. **Sisteme taşı.**
+- **Vercel'de sunucu eylemiyle dosya yükleme** → İstek gövdesi ~4,5 MB ile sınırlı, Next varsayılanı 1 MB. Tarayıcıda küçültme + `serverActions.bodySizeLimit` + sunucuda yeniden kodlama. Belge: 11-guvenlik (yükleme), 12-performans. **Sisteme taşı.**
 - **pnpm audit: yaması olmayan dolaylı açık** → `braces` (eslint-config-next zinciri, yalnızca geliştirme). Standart muafiyete izin veriyor ama biçim tanımlı değil; `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas` + gerekçe + gözden geçirme tarihi örneği eklenmeli. Belge: 15-git-ve-ci §6. **Sisteme taşı.**

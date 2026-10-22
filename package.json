@@ -26,6 +26,7 @@
     "prepare": "lefthook install || exit 0"
   },
   "dependencies": {
+    "@vercel/blob": "^2.8.2",
     "better-auth": "1.7.10",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
