@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Drawer, type DrawerHandle } from "@/components/ui/drawer";
+import { Drawer, type DrawerHandle, drawerTrigger, openDrawer } from "@/components/ui/drawer";
 import type { NavItem } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
@@ -41,12 +41,20 @@ export function MobileMenu({ items, whatsappHref, phoneHref, instagramHref }: Mo
         size="icon"
         className="md:hidden"
         aria-label="Menüyü aç"
-        aria-haspopup="dialog"
-        onClick={() => drawer.current?.open()}
+        {...drawerTrigger("mobil-menu")}
+        onClick={() => {
+          openDrawer(drawer);
+        }}
       >
         <Menu aria-hidden="true" className="size-6" />
       </Button>
-      <Drawer ref={drawer} side="right" labelledBy="mobil-menu-baslik" returnFocus={trigger}>
+      <Drawer
+        ref={drawer}
+        id="mobil-menu"
+        side="right"
+        labelledBy="mobil-menu-baslik"
+        returnFocus={trigger}
+      >
         <div className="flex h-full flex-col">
           <div className="flex items-center justify-between border-b px-5 py-3">
             <h2 id="mobil-menu-baslik" className="text-xl">

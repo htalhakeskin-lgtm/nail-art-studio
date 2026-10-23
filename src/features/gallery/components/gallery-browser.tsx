@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Drawer, type DrawerHandle } from "@/components/ui/drawer";
+import { Drawer, type DrawerHandle, drawerTrigger, openDrawer } from "@/components/ui/drawer";
 import {
   GALLERY_COLORS,
   GALLERY_LENGTHS,
@@ -185,8 +185,10 @@ export function GalleryBrowser({ items }: { items: GalleryCardData[] }) {
             variant="outline"
             size="sm"
             className="lg:hidden"
-            aria-haspopup="dialog"
-            onClick={() => filterDrawer.current?.open()}
+            {...drawerTrigger("galeri-filtre")}
+            onClick={() => {
+              openDrawer(filterDrawer);
+            }}
           >
             <SlidersHorizontal aria-hidden="true" />
             Renk ve uzunluk
@@ -199,6 +201,7 @@ export function GalleryBrowser({ items }: { items: GalleryCardData[] }) {
           </Button>
           <Drawer
             ref={filterDrawer}
+            id="galeri-filtre"
             side="bottom"
             labelledBy="filtre-baslik"
             returnFocus={filterTrigger}

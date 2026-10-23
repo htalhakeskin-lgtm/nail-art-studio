@@ -156,7 +156,9 @@ test.describe("sending a booking", () => {
     expect(await ics.text()).toContain("SUMMARY:Nail Art Studios: Kalıcı oje");
 
     await page.getByRole("link", { name: "Ertele" }).click();
-    await page.getByRole("list", { name: "Günler" }).getByRole("link").nth(1).click();
+    // Again the fourth free day: the second one can be under 24 h away by day, and then the
+    // page rightly hides "İptal et" (BR-RND-007).
+    await page.getByRole("list", { name: "Günler" }).getByRole("link").nth(3).click();
     await expect(page).toHaveURL(/islem=ertele&tarih=/);
     await page
       .getByRole("link", { name: /^\d{2}:\d{2}$/ })
