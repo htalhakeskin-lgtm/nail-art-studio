@@ -42,7 +42,7 @@ test.describe("meta on every indexable page (09-seo §2)", () => {
 
       const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
       expect(new URL(canonical ?? "").pathname).toBe(path);
-      for (const property of ["og:title", "og:description", "og:url", "og:locale"]) {
+      for (const property of ["og:title", "og:description", "og:url", "og:locale", "og:image"]) {
         await expect(page.locator(`meta[property="${property}"]`)).toHaveCount(1);
       }
       // Demo (DEMO_MODE=true): nothing is indexed (09-seo §7).
