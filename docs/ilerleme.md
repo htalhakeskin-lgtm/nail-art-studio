@@ -6,7 +6,8 @@
 
 - **Etkin dilim:** Faz 7 ✅ (PR açık)
 - **Son yapılan:** Faz 7 portfolyo: 15 ekran görüntüsü (`pnpm screenshots`; randevu akışı ve panel randevu detayı için adlandırılmış hazırlık adımları), 3 mockup + LinkedIn varyantları, `portfolyo/portfolyo.md` (ölçülmüş rakamlar, 2026-10-23), README kapak ve öne çıkanlar. Çekimde görülen sorun düzeltildi: panel üst menüsü 1440 px'te iki satıra bölünüyordu → menü 1024 px'ten itibaren, seyrek kullanılan Onaylar / Demo kutusu yalnızca "Bugün" listesinde, logo ve kullanıcı adı geniş ekranda tam
-- **Sıradaki adım:** Faz 8: "Sisteme taşı" işaretli derslerin web-proje sistemine önerilmesi; değişiklik kullanıcı onayıyla
+- **Faz 8:** "Sisteme taşı" işaretli 57 ders 24 başlıkta toplanıp web-proje `DERSLER.md` tablosuna **Öneri** olarak eklendi (D-012…D-035) ve kalibrasyon tablosuna bu proje yazıldı. Standartlar, iskelet ve şablonlar değiştirilmedi.
+- **Sıradaki adım:** Kullanıcı onayı: hangi önerilerin standartlara / iskelete işleneceği (sistem sürümü + değişiklik kaydı). Canlıya geçiş, yayın kaydındaki listeyle ve kullanıcı onayıyla.
 
 ## Gözetimsiz çalışma notları
 
