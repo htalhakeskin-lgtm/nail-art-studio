@@ -6,6 +6,23 @@ import { cn } from "@/lib/utils";
 
 export type DrawerHandle = { open: () => void; close: () => void };
 
+const nativeCommands =
+  typeof HTMLButtonElement !== "undefined" && "commandForElement" in HTMLButtonElement.prototype;
+
+/**
+ * Trigger attributes: browsers with invoker commands open the drawer natively, even before
+ * hydration (a tap on a slow line is never lost). Pair with onClick={() => openDrawer(ref)}.
+ */
+export function drawerTrigger(id: string): Record<string, string> {
+  // Not in React's types yet; React passes unknown lowercase attributes through.
+  return { commandfor: id, command: "show-modal", "aria-haspopup": "dialog" };
+}
+
+/** Click fallback for browsers without invoker commands. */
+export function openDrawer(drawer: RefObject<DrawerHandle | null>) {
+  if (!nativeCommands) drawer.current?.open();
+}
+
 /**
  * Side or bottom drawer on a native modal <dialog> (K-43): the browser provides the focus trap
  * (the rest of the page is inert), Esc and the backdrop; focus goes back to `returnFocus` on
@@ -14,6 +31,7 @@ export type DrawerHandle = { open: () => void; close: () => void };
  */
 export function Drawer({
   ref,
+  id,
   side,
   labelledBy,
   returnFocus,
@@ -21,6 +39,8 @@ export function Drawer({
   children,
 }: {
   ref: RefObject<DrawerHandle | null>;
+  /** Lets a button open it without JavaScript: {...drawerTrigger(id)} (invoker commands). */
+  id: string;
   side: "right" | "bottom";
   labelledBy: string;
   returnFocus?: RefObject<HTMLElement | null>;
@@ -37,6 +57,7 @@ export function Drawer({
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- backdrop click; keyboards close with the native Esc
     <dialog
       ref={dialog}
+      id={id}
       aria-labelledby={labelledBy}
       data-side={side}
       className={cn("drawer", className)}

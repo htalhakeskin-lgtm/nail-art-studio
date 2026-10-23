@@ -1,16 +1,68 @@
 import { readFileSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 
-import { type Browser, test } from "@playwright/test";
+import { type Browser, expect, type Page, test } from "@playwright/test";
+
+import { ADMIN_STATE } from "./session";
 
 /**
  * Portfolio screenshots (19-portfolyo §3). Run with `pnpm screenshots` after `pnpm db:reset`.
  * Desktop 1440×900 @2x, phone 390×844 @3x, tablet 820×1180 @2x. Animations end in their final
- * frame (reduced motion), the cookie banner is pre-dismissed, the demo banner stays visible.
+ * frame (reduced motion), there is no cookie banner (K-13), the demo banner stays visible.
  */
 
 type Device = "masaustu" | "mobil" | "tablet";
-type Shot = { dosya: string; yol: string; cihaz: Device; tamSayfa?: boolean; panel?: boolean };
+type Shot = {
+  dosya: string;
+  yol: string;
+  cihaz: Device;
+  tamSayfa?: boolean;
+  panel?: boolean;
+  hazirla?: keyof typeof PREPARE;
+};
+
+/** Pick the first free day and time, as a visitor would (same steps as booking.spec.ts). */
+async function pickFirstFreeSlot(page: Page) {
+  await page.getByRole("list", { name: "Günler" }).getByRole("link").first().click();
+  await expect(page.getByRole("heading", { level: 2, name: "3. Saat" })).toBeVisible();
+}
+
+/** Named steps a shot needs before the picture (plan §21: the flow, not just entry pages). */
+const PREPARE = {
+  "randevu-saat": pickFirstFreeSlot,
+  "randevu-onay": async (page: Page) => {
+    await pickFirstFreeSlot(page);
+    await page.getByRole("region", { name: "3. Saat" }).getByRole("link").first().click();
+    // Fictional visitor; phone from the 000 block (17-icerik §3), new last digits each run so
+    // the per-phone daily limit (P-10) never blocks a rerun.
+    const last = String(Date.now() % 10_000).padStart(4, "0");
+    await page.getByLabel("Adınız").fill("Deniz Yıldız");
+    await page
+      .getByRole("textbox", { name: "Telefon" })
+      .fill(`0532 000 ${last.slice(0, 2)} ${last.slice(2)}`);
+    await page.waitForFunction(
+      () =>
+        Date.now() -
+          Number(document.querySelector<HTMLInputElement>('[name="formStartedAt"]')?.value) >
+        1600,
+    );
+    await page
+      .getByRole("button", { name: /Randevu/ })
+      .last()
+      .click();
+    await expect(page).toHaveURL(/\/randevu\/yonet\/[A-Za-z0-9_-]{43}\?yeni=1$/);
+  },
+  "panel-randevu-detay": async (page: Page) => {
+    const href = await page
+      .locator('main a[href^="/panel/randevular/"]')
+      .evaluateAll((links) =>
+        links
+          .map((link) => link.getAttribute("href") ?? "")
+          .find((value) => /\/panel\/randevular\/[0-9a-f-]{36}$/.test(value)),
+      );
+    if (href) await page.goto(href, { waitUntil: "networkidle" });
+  },
+} satisfies Record<string, (page: Page) => Promise<void>>;
 
 const DEVICES: Record<
   Device,
@@ -45,9 +97,6 @@ const OUT_DIR = "portfolyo/screenshot";
 const shots = (JSON.parse(readFileSync("portfolyo/ekranlar.json", "utf8")) as { ekranlar: Shot[] })
   .ekranlar;
 
-/** Cookie preference stored before the page loads, so the banner never appears in a shot. */
-const COOKIE_CONSENT = { name: "cookie-consent", value: "necessary" }; // match the banner's cookie
-
 async function capture(browser: Browser, baseURL: string, shot: Shot) {
   const context = await browser.newContext({
     ...DEVICES[shot.cihaz],
@@ -56,19 +105,21 @@ async function capture(browser: Browser, baseURL: string, shot: Shot) {
     timezoneId: "Europe/Istanbul",
     reducedMotion: "reduce",
     colorScheme: "light",
-    storageState: shot.panel ? "tests/.auth/admin.json" : undefined,
+    storageState: shot.panel ? ADMIN_STATE : undefined,
   });
-  await context.addCookies([{ ...COOKIE_CONSENT, url: baseURL }]);
   const page = await context.newPage();
   await page.goto(shot.yol, { waitUntil: "networkidle" });
+  if (shot.hazirla) await PREPARE[shot.hazirla](page);
   await page.evaluate(() => document.fonts.ready);
-  // Trigger lazy images, then return to the top.
+  // Trigger lazy images, then return to the top, or to the step the URL points at (#adim-saat).
   await page.evaluate(async () => {
     for (let y = 0; y < document.documentElement.scrollHeight; y += window.innerHeight) {
       window.scrollTo(0, y);
       await new Promise((resolve) => setTimeout(resolve, 120));
     }
-    window.scrollTo(0, 0);
+    const target = window.location.hash ? document.querySelector(window.location.hash) : null;
+    if (target) target.scrollIntoView({ block: "start" });
+    else window.scrollTo(0, 0);
   });
   await page.waitForLoadState("networkidle");
   await page.addStyleTag({

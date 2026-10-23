@@ -4,12 +4,29 @@ Kadıköy'de Bahadır Karasu'nun işlettiği nail art stüdyosu için mobil önc
 
 > **Kişiye özel demo.** İşletmeci adı, Instagram hesabı (@bahadirkarasunails) ve telefon / WhatsApp hattı (0542 311 58 88) gerçektir; adres, hizmet ayrıntıları, yorumlar, görseller ve randevu kayıtları örnektir. Site `DEMO_MODE=true` ile arama motorlarına kapalıdır ve dışarıya e-posta / mesaj göndermez.
 
+**Canlı demo:** https://nail-art-studio-sigma.vercel.app · **Portfolyo metinleri:** [portfolyo/portfolyo.md](portfolyo/portfolyo.md)
+
+![Masaüstünde ana sayfa, telefonda numaralı bir eser](portfolyo/mockup/01-kapak.png)
+
+## Öne çıkanlar
+
+- **Numaralı galeri + "Bu tasarımı istiyorum":** randevu o tasarım ve ilgili hizmetle açılır.
+- **Canlı müsaitlik:** ana sayfada en yakın boş saatler; randevuda yalnızca boş gün ve saatler. Çakışmayı PostgreSQL dışlama kısıtı engeller.
+- **Yönetim bağlantısı:** müşteri randevusunu erteler, iptal eder, takvimine ekler (.ics, Google).
+- **Telefon paneli:** Bugün, randevular, müsaitlik, galeri yükleme, hizmetler, içerik, yorumlar, onay kayıtları, ayarlar; WhatsApp şablonları.
+- **Kalite:** 280 birim / entegrasyon + 367 uçtan uca test; her sayfa 6 genişlikte taşma ve axe denetiminden geçer; Lighthouse CI bütçeleri.
+
+| Akış | Panel |
+|---|---|
+| ![Eser → saat → onay](portfolyo/mockup/02-mobil-uclu.png) | ![Randevu ayrıntısı ve Bugün ekranı](portfolyo/mockup/03-panel.png) |
+
 | | |
 |---|---|
 | Plan (tek doğru kaynak) | [docs/proje-plani.md](docs/proje-plani.md) |
 | İlerleme ve sıradaki dilim | [docs/ilerleme.md](docs/ilerleme.md) |
 | Araştırma | [docs/arastirma.md](docs/arastirma.md) |
-| Kalite kapıları | [docs/kalite-kapilari.md](docs/kalite-kapilari.md) |
+| Kalite kapıları | [docs/kalite-kapilari.md](docs/kalite-kapilari.md) (rapor: ilerleme dosyasında) |
+| Yönetim paneli kılavuzu | [docs/admin-kilavuzu.md](docs/admin-kilavuzu.md) |
 | Yapay zekâ asistanı talimatları | [AGENTS.md](AGENTS.md) |
 | Sistem | web-proje 1.0.0 · S2 · hesap modeli B · V1 |
 

@@ -1,9 +1,45 @@
 {
-  "$comment": "Plan §21'deki ekran listesi. dosya: {sıra}-{ekran}-{cihaz}; cihaz: masaustu | mobil | tablet. tamSayfa: true ise ayrıca '-tam' sonekli tam sayfa görüntüsü alınır. hazirla: sayfada çekimden önce çalışacak isteğe bağlı adımlar (tıkla, kaydır).",
+  "$comment": "Plan §21 + 19-portfolyo §3 S2 listesi. dosya: {sıra}-{ekran}-{cihaz}; cihaz: masaustu | mobil | tablet. tamSayfa: ayrıca '-tam' sonekli tam sayfa. panel: yönetici oturumuyla. hazirla: tests/e2e/ekran-goruntusu.spec.ts içindeki adlandırılmış hazırlık (tıklama, form).",
   "ekranlar": [
-    { "dosya": "01-ana-sayfa-masaustu", "yol": "/", "cihaz": "masaustu", "tamSayfa": true },
-    { "dosya": "02-ana-sayfa-mobil", "yol": "/", "cihaz": "mobil" },
-    { "dosya": "03-iletisim-mobil", "yol": "/iletisim", "cihaz": "mobil" },
-    { "dosya": "04-sss-masaustu", "yol": "/sss", "cihaz": "masaustu" }
+    { "dosya": "01-ana-sayfa-mobil", "yol": "/", "cihaz": "mobil" },
+    { "dosya": "02-ana-sayfa-masaustu", "yol": "/", "cihaz": "masaustu", "tamSayfa": true },
+    { "dosya": "03-galeri-masaustu", "yol": "/galeri", "cihaz": "masaustu" },
+    { "dosya": "04-galeri-eser-mobil", "yol": "/galeri/renkli-puantiye", "cihaz": "mobil" },
+    {
+      "dosya": "05-randevu-gun-saat-mobil",
+      "yol": "/randevu?tasarim=renkli-puantiye",
+      "cihaz": "mobil",
+      "hazirla": "randevu-saat"
+    },
+    {
+      "dosya": "06-randevu-onay-mobil",
+      "yol": "/randevu?tasarim=renkli-puantiye",
+      "cihaz": "mobil",
+      "hazirla": "randevu-onay"
+    },
+    { "dosya": "07-hizmet-detay-tablet", "yol": "/hizmetler/kalici-oje", "cihaz": "tablet" },
+    { "dosya": "08-hizmet-detay-masaustu", "yol": "/hizmetler/kalici-oje", "cihaz": "masaustu" },
+    { "dosya": "09-iletisim-mobil", "yol": "/iletisim", "cihaz": "mobil" },
+    { "dosya": "10-panel-bugun-mobil", "yol": "/panel", "cihaz": "mobil", "panel": true },
+    { "dosya": "11-panel-bugun-masaustu", "yol": "/panel", "cihaz": "masaustu", "panel": true },
+    {
+      "dosya": "12-panel-randevu-detay-masaustu",
+      "yol": "/panel/randevular",
+      "cihaz": "masaustu",
+      "panel": true,
+      "hazirla": "panel-randevu-detay"
+    },
+    {
+      "dosya": "13-panel-galeri-yeni-masaustu",
+      "yol": "/panel/galeri/yeni",
+      "cihaz": "masaustu",
+      "panel": true
+    },
+    {
+      "dosya": "14-panel-talepler-masaustu",
+      "yol": "/panel/talepler",
+      "cihaz": "masaustu",
+      "panel": true
+    }
   ]
 }
