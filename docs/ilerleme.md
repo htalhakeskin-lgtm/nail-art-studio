@@ -1,12 +1,12 @@
 # İlerleme — Nail Art Studios · Bahadır Karasu
 
-> **Son güncelleme:** 2026-10-22 · **Faz:** 4 (geliştirme) · **Sıradaki dilim:** Faz 7 (portfolyo)
+> **Son güncelleme:** 2026-10-23 · **Faz:** 8 (dersler) · **Sıradaki:** derslerin sisteme taşınması (kullanıcı onayı)
 
 ## Şu an
 
-- **Etkin dilim:** Faz 6 ✅ (demo yayında)
-- **Son yapılan:** Faz 5 raporu + eksiklerin kapatılması (Ayarlar, paylaşım görseli, admin kılavuzu); Faz 6: canlı demo duman testi, Lighthouse canlı ölçümü, projeye özel canlıya geçiş listesi
-- **Sıradaki adım:** Faz 7 portfolyo (ekran görüntüleri, mockup, metinler); Faz 8 dersler
+- **Etkin dilim:** Faz 7 ✅ (PR açık)
+- **Son yapılan:** Faz 7 portfolyo: 15 ekran görüntüsü (`pnpm screenshots`; randevu akışı ve panel randevu detayı için adlandırılmış hazırlık adımları), 3 mockup + LinkedIn varyantları, `portfolyo/portfolyo.md` (ölçülmüş rakamlar, 2026-10-23), README kapak ve öne çıkanlar. Çekimde görülen sorun düzeltildi: panel üst menüsü 1440 px'te iki satıra bölünüyordu → menü 1024 px'ten itibaren, seyrek kullanılan Onaylar / Demo kutusu yalnızca "Bugün" listesinde, logo ve kullanıcı adı geniş ekranda tam
+- **Sıradaki adım:** Faz 8: "Sisteme taşı" işaretli derslerin web-proje sistemine önerilmesi; değişiklik kullanıcı onayıyla
 
 ## Gözetimsiz çalışma notları
 

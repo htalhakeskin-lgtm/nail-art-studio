@@ -56,7 +56,12 @@ export default defineConfig({
       dependencies: ["setup"],
     },
     // pnpm screenshots (19-portfolyo §3)
-    { name: "portfolyo", testMatch: /ekran-goruntusu\.spec\.ts/, use: { ...shared } },
+    {
+      name: "portfolyo",
+      testMatch: /ekran-goruntusu\.spec\.ts/,
+      use: { ...shared },
+      dependencies: ["setup"],
+    },
   ],
   webServer: {
     // Not "pnpm start" on CI: pnpm 12 runs the script outside Playwright's process group, so
