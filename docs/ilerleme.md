@@ -8,6 +8,7 @@
 - **Son yapılan:** Faz 7 portfolyo: 15 ekran görüntüsü (`pnpm screenshots`; randevu akışı ve panel randevu detayı için adlandırılmış hazırlık adımları), 3 mockup + LinkedIn varyantları, `portfolyo/portfolyo.md` (ölçülmüş rakamlar, 2026-10-23), README kapak ve öne çıkanlar. Çekimde görülen sorun düzeltildi: panel üst menüsü 1440 px'te iki satıra bölünüyordu → menü 1024 px'ten itibaren, seyrek kullanılan Onaylar / Demo kutusu yalnızca "Bugün" listesinde, logo ve kullanıcı adı geniş ekranda tam
 - **Faz 8:** "Sisteme taşı" işaretli 57 ders 24 başlıkta toplanıp web-proje `DERSLER.md` tablosuna **Öneri** olarak eklendi (D-012…D-035) ve kalibrasyon tablosuna bu proje yazıldı. Standartlar, iskelet ve şablonlar değiştirilmedi.
 - **Sıradaki adım:** Kullanıcı onayı: hangi önerilerin standartlara / iskelete işleneceği (sistem sürümü + değişiklik kaydı). Canlıya geçiş, yayın kaydındaki listeyle ve kullanıcı onayıyla.
+- **2026-11-03** — Kullanıcı web-proje sistemini güncelledi (v1.2: IC-07 / AR-08, alt bilgi imzası) ve bu projede uygulanmasını istedi. `SiteCredit` eklendi (`src/components/layout/site-credit.tsx`): alt bilgi son satırında, demo notunun karşısında, header'daki sahip etiketiyle aynı stilde "Created by Talha Keskin". Projenin yerel `docs/standartlar/` kopyası 2026-10-23 sürümünde kaldı; bu tek değişiklik ayrıca uygulandı, tam `uyarla` yapılmadı.
 
 ## Gözetimsiz çalışma notları
 

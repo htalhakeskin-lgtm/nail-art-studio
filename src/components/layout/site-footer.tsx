@@ -10,6 +10,8 @@ import {
 } from "@/features/site";
 import { env } from "@/lib/env";
 
+import { SiteCredit } from "./site-credit";
+
 const legalLinks = [
   { href: "/kvkk", label: "KVKK Aydınlatma Metni" },
   { href: "/gizlilik", label: "Gizlilik Politikası" },
@@ -100,14 +102,18 @@ export async function SiteFooter() {
         </nav>
       </div>
 
-      {env.DEMO_MODE && (
-        <div className="border-t border-border">
-          <p className="container-page py-6 text-sm text-muted-foreground">
-            Bu site gösterim amaçlı bir demodur. İşletmeci adı, Instagram hesabı ve telefon numarası
-            gerçektir; adres, hizmet ayrıntıları, yorumlar, görseller ve randevu kayıtları örnektir.
-          </p>
+      <div className="border-t border-border">
+        <div className="container-page flex flex-col items-start gap-3 py-6 sm:flex-row sm:items-center">
+          {env.DEMO_MODE && (
+            <p className="max-w-prose text-sm text-muted-foreground">
+              Bu site gösterim amaçlı bir demodur. İşletmeci adı, Instagram hesabı ve telefon
+              numarası gerçektir; adres, hizmet ayrıntıları, yorumlar, görseller ve randevu
+              kayıtları örnektir.
+            </p>
+          )}
+          <SiteCredit />
         </div>
-      )}
+      </div>
     </footer>
   );
 }
