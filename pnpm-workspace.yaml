@@ -23,3 +23,16 @@ auditConfig:
     # No patched version exists (2026-10-16). Runs only on our own lint globs, never on user input.
     # Review: 2026-11-16 or when eslint-config-next / braces ships a fix.
     - GHSA-vfj7-8cjw-p6xm
+    # shadcn CLI (devDependency, never imported by app code or run in CI/build; added only so a
+    # developer can run `pnpm exec shadcn add …` locally). Its bundled MCP registry server pulls
+    # an old zod/express/undici/systeminformation chain through @modelcontextprotocol/sdk and
+    # @dotenvx/dotenvx; `pnpm why zod` confirms the app's own zod resolves to 4.6.7 (patched),
+    # separate from shadcn's pinned 3.25.76. Bumping to shadcn@4.23.0 (2026-11-04) made this
+    # worse, not better (2026-10-27 advisories). Review: 2026-12-04 or when shadcn drops dotenvx.
+    - GHSA-mrhx-c7xc-m3w5 # zod — oversized collection validation DoS, shadcn's own 3.25.76 only
+    - GHSA-27r3-jxmh-p828 # body-parser — compressed body DoS, shadcn's bundled MCP server only
+    - GHSA-xjj6-f33q-929c # undici — DoS via excessive content-encodings
+    - GHSA-4w7w-5xrc-9h26 # undici — cache poisoning via cross-origin redirects
+    - GHSA-2m5v-pch6-74hx # undici — TLS cert validation bypass via dropped Agent options
+    - GHSA-qrxm-fqhp-jwvm # undici — DoS via TLS 1.2 certificate-changing renegotiation
+    - GHSA-3f7j-7jwc-fxfj # systeminformation — Windows command injection in services()

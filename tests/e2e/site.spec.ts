@@ -83,3 +83,10 @@ test("images come from pre-encoded variants, never the optimisation endpoint", a
   const loaded = await images.first().evaluate((node) => (node as HTMLImageElement).naturalWidth);
   expect(loaded).toBeGreaterThan(0);
 });
+
+test("footer carries the maker's credit, opposite the demo note (IC-07)", async ({ page }) => {
+  await page.goto("/");
+  const footer = page.locator("footer");
+  await expect(footer.getByText("Talha Keskin")).toBeVisible();
+  await expect(footer.getByText("Created by", { exact: false })).toHaveAttribute("lang", "en");
+});
