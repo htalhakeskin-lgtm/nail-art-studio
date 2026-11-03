@@ -244,7 +244,7 @@ Kod değişmez; yapılandırma, içerik ve yasal adımlar. Gerçek müşteri yay
 
 - ~~Yerelde `content.spec` panel testleri kararsız~~ → Çözüldü (D-12): paralel işçide `afterAll` temizliği ve yerelde 6 işçi; describe'lar seri, yerelde `--workers=2` (Dersler).
 - **Lighthouse performans puanı 78–88** (hedef 90, mobil benzetim): kalan fark çerçeve JS'si ve benzetimde geç ilk boyama; CI'da uyarı. Ayrıntı K-43.
-- **`pnpm audit`: 1 orta düzey** — `esbuild` ≤ 0.24.2 (`better-auth` → `drizzle-kit` zinciri, yalnızca geliştirme sunucusunu etkiler); yüksek / kritik yok. Üst sürüm bekleniyor.
+- **`pnpm audit`: yüksek / kritik yok** (2026-11-04) — 12 orta / düşük düzey açık kalıyor (ör. `esbuild` ≤ 0.24.2, `better-auth` → `drizzle-kit` zinciri; yalnızca geliştirme sunucusunu etkiler). 7 yüksek düzey açık `pnpm-workspace.yaml` → `auditConfig.ignoreGhsas`'ta gerekçeli ve tarihli: `shadcn` CLI'nin (devDependency, hiçbir script ya da CI işinde çağrılmıyor) bağladığı eski `zod` / `undici` / `body-parser` / `systeminformation` zinciri (`@modelcontextprotocol/sdk`, `@dotenvx/dotenvx` üzerinden); uygulamanın kendi `zod`'u (`4.6.7`) ayrı ve yamalı (`pnpm why zod` ile doğrulandı). Gözden geçirme: 2026-12-04.
 
 ## Dersler
 
